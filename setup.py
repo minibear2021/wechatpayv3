@@ -5,16 +5,16 @@ with open("README.md", "r", encoding="utf8") as f:
     long_description = f.read()
 
 setup(
-    name="wechatpay-api-v3",
-    version="0.1",
+    name="wechatpayv3",
+    version="0.43",
     author="minibear",
-    description="Python SDK for WechatPay V3",
+    description="微信支付接口V3版python库",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="BSD",
     keywords="python sdk wechatpay api v3 微信支付",
-    url="https://github.com/minibear2021/wechatpay-api-v3",
-    packages=["wechatpay-api-v3"],
+    url="https://github.com/minibear2021/wechatpayv3",
+    packages=["wechatpayv3"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Topic :: Utilities",

@@ -1,15 +1,15 @@
-# wechatpay-api-v3
-[![PyPI version](https://badge.fury.io/py/wechatpay-api-v3.svg)](https://badge.fury.io/py/wechatpay-api-v3)
+# wechatpayv3
+[![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
 
 ## 介绍
 
-**wechatpay-api-v3** 
+**wechatpayv3** 
 微信支付接口V3版python库.
 
 ## 安装
 
 ```
-$ pip install wechatpay-api-v3
+$ pip install wechatpayv3
 ```
 
 ## 使用方法
@@ -18,7 +18,7 @@ $ pip install wechatpay-api-v3
 
 ### 初始化
 ``` python
-from wechatpay-api-v3 import WeChatPay, WeChatPayType
+from wechatpayv3 import WeChatPay, WeChatPayType
 
 MCHID = '1230000109'
 

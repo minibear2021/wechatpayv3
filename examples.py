@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from config import MCH_KEY_SERIAL_NO, MCHID, WECHAT_PUBLIC_KEY, MCH_PRIVATE_KEY, APPID, NOTIFY_URL
 
-from wechatpay import WeChatPay, WeChatPayException, WeChatPayType
+from wechatpayv3 import WeChatPay, WeChatPayType
 
 wxpay = WeChatPay(wechatpay_type=WeChatPayType.MINIPROG,
                   mchid=MCHID,
