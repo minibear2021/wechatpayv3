@@ -11,7 +11,7 @@ class Core():
         self._wechat_public_key = wechat_public_key
         self._gate_way = 'https://api.mch.weixin.qq.com'
 
-    def get(self, path, **kwargs):
+    def get(self, path):
         headers = {}
         headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
@@ -21,7 +21,7 @@ class Core():
         response = requests.get(url=self._gate_way + path, headers=headers)
         return response.status_code, response.text
 
-    def post(self, path, json=None, **kwargs):
+    def post(self, path, json=None):
         headers = {}
         headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})

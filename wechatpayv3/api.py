@@ -55,7 +55,7 @@ class WeChatPay():
         :param goods_tag: 订单优惠标记，示例值：'WXG'
         :param detail: 优惠功能，示例值：{'cost_price':608800, 'invoice_id':'微信123', 'goods_detail':[{'merchant_goods_id':'商品编码', 'wechatpay_goods_id':'1001', 'goods_name':'iPhoneX 256G', 'quantity':1, 'unit_price':828800}]}
         :param scene_info: 场景信息，示例值：{'payer_client_ip':'14.23.150.211', 'device_id':'013467007045764', 'store_info':{'id':'0001', 'name':'腾讯大厦分店', 'area_code':'440305', 'address':'广东省深圳市南山区科技中一道10000号'}}
-        :param settle_info: 结算信息，示例值：{'profit_sharing':false}
+        :param settle_info: 结算信息，示例值：{'profit_sharing':False}
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
         """
         params = {}
@@ -74,6 +74,8 @@ class WeChatPay():
             params.update({'amount': amount})
         else:
             raise WeChatPayException('amount is not assigned.')
+        if payer:
+                params.update({'payer': payer})
         if scene_info:
             params.update({'scene_info': scene_info})
         if time_expire:
@@ -87,9 +89,7 @@ class WeChatPay():
         if settle_info:
             params.update({'settle_info': settle_info})
         if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
-            if payer:
-                params.update({'payer': payer})
-            else:
+            if not payer:
                 raise WeChatPayException('payer is not assigned')
             path = '/v3/pay/transactions/jsapi'
         elif self._type == WeChatPayType.APP:
@@ -100,7 +100,7 @@ class WeChatPay():
             path = '/v3/pay/transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
-        self._core.post(path, json=json.dumps(params))
+        return self._core.post(path, json=json.dumps(params))
 
     def close(self, out_trade_no):
         """关闭订单
@@ -121,15 +121,12 @@ class WeChatPay():
         """
         if not (transaction_id or out_trade_no):
             raise WeChatPayException('params is not assigned')
-        params = {}
-        params['mchid'] = self._mchid
         if transaction_id:
             path = '/v3/pay/transactions/id/%s' % transaction_id
-            params['transaction_id'] = transaction_id
         else:
             path = '/v3/pay/transactions/out-trade-no/%s' % out_trade_no
-            params['out_trade_no'] = out_trade_no
-        return self._core.get(path, json=json.dumps(params))
+        path = '%s?mchid=%s' %(path, self._mchid)
+        return self._core.get(path)
 
     def refund(self,
                out_refund_no,
@@ -209,9 +206,95 @@ class WeChatPay():
         return self._core.get(path)
 
     def certificate(self):
+        """下载微信支付平台证书
+        """
         path = '/v3/certificates'
         return self._core.get(path)
 
+    def combine_pay(self, 
+                    combine_out_trade_no,
+                    sub_orders,
+                    scene_info=None,
+                    combine_payer_info=None,
+                    time_start=None,
+                    time_expire=None,
+                    combine_appid=None,
+                    combine_mchid=None,
+                    notify_url=None):
+        """合单支付下单
+        :param combine_out_trade_no: 合单商户订单号, 示例值：'P20150806125346'
+        :param sub_orders: 子单信息，示例值：[{'mchid':'1900000109', 'attach':'深圳分店', 'amount':{'total_amount':100,'currency':'CNY'}, 'out_trade_no':'20150806125346', 'description':'腾讯充值中心-QQ会员充值', 'settle_info':{'profit_sharing':False, 'subsidy_amount':10}}]
+        :param scene_info: 场景信息, 示例值：{'device_id':'POS1:123', 'payer_client_ip':'14.17.22.32'}
+        :param combine_payer_info: 支付者, 示例值：{'openid':'oUpF8uMuAJO_M2pxb1Q9zNjWeS6o'}
+        :param time_start: 交易起始时间，示例值：'2019-12-31T15:59:59+08:00'
+        :param time_expire: 交易结束时间, 示例值：'2019-12-31T15:59:59+08:00'
+        :param combine_appid: 合单商户appid, 示例值：'wxd678efh567hg6787'
+        :param combine_mchid: 合单发起方商户号，示例值：'1900000109'
+        :param notify_url: 通知地址, 示例值：'https://yourapp.com/notify'
+        """
+        params={}
+        params['combine_appid'] = combine_appid or self._appid
+        params['combine_mchid'] = combine_mchid or self._mchid
+        params['notify_url'] = notify_url or self._notify_url
+        if combine_out_trade_no:
+            params.update({'combine_out_trade_no': combine_out_trade_no})
+        else:
+            raise WeChatPayException('combine_out_trade_no is not assigned.')
+        if sub_orders:
+            params.update({'sub_orders': sub_orders})
+        else:
+            raise WeChatPayException('sub_orders is not assigned.')
+        if scene_info:
+            params.update({'scene_info': scene_info})
+        if combine_payer_info:
+            params.update({'combine_payer_info': combine_payer_info})
+        if time_start:
+            params.update({'time_start': time_start})
+        if time_expire:
+            params.update({'time_expire': time_expire})
+        if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
+            if not combine_payer_info:
+                raise WeChatPayException('combine_payer_info is not assigned')
+            path = '/v3/combine-transactions/jsapi'
+        elif self._type == WeChatPayType.APP:
+            path = '/v3/combine-transactions/app'
+        elif self._type == WeChatPayType.H5:
+            if not scene_info:
+                raise WeChatPayException('scene_info is not assigned.')
+            path = '/v3/combine-transactions/h5'
+        elif self._type == WeChatPayType.NATIVE:
+            path = '/v3/combine-transactions/native'
+        return self._core.post(path, json=json.dumps(params))
+
+    def combine_query(self, combine_out_trade_no):
+        """合单查询订单
+        :param combine_out_trade_no: 合单商户订单号，示例值：P20150806125346
+        """
+        params = {}
+        if not combine_out_trade_no:
+            raise WeChatPayException('param combine_out_trade_no is not assigned')
+        else:
+            params.update({'combine_out_trade_no':combine_out_trade_no})
+        path = '/v3/combine-transactions/out-trade-no/%s' % combine_out_trade_no
+        return self._core.get(path)
+
+    def combine_close(self, combine_out_trade_no, sub_orders, combine_appid=None):
+        """合单关闭订单
+        :param combine_out_trade_no: 合单商户订单号，示例值：'P20150806125346'
+        :param sub_orders: 子单信息, 示例值：[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}]
+        :param combine_appid: 合单商户appid, 示例值：'wxd678efh567hg6787'
+        """
+        params = {}
+        params['combine_appid'] = combine_appid or self._appid
+
+        if not combine_out_trade_no:
+            raise WeChatPayException('combine_out_trade_no is not assigned.')
+        if not sub_orders:
+            raise WeChatPayException('sub_orders is not assigned.')
+        else:
+            params.update({'sub_orders': sub_orders})
+        path = '/v3/combine-transactions/out-trade-no/%s/close' % combine_out_trade_no
+        return self._core.post(path, json=json.dumps(params))
 
 class WeChatPayException(Exception):
     def __init__(self, reason):

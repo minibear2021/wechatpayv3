@@ -63,6 +63,24 @@ def download_bill():
     print('code: %s, message: %s' % (code, message))
 
 
+def combine_pay():
+    code, message = wxpay.combine_pay(combine_out_trade_no='demo_out_trade_no', sub_orders=[{'mchid': '1900000109', 'attach': '深圳分店', 'amount': {
+                                      'total_amount': 100, 'currency': 'CNY'}, 'out_trade_no': '20150806125346', 'description': '腾讯充值中心-QQ会员充值', 'settle_info': {'profit_sharing': False, 'subsidy_amount': 10}}])
+    print('code: %s, message: %s' % (code, message))
+
+
+def combine_query():
+    code, message = wxpay.combine_query(
+        combine_out_trade_no='demo_out_trade_no')
+    print('code: %s, message: %s' % (code, message))
+
+
+def combine_close():
+    code, message = wxpay.combine_close(combine_out_trade_no='demo_out_trade_no', sub_orders=[
+                                        {'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
+    print('code: %s, message: %s' % (code, message))
+
+
 if __name__ == '__main__':
     # certificate()
     # pay()
@@ -72,5 +90,8 @@ if __name__ == '__main__':
     # query_refund()
     # trade_bill()
     # fundflow_bill()
-    download_bill()
+    # download_bill()
+    # combine_pay()
+    # combine_query()
+    # combine_close()
     pass
