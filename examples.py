@@ -3,13 +3,14 @@ from config import MCH_KEY_SERIAL_NO, MCHID, WECHAT_CERTIFICATE, MCH_PRIVATE_KEY
 
 from wechatpayv3 import WeChatPay, WeChatPayType
 
-wxpay = WeChatPay(wechatpay_type=WeChatPayType.MINIPROG,
-                  mchid=MCHID,
-                  mch_parivate_key=MCH_PRIVATE_KEY,
-                  mch_key_serial_no=MCH_KEY_SERIAL_NO,
-                  wechat_certificate=WECHAT_CERTIFICATE,
-                  appid=APPID,
-                  notify_url=NOTIFY_URL)
+wxpay = WeChatPay(
+    wechatpay_type=WeChatPayType.MINIPROG,
+    mchid=MCHID,
+    mch_parivate_key=MCH_PRIVATE_KEY,
+    mch_key_serial_no=MCH_KEY_SERIAL_NO,
+    wechat_certificate=WECHAT_CERTIFICATE,
+    appid=APPID,
+    notify_url=NOTIFY_URL)
 
 
 def certificate():
@@ -18,10 +19,11 @@ def certificate():
 
 
 def pay():
-    code, message = wxpay.pay(description='demo-description',
-                              out_trade_no='demo-trade-no',
-                              amount={'total': 100},
-                              payer={'openid': 'demo-openid'})
+    code, message = wxpay.pay(
+        description='demo-description',
+        out_trade_no='demo-trade-no',
+        amount={'total': 100},
+        payer={'openid': 'demo-openid'})
     print('code: %s, message: %s' % (code, message))
 
 
@@ -36,9 +38,10 @@ def close():
 
 
 def refund():
-    code, message = wxpay.refund(transaction_id='demo-transation-id',
-                                 out_refund_no='demo-out-refund-no',
-                                 amount={'refund': 100, 'total': 100, 'currency': 'CNY'})
+    code, message = wxpay.refund(
+        transaction_id='demo-transation-id',
+        out_refund_no='demo-out-refund-no',
+        amount={'refund': 100, 'total': 100, 'currency': 'CNY'})
     print('code: %s, message: %s' % (code, message))
 
 
@@ -64,8 +67,15 @@ def download_bill():
 
 
 def combine_pay():
-    code, message = wxpay.combine_pay(combine_out_trade_no='demo_out_trade_no', sub_orders=[{'mchid': '1900000109', 'attach': '深圳分店', 'amount': {
-                                      'total_amount': 100, 'currency': 'CNY'}, 'out_trade_no': '20150806125346', 'description': '腾讯充值中心-QQ会员充值', 'settle_info': {'profit_sharing': False, 'subsidy_amount': 10}}])
+    code, message = wxpay.combine_pay(
+        combine_out_trade_no='demo_out_trade_no',
+        sub_orders=[{'mchid': '1900000109',
+                     'attach': '深圳分店',
+                     'amount': {'total_amount': 100, 'currency': 'CNY'},
+                     'out_trade_no': '20150806125346',
+                     'description': '腾讯充值中心-QQ会员充值',
+                     'settle_info': {'profit_sharing': False, 'subsidy_amount': 10}}],
+        combine_payer_info={'openid':'oUpF8uMuAJO_M2pxb1Q9zNjWeS6o'})
     print('code: %s, message: %s' % (code, message))
 
 
@@ -76,8 +86,9 @@ def combine_query():
 
 
 def combine_close():
-    code, message = wxpay.combine_close(combine_out_trade_no='demo_out_trade_no', sub_orders=[
-                                        {'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
+    code, message = wxpay.combine_close(
+        combine_out_trade_no='demo_out_trade_no',
+        sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
     print('code: %s, message: %s' % (code, message))
 
 

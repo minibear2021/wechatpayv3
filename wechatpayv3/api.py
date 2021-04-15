@@ -109,9 +109,7 @@ class WeChatPay():
         if not out_trade_no:
             raise Exception('out_trade_no is not assigned.')
         path = '/v3/pay/transactions/out-trade-no/%s/close' % out_trade_no
-        params = {}
-        params['mchid'] = self._mchid
-        params['out_trade_no'] = out_trade_no
+        params = {'mchid': self._mchid}
         return self._core.post(path, data=params)
 
     def query(self, transaction_id=None, out_trade_no=None):
@@ -158,7 +156,7 @@ class WeChatPay():
         else:
             raise Exception('amount is not assigned.')
         if transaction_id:
-            params.update({'transation_id': transaction_id})
+            params.update({'transaction_id': transaction_id})
         if out_trade_no:
             params.update({'out_trade_no': out_trade_no})
         if reason:

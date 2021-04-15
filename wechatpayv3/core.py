@@ -32,7 +32,7 @@ class Core():
                 return -1, '{"message": "微信支付平台证书序号不一致"}'
             if not verify_response(timestamp, nonce, body, signature, self._wechat_certificate):
                 return -1, '{"message": "应答签名验证失败"}'
-        return response.status_code, response.content
+        return response.status_code, response.text
 
     def post(self, path, data=None):
         headers = {}
@@ -56,4 +56,4 @@ class Core():
                 return -1, '{"message": "微信支付平台证书序号不一致"}'
             if not verify_response(timestamp, nonce, body, signature, self._wechat_certificate):
                 return -1, '{"message": "应答签名验证失败"}'
-        return response.status_code, response.content
+        return response.status_code, response.text
