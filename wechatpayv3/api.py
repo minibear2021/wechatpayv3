@@ -65,15 +65,15 @@ class WeChatPay():
         if description:
             params.update({'description': description})
         else:
-            raise WeChatPayException('description is not assigned.')
+            raise Exception('description is not assigned.')
         if out_trade_no:
             params.update({'out_trade_no': out_trade_no})
         else:
-            raise WeChatPayException('out_trade_no is not assigned.')
+            raise Exception('out_trade_no is not assigned.')
         if amount:
             params.update({'amount': amount})
         else:
-            raise WeChatPayException('amount is not assigned.')
+            raise Exception('amount is not assigned.')
         if payer:
                 params.update({'payer': payer})
         if scene_info:
@@ -90,29 +90,29 @@ class WeChatPay():
             params.update({'settle_info': settle_info})
         if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not payer:
-                raise WeChatPayException('payer is not assigned')
+                raise Exception('payer is not assigned')
             path = '/v3/pay/transactions/jsapi'
         elif self._type == WeChatPayType.APP:
             path = '/v3/pay/transactions/app'
         elif self._type == WeChatPayType.H5:
             if not scene_info:
-                raise WeChatPayException('scene_info is not assigned.')
+                raise Exception('scene_info is not assigned.')
             path = '/v3/pay/transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
-        return self._core.post(path, json=json.dumps(params))
+        return self._core.post(path, data=params)
 
     def close(self, out_trade_no):
         """关闭订单
         :param out_trade_no: 商户订单号，示例值：'1217752501201407033233368018'
         """
         if not out_trade_no:
-            raise WeChatPayException('out_trade_no is not assigned.')
+            raise Exception('out_trade_no is not assigned.')
         path = '/v3/pay/transactions/out-trade-no/%s/close' % out_trade_no
         params = {}
         params['mchid'] = self._mchid
         params['out_trade_no'] = out_trade_no
-        return self._core.post(path, json=json.dumps(params))
+        return self._core.post(path, data=params)
 
     def query(self, transaction_id=None, out_trade_no=None):
         """查询订单
@@ -120,7 +120,7 @@ class WeChatPay():
         :param out_trade_no: 商户订单号，示例值：1217752501201407033233368018
         """
         if not (transaction_id or out_trade_no):
-            raise WeChatPayException('params is not assigned')
+            raise Exception('params is not assigned')
         if transaction_id:
             path = '/v3/pay/transactions/id/%s' % transaction_id
         else:
@@ -152,11 +152,11 @@ class WeChatPay():
         if out_refund_no:
             params.update({'out_refund_no': out_refund_no})
         else:
-            raise WeChatPayException('out_refund_no is not assigned.')
+            raise Exception('out_refund_no is not assigned.')
         if amount:
             params.update({'amount': amount})
         else:
-            raise WeChatPayException('amount is not assigned.')
+            raise Exception('amount is not assigned.')
         if transaction_id:
             params.update({'transation_id': transaction_id})
         if out_trade_no:
@@ -168,7 +168,7 @@ class WeChatPay():
         if goods_detail:
             params.update({'goods_detail': goods_detail})
         path = '/v3/refund/domestic/refunds'
-        return self._core.post(path, json=json.dumps(params))
+        return self._core.post(path, data=params)
 
     def query_refund(self, out_refund_no):
         """查询单笔退款
@@ -239,11 +239,11 @@ class WeChatPay():
         if combine_out_trade_no:
             params.update({'combine_out_trade_no': combine_out_trade_no})
         else:
-            raise WeChatPayException('combine_out_trade_no is not assigned.')
+            raise Exception('combine_out_trade_no is not assigned.')
         if sub_orders:
             params.update({'sub_orders': sub_orders})
         else:
-            raise WeChatPayException('sub_orders is not assigned.')
+            raise Exception('sub_orders is not assigned.')
         if scene_info:
             params.update({'scene_info': scene_info})
         if combine_payer_info:
@@ -254,17 +254,17 @@ class WeChatPay():
             params.update({'time_expire': time_expire})
         if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not combine_payer_info:
-                raise WeChatPayException('combine_payer_info is not assigned')
+                raise Exception('combine_payer_info is not assigned')
             path = '/v3/combine-transactions/jsapi'
         elif self._type == WeChatPayType.APP:
             path = '/v3/combine-transactions/app'
         elif self._type == WeChatPayType.H5:
             if not scene_info:
-                raise WeChatPayException('scene_info is not assigned.')
+                raise Exception('scene_info is not assigned.')
             path = '/v3/combine-transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/combine-transactions/native'
-        return self._core.post(path, json=json.dumps(params))
+        return self._core.post(path, data=params)
 
     def combine_query(self, combine_out_trade_no):
         """合单查询订单
@@ -272,7 +272,7 @@ class WeChatPay():
         """
         params = {}
         if not combine_out_trade_no:
-            raise WeChatPayException('param combine_out_trade_no is not assigned')
+            raise Exception('param combine_out_trade_no is not assigned')
         else:
             params.update({'combine_out_trade_no':combine_out_trade_no})
         path = '/v3/combine-transactions/out-trade-no/%s' % combine_out_trade_no
@@ -288,21 +288,13 @@ class WeChatPay():
         params['combine_appid'] = combine_appid or self._appid
 
         if not combine_out_trade_no:
-            raise WeChatPayException('combine_out_trade_no is not assigned.')
+            raise Exception('combine_out_trade_no is not assigned.')
         if not sub_orders:
-            raise WeChatPayException('sub_orders is not assigned.')
+            raise Exception('sub_orders is not assigned.')
         else:
             params.update({'sub_orders': sub_orders})
         path = '/v3/combine-transactions/out-trade-no/%s/close' % combine_out_trade_no
-        return self._core.post(path, json=json.dumps(params))
-
-class WeChatPayException(Exception):
-    def __init__(self, reason):
-        self._reason = reason
-
-    def __str__(self):
-        return self._reason
-
+        return self._core.post(path, data=params)
 
 class WeChatPayType(Enum):
     JSAPI = 0

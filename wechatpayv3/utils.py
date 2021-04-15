@@ -16,15 +16,16 @@ def build_authorization(path,
                         mchid,
                         serial_no,
                         mch_private_key,
-                        body=None,
+                        data=None,
                         nonce_str=None):
     timeStamp = str(int(time.time()))
     nonce_str = nonce_str or ''.join(str(uuid.uuid4()).split('-')).upper()
-    body = body if body else ''
+    body = data if data else ''
     sign_str = method + '\n' + path + '\n' + \
         timeStamp + '\n' + nonce_str + '\n' + body + '\n'
-    authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="%s",serial_no="%s",nonce_str="%s",timestamp="%s",signature="%s"' % (
-        mchid, serial_no, nonce_str, timeStamp, sign(mch_private_key=mch_private_key, sign_str=sign_str))
+    signature = sign(mch_private_key=mch_private_key, sign_str=sign_str)
+    authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",signature="%s",timestamp="%s",serial_no="%s"' % (
+        mchid, nonce_str, signature, timeStamp, serial_no)
     return authorization
 
 
