@@ -13,7 +13,7 @@ class WeChatPay():
                  mch_key_serial_no,
                  appid,
                  notify_url=None,
-                 wechat_public_key=None):
+                 wechat_certificate=None):
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
@@ -21,7 +21,7 @@ class WeChatPay():
         :param mch_key_serial_no: 商户证书序列号，示例值：'444F4864EA9B34415...'
         :param appid: 应用ID，示例值：'wxd678efh567hg6787'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
-        :param wechat_public_key：微信支付平台证书公钥，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+        :param wechat_certificate：微信支付平台证书，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
         """
         self._type = wechatpay_type
         self._mchid = mchid
@@ -30,7 +30,7 @@ class WeChatPay():
         self._core = Core(mchid=self._mchid,
                           mch_key_serial_no=mch_key_serial_no,
                           mch_private_key=mch_parivate_key,
-                          wechat_public_key=wechat_public_key)
+                          wechat_certificate=wechat_certificate)
 
     def pay(self,
             description,
