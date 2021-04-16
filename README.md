@@ -3,8 +3,12 @@
 
 ## 介绍
 
+https://github.com/minibear2021/wechatpayv3
+
+https://gitee.com/minibear2021/wechatpayv3
 
 微信支付接口V3版python库。
+
 V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了证书的自动更新，开发者无需关注证书有效性，更不需要手动下载及更新。
 
 ## 安装
@@ -21,11 +25,17 @@ $ pip install wechatpayv3
 ``` python
 from wechatpayv3 import WeChatPay, WeChatPayType
 
+# 微信支付商户号
 MCHID = '1230000109'
+# 商户证书私钥
 PRIVATE_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+# 商户证书序列号
 CERT_SERIAL_NO = '444F4864EA9B34415...'
+# API v3密钥， https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_2.shtml
 APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+# APPID
 APPID = 'wxd678efh567hg6787'
+# 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.weixin.qq.com/wxpay/pay.php'
 
 wxpay = WeChatPay(
@@ -113,6 +123,14 @@ def combine_close():
         combine_out_trade_no='demo_out_trade_no', 
         sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
     print('code: %s, message: %s' % (code, message))
-```
 
+# 计算签名供调起支付时拼凑参数使用
+# 注意事项：注意参数顺序，某个参数为空时不能省略，以空字符串''占位
+def sign():
+    print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
+
+# 验证并解密回调消息，把回调接口收到的headers和body传入
+def decrypt_callback(headers, body):
+    print(wxpay.decrypt_callback(headers, body))
+```
 

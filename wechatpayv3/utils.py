@@ -71,7 +71,7 @@ def format_certificate(certificate):
     return certificate
 
 
-def verify_response(timestamp, nonce, body, signature, certificate):
+def verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key_str = dump_public_key(certificate)
     public_key = load_pem_public_key(data=public_key_str.encode('UTF-8'),backend=default_backend())

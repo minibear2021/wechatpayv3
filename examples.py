@@ -86,6 +86,11 @@ def combine_close():
         sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
     print('code: %s, message: %s' % (code, message))
 
+def sign():
+    print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
+
+def decrypt_callback(headers, body):
+    print(wxpay.decrypt_callback(headers, body))
 
 if __name__ == '__main__':
     pay()
@@ -99,4 +104,5 @@ if __name__ == '__main__':
     combine_pay()
     combine_query()
     combine_close()
+    sign()
     pass

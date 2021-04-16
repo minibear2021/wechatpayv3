@@ -5,7 +5,7 @@ from enum import Enum
 import requests
 
 from .utils import (build_authorization, certificate_serial_number, decrypt,
-                    verify_response)
+                    verify, sign)
 
 
 class RequestType(Enum):
@@ -45,9 +45,36 @@ class Core():
                     ciphertext = encrypt_certificate.get('ciphertext')
                 if not (serial_no and effective_time and expire_time and algorithm and nonce and associated_data and ciphertext):
                     continue
-                certificate = decrypt(nonce=nonce, ciphertext=ciphertext,
-                                      associated_data=associated_data, apiv3_key=self._apiv3_key)
+                certificate = decrypt(
+                    nonce=nonce,
+                    ciphertext=ciphertext,
+                    associated_data=associated_data,
+                    apiv3_key=self._apiv3_key)
                 self._certificates.append(certificate)
+
+    def verify_signature(self, headers, body):
+        signature = headers.get('Wechatpay-Signature')
+        timestamp = headers.get('Wechatpay-Timestamp')
+        nonce = headers.get('Wechatpay-Nonce')
+        serial_no = headers.get('Wechatpay-Serial')
+        verified = False
+        for cert in self._certificates:
+            if serial_no == certificate_serial_number(cert):
+                verified = True
+                certificate = cert
+                break
+        if not verified:
+            self._update_certificates()
+            for cert in self._certificates:
+                if serial_no == certificate_serial_number(cert):
+                    verified = True
+                    certificate = cert
+                    break
+            if not verified:
+                return False
+        if not verify(timestamp, nonce, body, signature, certificate):
+            return False
+        return True
 
     def request(self, path, method=RequestType.GET, data=None, skip_verify=False):
         headers = {}
@@ -70,27 +97,37 @@ class Core():
                 self._gate_way + path, json=data, headers=headers)
 
         if response.status_code in range(200, 300) and not skip_verify:
-            timestamp = response.headers.get('Wechatpay-Timestamp')
-            nonce = response.headers.get('Wechatpay-Nonce')
-            signature = response.headers.get('Wechatpay-Signature')
-            body = response.text
-            serial_no = response.headers.get('Wechatpay-Serial')
-            verified = False
-            for cert in self._certificates:
-                if serial_no == certificate_serial_number(cert):
-                    verified = True
-                    certificate = cert
-                    break
-            if not verified:
-                self._update_certificates()
-                for cert in self._certificates:
-                    if serial_no == certificate_serial_number(cert):
-                        verified = True
-                        certificate = cert
-                        break
-                if not verified:
-                    raise Exception(
-                        "wechatpay certificate serial number does not match")
-            if not verify_response(timestamp, nonce, body, signature, certificate):
-                raise Exception("signature verification failed")
+            if not self.verify_signature(response.headers, response.text):
+                raise Exception('failed to verify signature')
         return response.status_code, response.text
+
+    def sign(self, sign_str):
+        return sign(self._private_key, sign_str)
+
+    def decrypt_callback(self, headers, body):
+        if verify_signature(headers, body):
+            data = json.loads(body)
+            resource_type = data.get('resource_type')
+            if resource_type != 'encrypt-resource':
+                return None
+            resource = data.get('resource')
+            if not resource:
+                return None
+            algorithm = resource.get('algorithm')
+            if algorithm != 'AEAD_AES_256_GCM':
+                return None
+            nonce = resource.get('nonce')
+            ciphertext = resource.get('ciphertext')
+            associated_data = resource.get('associated_data')
+            if not (nonce and ciphertext):
+                return None
+            if not associated_data:
+                associated_data = ''
+            result = decrypt(
+                nonce=nonce,
+                ciphertext=ciphertext,
+                associated_data=associated_data,
+                apiv3_key=self._apiv3_key)
+            return result
+        else:
+            return None

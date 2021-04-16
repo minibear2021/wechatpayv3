@@ -293,6 +293,18 @@ class WeChatPay():
         path = '/v3/combine-transactions/out-trade-no/%s/close' % combine_out_trade_no
         return self._core.request(path, method=RequestType.POST, data=params)
 
+    def sign(self, data):
+        """计算签名值paySign，供JSAPI、APP、NATIVE调起支付时使用
+        :param data: 需要签名的参数清单，示例值：['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']
+        """
+        sign_str = '\n'.join(data) + '\n'
+        return self._core.sign(sign_str)
+
+    def decrypt_callback(self, headers, body):
+        """解密回调接口收到的信息
+        """
+        return self._core.decrypt_callback(headers, body)
+
 
 class WeChatPayType(Enum):
     JSAPI = 0
