@@ -22,7 +22,7 @@ class Core():
             path, 'GET', self._mchid, self._mch_key_serial_no, self._mch_private_key)
         headers.update({'Authorization': authorization})
         response = requests.get(url=self._gate_way + path, headers=headers)
-        if response.status_code in range(200, 300):
+        if response.status_code in range(200, 300) and self._wechat_certificate:
             timestamp = response.headers.get('Wechatpay-Timestamp')
             nonce = response.headers.get('Wechatpay-Nonce')
             signature = response.headers.get('Wechatpay-Signature')
@@ -47,7 +47,7 @@ class Core():
         response = requests.post(self._gate_way + path,
                                  json=data,
                                  headers=headers)
-        if response.status_code in range(200, 300):
+        if response.status_code in range(200, 300) and self._wechat_certificate:
             timestamp = response.headers.get('Wechatpay-Timestamp')
             nonce = response.headers.get('Wechatpay-Nonce')
             signature = response.headers.get('Wechatpay-Signature')

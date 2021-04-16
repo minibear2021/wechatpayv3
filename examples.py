@@ -93,7 +93,7 @@ def combine_close():
 
 
 if __name__ == '__main__':
-    # certificate()
+    certificate()
     # pay()
     # query()
     # close()
