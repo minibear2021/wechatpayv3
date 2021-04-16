@@ -22,16 +22,17 @@ class Core():
             path, 'GET', self._mchid, self._mch_key_serial_no, self._mch_private_key)
         headers.update({'Authorization': authorization})
         response = requests.get(url=self._gate_way + path, headers=headers)
-        if response.status_code in [200, 202, 204]:
+        if response.status_code in range(200, 300):
             timestamp = response.headers.get('Wechatpay-Timestamp')
             nonce = response.headers.get('Wechatpay-Nonce')
             signature = response.headers.get('Wechatpay-Signature')
-            body = response.content
+            body = response.text
             serial_no = response.headers.get('Wechatpay-Serial')
             if serial_no != certificate_serial_number(self._wechat_certificate):
-                return -1, '{"message": "微信支付平台证书序号不一致"}'
+                raise Exception(
+                    "wechatpay certificate serial number does not match")
             if not verify_response(timestamp, nonce, body, signature, self._wechat_certificate):
-                return -1, '{"message": "应答签名验证失败"}'
+                raise Exception("signature verification failed")
         return response.status_code, response.text
 
     def post(self, path, data=None):
@@ -46,14 +47,15 @@ class Core():
         response = requests.post(self._gate_way + path,
                                  json=data,
                                  headers=headers)
-        if response.status_code in [200, 202, 204]:
+        if response.status_code in range(200, 300):
             timestamp = response.headers.get('Wechatpay-Timestamp')
             nonce = response.headers.get('Wechatpay-Nonce')
             signature = response.headers.get('Wechatpay-Signature')
-            body = response.content
+            body = response.text
             serial_no = response.headers.get('Wechatpay-Serial')
             if serial_no != certificate_serial_number(self._wechat_certificate):
-                return -1, '{"message": "微信支付平台证书序号不一致"}'
+                raise Exception(
+                    "wechatpay certificate serial number does not match")
             if not verify_response(timestamp, nonce, body, signature, self._wechat_certificate):
-                return -1, '{"message": "应答签名验证失败"}'
+                raise Exception("signature verification failed")
         return response.status_code, response.text

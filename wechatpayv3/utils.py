@@ -4,11 +4,13 @@ import time
 import uuid
 from base64 import b64decode, b64encode
 
+from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.hashes import SHA256
+from cryptography.hazmat.primitives.serialization import (load_pem_private_key,
+                                                          load_pem_public_key)
 from OpenSSL import crypto
 
 
@@ -31,7 +33,7 @@ def build_authorization(path,
 
 
 def sign(private_key, sign_str):
-    private_key = serialization.load_pem_private_key(data=format_private_key(
+    private_key = load_pem_private_key(data=format_private_key(
         private_key).encode('UTF-8'), password=None, backend=default_backend())
     message = sign_str.encode('UTF-8')
     signature = private_key.sign(message, PKCS1v15(), SHA256())
@@ -70,9 +72,15 @@ def format_certificate(certificate):
 
 def verify_response(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
-    public_key = dump_public_key(certificate)
+    public_key_str = dump_public_key(certificate)
+    public_key = load_pem_public_key(data=public_key_str.encode('UTF-8'),backend=default_backend())
     message = sign_str.encode('UTF-8')
-    return public_key.verify(b64decode(signature), sign_str.encode('UTF-8'), PKCS1v15, SHA256)
+    signature = b64decode(signature)
+    try:
+        public_key.verify(signature, sign_str.encode('UTF-8'), PKCS1v15(), SHA256())
+    except InvalidSignature:
+        return False
+    return True
 
 
 def certificate_serial_number(certificate):
