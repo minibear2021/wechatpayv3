@@ -2,35 +2,35 @@
 import json
 from enum import Enum
 
-from .core import Core
+from .core import Core, RequestType
 
 
 class WeChatPay():
     def __init__(self,
                  wechatpay_type,
                  mchid,
-                 mch_parivate_key,
-                 mch_key_serial_no,
+                 parivate_key,
+                 cert_serial_no,
                  appid,
-                 notify_url=None,
-                 wechat_certificate=None):
+                 apiv3_key,
+                 notify_url=None):
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
         :param mch_private_key: 商户证书私钥，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
         :param mch_key_serial_no: 商户证书序列号，示例值：'444F4864EA9B34415...'
         :param appid: 应用ID，示例值：'wxd678efh567hg6787'
+        :param mch_apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
-        :param wechat_certificate：微信支付平台证书，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
         """
         self._type = wechatpay_type
         self._mchid = mchid
         self._appid = appid
         self._notify_url = notify_url
         self._core = Core(mchid=self._mchid,
-                          mch_key_serial_no=mch_key_serial_no,
-                          mch_private_key=mch_parivate_key,
-                          wechat_certificate=wechat_certificate)
+                          cert_serial_no=cert_serial_no,
+                          private_key=parivate_key,
+                          apiv3_key=apiv3_key)
 
     def pay(self,
             description,
@@ -75,7 +75,7 @@ class WeChatPay():
         else:
             raise Exception('amount is not assigned.')
         if payer:
-                params.update({'payer': payer})
+            params.update({'payer': payer})
         if scene_info:
             params.update({'scene_info': scene_info})
         if time_expire:
@@ -100,7 +100,7 @@ class WeChatPay():
             path = '/v3/pay/transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
-        return self._core.post(path, data=params)
+        return self._core.request(path, method=RequestType.POST, data=params)
 
     def close(self, out_trade_no):
         """关闭订单
@@ -110,7 +110,7 @@ class WeChatPay():
             raise Exception('out_trade_no is not assigned.')
         path = '/v3/pay/transactions/out-trade-no/%s/close' % out_trade_no
         params = {'mchid': self._mchid}
-        return self._core.post(path, data=params)
+        return self._core.request(path, method=RequestType.POST, data=params)
 
     def query(self, transaction_id=None, out_trade_no=None):
         """查询订单
@@ -123,8 +123,8 @@ class WeChatPay():
             path = '/v3/pay/transactions/id/%s' % transaction_id
         else:
             path = '/v3/pay/transactions/out-trade-no/%s' % out_trade_no
-        path = '%s?mchid=%s' %(path, self._mchid)
-        return self._core.get(path)
+        path = '%s?mchid=%s' % (path, self._mchid)
+        return self._core.request(path)
 
     def refund(self,
                out_refund_no,
@@ -166,14 +166,14 @@ class WeChatPay():
         if goods_detail:
             params.update({'goods_detail': goods_detail})
         path = '/v3/refund/domestic/refunds'
-        return self._core.post(path, data=params)
+        return self._core.request(path, method=RequestType.POST, data=params)
 
     def query_refund(self, out_refund_no):
         """查询单笔退款
         :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
         """
         path = '/v3/refund/domestic/refunds/%s' % out_refund_no
-        return self._core.get(path)
+        return self._core.request(path)
 
     def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP'):
         """申请交易账单
@@ -183,7 +183,7 @@ class WeChatPay():
         """
         path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (
             bill_date, bill_type, tar_type)
-        return self._core.get(path)
+        return self._core.request(path)
 
     def fundflow_bill(self, bill_date, account_type='BASIC', tar_type='GZIP'):
         """申请资金账单
@@ -193,7 +193,7 @@ class WeChatPay():
         """
         path = '/v3/bill/fundflowbill?bill_date=%s&account_type=%s&tar_type=%s' % (
             bill_date, account_type, tar_type)
-        return self._core.get(path)
+        return self._core.request(path)
 
     def download_bill(self, url):
         """下载账单
@@ -201,15 +201,14 @@ class WeChatPay():
         """
         path = url[len(self._core._gate_way):] if url.startswith(
             self._core._gate_way) else url
-        return self._core.get(path)
+        return self._core.request(path)
 
-    def certificate(self):
-        """下载微信支付平台证书
-        """
-        path = '/v3/certificates'
-        return self._core.get(path)
+    # def certificates(self):
+    #     """下载微信支付平台证书
+    #     """
+    #     return self._core.certificates
 
-    def combine_pay(self, 
+    def combine_pay(self,
                     combine_out_trade_no,
                     sub_orders,
                     scene_info=None,
@@ -230,7 +229,7 @@ class WeChatPay():
         :param combine_mchid: 合单发起方商户号，示例值：'1900000109'
         :param notify_url: 通知地址, 示例值：'https://yourapp.com/notify'
         """
-        params={}
+        params = {}
         params['combine_appid'] = combine_appid or self._appid
         params['combine_mchid'] = combine_mchid or self._mchid
         params['notify_url'] = notify_url or self._notify_url
@@ -262,7 +261,7 @@ class WeChatPay():
             path = '/v3/combine-transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/combine-transactions/native'
-        return self._core.post(path, data=params)
+        return self._core.request(path, method=RequestType.POST, data=params)
 
     def combine_query(self, combine_out_trade_no):
         """合单查询订单
@@ -272,9 +271,9 @@ class WeChatPay():
         if not combine_out_trade_no:
             raise Exception('param combine_out_trade_no is not assigned')
         else:
-            params.update({'combine_out_trade_no':combine_out_trade_no})
+            params.update({'combine_out_trade_no': combine_out_trade_no})
         path = '/v3/combine-transactions/out-trade-no/%s' % combine_out_trade_no
-        return self._core.get(path)
+        return self._core.request(path)
 
     def combine_close(self, combine_out_trade_no, sub_orders, combine_appid=None):
         """合单关闭订单
@@ -292,7 +291,8 @@ class WeChatPay():
         else:
             params.update({'sub_orders': sub_orders})
         path = '/v3/combine-transactions/out-trade-no/%s/close' % combine_out_trade_no
-        return self._core.post(path, data=params)
+        return self._core.request(path, method=RequestType.POST, data=params)
+
 
 class WeChatPayType(Enum):
     JSAPI = 0

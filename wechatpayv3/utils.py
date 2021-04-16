@@ -3,6 +3,7 @@
 import time
 import uuid
 from base64 import b64decode, b64encode
+import json
 
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.backends import default_backend
@@ -23,7 +24,7 @@ def build_authorization(path,
                         nonce_str=None):
     timeStamp = str(int(time.time()))
     nonce_str = nonce_str or ''.join(str(uuid.uuid4()).split('-')).upper()
-    body = data if data else ''
+    body = json.dumps(data) if data else ''
     sign_str = method + '\n' + path + '\n' + \
         timeStamp + '\n' + nonce_str + '\n' + body + '\n'
     signature = sign(private_key=mch_private_key, sign_str=sign_str)

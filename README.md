@@ -3,8 +3,9 @@
 
 ## 介绍
 
-**wechatpayv3** 
-微信支付接口V3版python库.
+
+微信支付接口V3版python库。
+V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了证书的自动更新，开发者无需关注证书有效性，更不需要手动下载及更新。
 
 ## 安装
 
@@ -21,18 +22,18 @@ $ pip install wechatpayv3
 from wechatpayv3 import WeChatPay, WeChatPayType
 
 MCHID = '1230000109'
-MCH_PRIVATE_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
-MCH_KEY_SERIAL_NO = '444F4864EA9B34415...'
-WECHAT_PUBLIC_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+PRIVATE_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+CERT_SERIAL_NO = '444F4864EA9B34415...'
+APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
 APPID = 'wxd678efh567hg6787'
 NOTIFY_URL = 'https://www.weixin.qq.com/wxpay/pay.php'
 
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.MINIPROG,
     mchid=MCHID,
-    mch_parivate_key=MCH_PRIVATE_KEY,
-    mch_key_serial_no=MCH_KEY_SERIAL_NO,
-    wechat_public_key=WECHAT_PUBLIC_KEY,
+    parivate_key=PRIVATE_KEY,
+    cert_serial_no=CERT_SERIAL_NO,
+    apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL)
 ```
@@ -40,10 +41,6 @@ wxpay = WeChatPay(
 ### 接口
 
 ``` python
-# 下载证书
-def certificate():
-    code, message = wxpay.certificate()
-    print('code: %s, message: %s' % (code, message))
 
 # 统一下单
 def pay():
@@ -66,10 +63,10 @@ def close():
 
 # 申请退款
 def refund():
-    code, message = wxpay.refund(
-        transaction_id='demo-transation-id',
+    code, message=wxpay.refund(
         out_refund_no='demo-out-refund-no',
-        amount={'refund': 100, 'total': 100, 'currency': 'CNY'})
+        amount={'refund': 100, 'total': 100, 'currency': 'CNY'},
+        transaction_id='1217752501201407033233368018')
     print('code: %s, message: %s' % (code, message))
 
 # 退款查询
