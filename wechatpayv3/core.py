@@ -105,7 +105,7 @@ class Core():
         return sign(self._private_key, sign_str)
 
     def decrypt_callback(self, headers, body):
-        if verify_signature(headers, body):
+        if self.verify_signature(headers, body):
             data = json.loads(body)
             resource_type = data.get('resource_type')
             if resource_type != 'encrypt-resource':
