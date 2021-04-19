@@ -6,7 +6,7 @@
 
 微信支付接口V3版python库。
 
-V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了证书的自动更新，开发者无需关注证书有效性，亦无需手动下载及更新。
+V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了平台证书的自动更新，开发者无需关注平台证书有效性，亦无需手动下载及更新。
 
 ## 适用对象
 
@@ -130,8 +130,7 @@ def fundflow_bill():
 
 # 下载账单
 def download_bill():
-    code, message = wxpay.download_bill(
-        url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token')
+    code, message = wxpay.download_bill(url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token')
     print('code: %s, message: %s' % (code, message))
 
 # 合单支付下单

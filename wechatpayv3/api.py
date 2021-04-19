@@ -181,8 +181,7 @@ class WeChatPay():
         :param bill_type: 账单类型, 默认值：'ALL'
         :param tar_type: 压缩类型，默认值：'GZIP'
         """
-        path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (
-            bill_date, bill_type, tar_type)
+        path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (bill_date, bill_type, tar_type)
         return self._core.request(path)
 
     def fundflow_bill(self, bill_date, account_type='BASIC', tar_type='GZIP'):
@@ -191,16 +190,14 @@ class WeChatPay():
         :param account_type: 资金账户类型, 默认值：'BASIC'，基本账户, 可选：'OPERATION'，运营账户；'FEES'，手续费账户
         :param tar_type: 压缩类型，默认值：'GZIP'
         """
-        path = '/v3/bill/fundflowbill?bill_date=%s&account_type=%s&tar_type=%s' % (
-            bill_date, account_type, tar_type)
+        path = '/v3/bill/fundflowbill?bill_date=%s&account_type=%s&tar_type=%s' % (bill_date, account_type, tar_type)
         return self._core.request(path)
 
     def download_bill(self, url):
         """下载账单
         :param url: 账单下载地址，示例值：'https://api.mch.weixin.qq.com/v3/billdownload/file?token=xxx'
         """
-        path = url[len(self._core._gate_way):] if url.startswith(
-            self._core._gate_way) else url
+        path = url[len(self._core._gate_way):] if url.startswith(self._core._gate_way) else url
         return self._core.request(path)
 
     # def certificates(self):

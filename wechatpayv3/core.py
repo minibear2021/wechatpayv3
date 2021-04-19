@@ -4,8 +4,7 @@ from enum import Enum
 
 import requests
 
-from .utils import (build_authorization, certificate_serial_number, decrypt,
-                    verify, sign)
+from .utils import build_authorization, certificate_serial_number, decrypt, sign, verify, load_certificate
 
 
 class RequestType(Enum):
@@ -25,9 +24,7 @@ class Core():
 
     def _update_certificates(self):
         path = '/v3/certificates'
-        code, message = self.request(
-            path,
-            skip_verify=False if self._certificates else True)
+        code, message = self.request(path, skip_verify=False if self._certificates else True)
         if code == 200:
             self._certificates.clear()
             data = json.loads(message).get('data')
@@ -40,16 +37,16 @@ class Core():
                 if encrypt_certificate:
                     algorithm = encrypt_certificate.get('algorithm')
                     nonce = encrypt_certificate.get('nonce')
-                    associated_data = encrypt_certificate.get(
-                        'associated_data')
+                    associated_data = encrypt_certificate.get('associated_data')
                     ciphertext = encrypt_certificate.get('ciphertext')
                 if not (serial_no and effective_time and expire_time and algorithm and nonce and associated_data and ciphertext):
                     continue
-                certificate = decrypt(
+                cert_str = decrypt(
                     nonce=nonce,
                     ciphertext=ciphertext,
                     associated_data=associated_data,
                     apiv3_key=self._apiv3_key)
+                certificate = load_certificate(cert_str)
                 if certificate:
                     self._certificates.append(certificate)
 
@@ -60,14 +57,14 @@ class Core():
         serial_no = headers.get('Wechatpay-Serial')
         verified = False
         for cert in self._certificates:
-            if serial_no == certificate_serial_number(cert):
+            if int('0x' + serial_no, 16) == cert.serial_number:
                 verified = True
                 certificate = cert
                 break
         if not verified:
             self._update_certificates()
             for cert in self._certificates:
-                if serial_no == certificate_serial_number(cert):
+                if int('0x' + serial_no, 16) == cert.serial_number:
                     verified = True
                     certificate = cert
                     break
@@ -81,8 +78,7 @@ class Core():
         headers = {}
         headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
-        headers.update(
-            {'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
+        headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
         authorization = build_authorization(
             path,
             'GET' if method == RequestType.GET else 'POST',
@@ -94,9 +90,7 @@ class Core():
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         else:
-            response = requests.post(
-                self._gate_way + path, json=data, headers=headers)
-
+            response = requests.post(url=self._gate_way + path, json=data, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
             if not self.verify_signature(response.headers, response.text):
                 raise Exception('failed to verify signature')

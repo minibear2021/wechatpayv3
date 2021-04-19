@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from config import CERT_SERIAL_NO, MCHID, APIV3_KEY, PRIVATE_KEY, APPID, NOTIFY_URL
-
+from config import APIV3_KEY, APPID, CERT_SERIAL_NO, MCHID, NOTIFY_URL, PRIVATE_KEY
 from wechatpayv3 import WeChatPay, WeChatPayType
 
 wxpay = WeChatPay(
@@ -56,8 +55,7 @@ def fundflow_bill():
 
 
 def download_bill():
-    code, message = wxpay.download_bill(
-        url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token')
+    code, message = wxpay.download_bill(url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token')
     print('code: %s, message: %s' % (code, message))
 
 
@@ -75,8 +73,7 @@ def combine_pay():
 
 
 def combine_query():
-    code, message = wxpay.combine_query(
-        combine_out_trade_no='demo_out_trade_no')
+    code, message = wxpay.combine_query(combine_out_trade_no='demo_out_trade_no')
     print('code: %s, message: %s' % (code, message))
 
 
@@ -88,8 +85,7 @@ def combine_close():
 
 
 def sign():
-    print(wxpay.sign(['wx888', '1414561699', '5K8264ILTKCH16CQ2502S....',
-                      'prepay_id=wx201410272009395522657....']))
+    print(wxpay.sign(['wx888', '1414561699', '5K8264ILTKCH16CQ2502S....', 'prepay_id=wx201410272009395522657....']))
 
 
 def decrypt_callback(headers, body):
