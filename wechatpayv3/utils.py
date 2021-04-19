@@ -5,7 +5,7 @@ import uuid
 from base64 import b64decode, b64encode
 import json
 
-from cryptography.exceptions import InvalidSignature
+from cryptography.exceptions import InvalidSignature, InvalidTag
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -48,7 +48,11 @@ def decrypt(nonce, ciphertext, associated_data, apiv3_key):
     associated_data_bytes = associated_data.encode('UTF-8')
     data = b64decode(ciphertext)
     aesgcm = AESGCM(key_bytes)
-    return aesgcm.decrypt(nonce_bytes, data, associated_data_bytes).decode('UTF-8')
+    try:
+        result = aesgcm.decrypt(nonce_bytes, data, associated_data_bytes).decode('UTF-8')
+    except InvalidTag:
+        result = None
+    return result
 
 
 def format_private_key(private_key):

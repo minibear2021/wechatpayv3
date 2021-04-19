@@ -50,7 +50,8 @@ class Core():
                     ciphertext=ciphertext,
                     associated_data=associated_data,
                     apiv3_key=self._apiv3_key)
-                self._certificates.append(certificate)
+                if certificate:
+                    self._certificates.append(certificate)
 
     def verify_signature(self, headers, body):
         signature = headers.get('Wechatpay-Signature')

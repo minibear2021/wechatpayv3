@@ -1,15 +1,40 @@
 # wechatpayv3
 [![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
-
+[![Download count](https://img.shields.io/pypi/dw/wechatpayv3)](https://img.shields.io/pypi/dw/wechatpayv3)
 ## 介绍
 
-https://github.com/minibear2021/wechatpayv3
-
-https://gitee.com/minibear2021/wechatpayv3
 
 微信支付接口V3版python库。
 
-V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了证书的自动更新，开发者无需关注证书有效性，更不需要手动下载及更新。
+V3版微信支付接口强化了数字证书的运用，**wechatpayv3** 在sdk内部实现了证书的自动更新，开发者无需关注证书有效性，亦无需手动下载及更新。
+
+## 适用对象
+
+**wechatpayv3**仅支持直连商户接口，接口说明详见 [官网](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)。
+## 适配进度
+
+微信支付V3版API接口
+
+其中：
+
+#### 基础支付
+    JSAPI支付 已适配
+    APP支付 已适配
+    H5支付 已适配
+    Native支付 已适配
+    小程序支付 已适配
+    合单支付 已适配
+    付款码支付 待官网更新
+    刷脸支付 无需适配
+
+#### 行业方案
+    智慧商圈 已适配
+
+## 源码
+
+[github](https://github.com/minibear2021/wechatpayv3)
+
+[gitee](https://gitee.com/minibear2021/wechatpayv3)
 
 ## 安装
 
@@ -18,6 +43,15 @@ $ pip install wechatpayv3
 ```
 
 ## 使用方法
+### 参数类型
+官网接口文档中指明的参数类型和**wechatpayv3**中接口需要传入的参数类型对应如下：
+| 文档声明 | **wechatpayv3** |
+| --- | --- |
+| string | string |
+| int | int |
+| object | dict: {} |
+| array  | list: [] |
+| boolean | bool: True, False |
 ### 准备
 参考微信官方文档准备好密钥, 证书文件和配置([证书/密钥/签名介绍](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_0.shtml))
 
@@ -132,5 +166,16 @@ def sign():
 # 验证并解密回调消息，把回调接口收到的headers和body传入
 def decrypt_callback(headers, body):
     print(wxpay.decrypt_callback(headers, body))
+
+# 智慧商圈积分同步
+def points_notify():
+    code, message = wxpay.points_notify(
+        transaction_id='4200000533202000000000000000',
+        openid='otPAN5xxxxxxxxrOEG6lUv_pzacc',
+        earn_points=True,
+        increased_points=100,
+        points_update_time='2020-05-20T13:29:35.120+08:00')
+    print('code: %s, message: %s' % (code, message))
+
 ```
 
