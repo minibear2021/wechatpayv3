@@ -181,7 +181,7 @@ def points_notify():
     print('code: %s, message: %s' % (code, message))
 
 # 智慧商圈积分授权查询
-def user_authorizations():
+def user_authorization():
     code, message = wxpay.user_authorizations(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
     print('code: %s, message: %s' % (code, message))
 ```

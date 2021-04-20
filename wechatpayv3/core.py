@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
+
 from datetime import datetime
 import json
 import os
-from enum import Enum
 
 import requests
 
 from .utils import build_authorization, decrypt, load_certificate, sign, verify
+from .type import RequestType
 
-
-class RequestType(Enum):
-    GET = 0
-    POST = 1
 
 
 class Core():

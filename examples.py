@@ -103,8 +103,8 @@ def points_notify():
     print('code: %s, message: %s' % (code, message))
 
 
-def user_authorizations():
-    code, message = wxpay.user_authorizations(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
+def user_authorization():
+    code, message = wxpay.user_authorization(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
     print('code: %s, message: %s' % (code, message))
 
 
@@ -122,5 +122,5 @@ if __name__ == '__main__':
     combine_close()
     sign()
     points_notify()
-    user_authorizations()
+    user_authorization()
     pass
