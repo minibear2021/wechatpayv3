@@ -4,7 +4,7 @@ from enum import Enum
 
 import requests
 
-from .utils import build_authorization, certificate_serial_number, decrypt, sign, verify, load_certificate
+from .utils import build_authorization, decrypt, sign, verify, load_certificate
 
 
 class RequestType(Enum):
