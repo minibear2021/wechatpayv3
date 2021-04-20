@@ -74,6 +74,7 @@ def pay(self,
         path = '/v3/pay/transactions/native'
     return self._core.request(path, method=RequestType.POST, data=params)
 
+
 def close(self, out_trade_no):
     """关闭订单
     :param out_trade_no: 商户订单号，示例值：'1217752501201407033233368018'
@@ -83,6 +84,7 @@ def close(self, out_trade_no):
     path = '/v3/pay/transactions/out-trade-no/%s/close' % out_trade_no
     params = {'mchid': self._mchid}
     return self._core.request(path, method=RequestType.POST, data=params)
+
 
 def query(self, transaction_id=None, out_trade_no=None):
     """查询订单
@@ -98,15 +100,16 @@ def query(self, transaction_id=None, out_trade_no=None):
     path = '%s?mchid=%s' % (path, self._mchid)
     return self._core.request(path)
 
+
 def refund(self,
-            out_refund_no,
-            amount,
-            transaction_id=None,
-            out_trade_no=None,
-            reason=None,
-            funds_account=None,
-            goods_detail=None,
-            notify_url=None):
+           out_refund_no,
+           amount,
+           transaction_id=None,
+           out_trade_no=None,
+           reason=None,
+           funds_account=None,
+           goods_detail=None,
+           notify_url=None):
     """申请退款
     :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
     :param amount: 金额信息，示例值：{'refund':888, 'total':888, 'currency':'CNY'}
@@ -140,12 +143,14 @@ def refund(self,
     path = '/v3/refund/domestic/refunds'
     return self._core.request(path, method=RequestType.POST, data=params)
 
+
 def query_refund(self, out_refund_no):
     """查询单笔退款
     :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
     """
     path = '/v3/refund/domestic/refunds/%s' % out_refund_no
     return self._core.request(path)
+
 
 def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP'):
     """申请交易账单
@@ -156,6 +161,7 @@ def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP'):
     path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (bill_date, bill_type, tar_type)
     return self._core.request(path)
 
+
 def fundflow_bill(self, bill_date, account_type='BASIC', tar_type='GZIP'):
     """申请资金账单
     :param bill_date: 账单日期，示例值：'2019-06-11'
@@ -165,12 +171,14 @@ def fundflow_bill(self, bill_date, account_type='BASIC', tar_type='GZIP'):
     path = '/v3/bill/fundflowbill?bill_date=%s&account_type=%s&tar_type=%s' % (bill_date, account_type, tar_type)
     return self._core.request(path)
 
+
 def download_bill(self, url):
     """下载账单
     :param url: 账单下载地址，示例值：'https://api.mch.weixin.qq.com/v3/billdownload/file?token=xxx'
     """
     path = url[len(self._core._gate_way):] if url.startswith(self._core._gate_way) else url
     return self._core.request(path)
+
 
 def combine_pay(self,
                 combine_out_trade_no,
@@ -227,6 +235,7 @@ def combine_pay(self,
         path = '/v3/combine-transactions/native'
     return self._core.request(path, method=RequestType.POST, data=params)
 
+
 def combine_query(self, combine_out_trade_no):
     """合单查询订单
     :param combine_out_trade_no: 合单商户订单号，示例值：P20150806125346
@@ -238,6 +247,7 @@ def combine_query(self, combine_out_trade_no):
         params.update({'combine_out_trade_no': combine_out_trade_no})
     path = '/v3/combine-transactions/out-trade-no/%s' % combine_out_trade_no
     return self._core.request(path)
+
 
 def combine_close(self, combine_out_trade_no, sub_orders, combine_appid=None):
     """合单关闭订单
@@ -256,7 +266,3 @@ def combine_close(self, combine_out_trade_no, sub_orders, combine_appid=None):
         params.update({'sub_orders': sub_orders})
     path = '/v3/combine-transactions/out-trade-no/%s/close' % combine_out_trade_no
     return self._core.request(path, method=RequestType.POST, data=params)
-
-
-
-

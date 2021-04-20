@@ -15,7 +15,6 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.primitives.hashes import HashAlgorithm
 
 
-
 def build_authorization(path,
                         method,
                         mchid,
@@ -69,6 +68,7 @@ def load_certificate(certificate_str):
     except ValueError:
         return None
 
+
 def verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key = certificate.public_key()
@@ -79,4 +79,3 @@ def verify(timestamp, nonce, body, signature, certificate):
     except InvalidSignature:
         return False
     return True
-

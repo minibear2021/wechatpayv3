@@ -1,8 +1,9 @@
 # wechatpayv3
+
 [![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
 [![Download count](https://img.shields.io/pypi/dw/wechatpayv3)](https://img.shields.io/pypi/dw/wechatpayv3)
-## 介绍
 
+## 介绍
 
 微信支付接口V3版python库。
 
@@ -22,6 +23,7 @@
 其中：
 
 #### 基础支付
+
     JSAPI支付 已适配
     APP支付 已适配
     H5支付 已适配
@@ -32,7 +34,66 @@
     刷脸支付 无需适配
 
 #### 行业方案
+
     智慧商圈 已适配
+
+#### 需要的接口适配怎么办？
+
+由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
+必填的参数建议加上空值检查，可选的参数默认传入None。参数类型对照参考下表：
+
+| 文档声明 | **wechatpayv3** |
+| --- | --- |
+| string | string |
+| int | int |
+| object | dict: {} |
+| array  | list: [] |
+| boolean | bool: True, False |
+
+```python
+def refund(self,
+           out_refund_no,
+           amount,
+           transaction_id=None,
+           out_trade_no=None,
+           reason=None,
+           funds_account=None,
+           goods_detail=None,
+           notify_url=None):
+    """申请退款
+    :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
+    :param amount: 金额信息，示例值：{'refund':888, 'total':888, 'currency':'CNY'}
+    :param transaction_id: 微信支付订单号，示例值：'1217752501201407033233368018'
+    :param out_trade_no: 商户订单号，示例值：'1217752501201407033233368018'
+    :param reason: 退款原因，示例值：'商品已售完'
+    :param funds_account: 退款资金来源，示例值：'AVAILABLE'
+    :param goods_detail: 退款商品，示例值：{'merchant_goods_id':'1217752501201407033233368018', 'wechatpay_goods_id':'1001', 'goods_name':'iPhone6s 16G', 'unit_price':528800, 'refund_amount':528800, 'refund_quantity':1}
+    :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
+    """
+    params = {}
+    params['notify_url'] = notify_url or self._notify_url
+    # 
+    if out_refund_no:
+        params.update({'out_refund_no': out_refund_no})
+    else:
+        raise Exception('out_refund_no is not assigned.')
+    if amount:
+        params.update({'amount': amount})
+    else:
+        raise Exception('amount is not assigned.')
+    if transaction_id:
+        params.update({'transaction_id': transaction_id})
+    if out_trade_no:
+        params.update({'out_trade_no': out_trade_no})
+    if reason:
+        params.update({'reason': reason})
+    if funds_account:
+        params.update({'funds_account': funds_account})
+    if goods_detail:
+        params.update({'goods_detail': goods_detail})
+    path = '/v3/refund/domestic/refunds'
+    return self._core.request(path, method=RequestType.POST, data=params)
+```
 
 ## 源码
 
@@ -47,19 +108,12 @@ $ pip install wechatpayv3
 ```
 
 ## 使用方法
-### 参数类型
-官网接口文档中指明的参数类型和**wechatpayv3**中接口需要传入的参数类型对应如下：
-| 文档声明 | **wechatpayv3** |
-| --- | --- |
-| string | string |
-| int | int |
-| object | dict: {} |
-| array  | list: [] |
-| boolean | bool: True, False |
+
 ### 准备
 参考微信官方文档准备好密钥, 证书文件和配置([证书/密钥/签名介绍](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_0.shtml))
 
 ### 初始化
+
 ``` python
 from wechatpayv3 import WeChatPay, WeChatPayType
 

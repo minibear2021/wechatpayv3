@@ -46,6 +46,7 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
     path = '/v3/businesscircle/points/notify'
     return self._core.request(path, method=RequestType.POST, data=params)
 
+
 def user_authorization(self, openid):
     """智慧商圈积分授权查询
     :param openid: 用户标识，示例值：'oWmnN4xxxxxxxxxxe92NHIGf1xd8'

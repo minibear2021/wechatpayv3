@@ -2,6 +2,7 @@
 
 from .type import WeChatPayType
 
+
 class WeChatPay():
     def __init__(self,
                  wechatpay_type,
@@ -33,7 +34,7 @@ class WeChatPay():
                           private_key=parivate_key,
                           apiv3_key=apiv3_key,
                           cert_dir=cert_dir)
-    
+
     def sign(self, data):
         """计算签名值paySign，供JSAPI、APP、NATIVE调起支付时使用
         :param data: 需要签名的参数清单，示例值：['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']
@@ -46,5 +47,7 @@ class WeChatPay():
         """
         return self._core.decrypt_callback(headers, body)
 
-    from .transaction import pay, close, query, refund, query_refund, trade_bill, fundflow_bill, download_bill, combine_pay, combine_query, combine_close
     from .businesscircle import points_notify, user_authorization
+    from .transaction import (close, combine_close, combine_pay, combine_query,
+                              download_bill, fundflow_bill, pay, query,
+                              query_refund, refund, trade_bill)

@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 import json
 import os
+from datetime import datetime
 
 import requests
 
-from .utils import build_authorization, decrypt, load_certificate, sign, verify
 from .type import RequestType
-
+from .utils import build_authorization, decrypt, load_certificate, sign, verify
 
 
 class Core():
@@ -59,7 +58,7 @@ class Core():
                                 f.write(cert_str)
                                 f.close()
 
-    def verify_signature(self, headers, body):
+    def _verify_signature(self, headers, body):
         signature = headers.get('Wechatpay-Signature')
         timestamp = headers.get('Wechatpay-Timestamp')
         nonce = headers.get('Wechatpay-Nonce')
@@ -101,7 +100,7 @@ class Core():
         else:
             response = requests.post(url=self._gate_way + path, json=data, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
-            if not self.verify_signature(response.headers, response.text):
+            if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify signature')
         return response.status_code, response.text
 
@@ -109,7 +108,7 @@ class Core():
         return sign(self._private_key, sign_str)
 
     def decrypt_callback(self, headers, body):
-        if self.verify_signature(headers, body):
+        if self._verify_signature(headers, body):
             data = json.loads(body)
             resource_type = data.get('resource_type')
             if resource_type != 'encrypt-resource':
