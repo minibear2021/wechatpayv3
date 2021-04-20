@@ -23,7 +23,7 @@ class WeChatPay():
         :param appid: 应用ID，示例值：'wxd678efh567hg6787'
         :param mch_apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
-        :param cert_dir: 平台证书存放目录，须以/结尾，示例值：'/server/cert/'
+        :param cert_dir: 平台证书存放目录，示例值：'/server/cert'
         """
         self._type = wechatpay_type
         self._mchid = mchid
@@ -305,7 +305,6 @@ class WeChatPay():
         """
         return self._core.decrypt_callback(headers, body)
 
-
     def points_notify(self, transaction_id, openid, earn_points, increased_points, points_update_time, no_points_remarks=None, total_points=None):
         """智慧商圈积分同步
         :param transaction_id: 微信订单号，示例值：'1217752501201407033233368018'
@@ -322,11 +321,11 @@ class WeChatPay():
         params = {}
         params.update({'appid': self._appid})
         if transaction_id:
-            params.update({'transaction_id':transaction_id})
+            params.update({'transaction_id': transaction_id})
         else:
             raise Exception('transaction_id is not assigned.')
         if openid:
-            params.update({'openid':openid})
+            params.update({'openid': openid})
         else:
             raise Exception('openid is not assigned.')
         if earn_points:
@@ -334,19 +333,21 @@ class WeChatPay():
         else:
             raise Exception('earn_points is not assigned.')
         if increased_points:
-            params.update({'increased_points':increased_points})
+            params.update({'increased_points': increased_points})
         else:
             raise Exception('increased_points is not assigned')
         if points_update_time:
-            params.update({'points_update_time':points_update_time})
+            params.update({'points_update_time': points_update_time})
         else:
             raise Exception('points_update_time is not assigned.')
         if no_points_remarks:
-            params.update({'no_points_remarks':no_points_remarks})
+            params.update({'no_points_remarks': no_points_remarks})
         if total_points:
-            params.update({'total_points':total_points})
+            params.update({'total_points': total_points})
         path = '/v3/businesscircle/points/notify'
         return self._core.request(path, method=RequestType.POST, data=params)
+
+
 class WeChatPayType(Enum):
     JSAPI = 0
     APP = 1
