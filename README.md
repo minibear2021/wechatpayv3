@@ -170,7 +170,7 @@ def sign():
 def decrypt_callback(headers, body):
     print(wxpay.decrypt_callback(headers, body))
 
-# 智慧商圈积分同步
+# 智慧商圈积分通知
 def points_notify():
     code, message = wxpay.points_notify(
         transaction_id='4200000533202000000000000000',
@@ -180,5 +180,8 @@ def points_notify():
         points_update_time='2020-05-20T13:29:35.120+08:00')
     print('code: %s, message: %s' % (code, message))
 
+# 智慧商圈积分授权查询
+def user_authorizations():
+    code, message = wxpay.user_authorizations(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
+    print('code: %s, message: %s' % (code, message))
 ```
-
