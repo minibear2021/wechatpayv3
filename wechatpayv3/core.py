@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import json
+import os
 from enum import Enum
 
 import requests
 
-from .utils import build_authorization, decrypt, sign, verify, load_certificate
+from .utils import build_authorization, decrypt, load_certificate, sign, verify
 
 
 class RequestType(Enum):
@@ -13,14 +15,15 @@ class RequestType(Enum):
 
 
 class Core():
-    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key):
+    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None):
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
         self._private_key = private_key
         self._apiv3_key = apiv3_key
         self._gate_way = 'https://api.mch.weixin.qq.com'
         self._certificates = []
-        self._update_certificates()
+        self._cert_dir = cert_dir + '/' if cert_dir else None
+        self._load_local_certificates()
 
     def _update_certificates(self):
         path = '/v3/certificates'
@@ -47,28 +50,37 @@ class Core():
                     associated_data=associated_data,
                     apiv3_key=self._apiv3_key)
                 certificate = load_certificate(cert_str)
+                now = datetime.utcnow()
                 if certificate:
-                    self._certificates.append(certificate)
+                    if now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                        self._certificates.append(certificate)
+                        if self._cert_dir:
+                            if not os.path.exists(self._cert_dir):
+                                os.makedirs(self._cert_dir)
+                            if not os.path.exists(self._cert_dir + serial_no + '.pem'):
+                                f = open(self._cert_dir + serial_no + '.pem', 'w')
+                                f.write(cert_str)
+                                f.close()
 
     def verify_signature(self, headers, body):
         signature = headers.get('Wechatpay-Signature')
         timestamp = headers.get('Wechatpay-Timestamp')
         nonce = headers.get('Wechatpay-Nonce')
         serial_no = headers.get('Wechatpay-Serial')
-        verified = False
+        cert_found = False
         for cert in self._certificates:
             if int('0x' + serial_no, 16) == cert.serial_number:
-                verified = True
+                cert_found = True
                 certificate = cert
                 break
-        if not verified:
+        if not cert_found:
             self._update_certificates()
             for cert in self._certificates:
                 if int('0x' + serial_no, 16) == cert.serial_number:
-                    verified = True
+                    cert_found = True
                     certificate = cert
                     break
-            if not verified:
+            if not cert_found:
                 return False
         if not verify(timestamp, nonce, body, signature, certificate):
             return False
@@ -126,3 +138,15 @@ class Core():
             return result
         else:
             return None
+
+    def _load_local_certificates(self):
+        if self._cert_dir and os.path.exists(self._cert_dir):
+            for file in os.listdir(self._cert_dir):
+                if file.lower().endswith('.pem'):
+                    f = open(self._cert_dir + file, encoding="utf-8")
+                    certificate = load_certificate(f.read())
+                    now = datetime.utcnow()
+                    if certificate:
+                        if now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                            self._certificates.append(certificate)
+                    f.close()

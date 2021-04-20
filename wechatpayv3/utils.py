@@ -64,7 +64,10 @@ def format_private_key(private_key):
 
 
 def load_certificate(certificate_str):
-    return load_pem_x509_certificate(data=certificate_str.encode('UTF-8'), backend=default_backend())
+    try:
+        return load_pem_x509_certificate(data=certificate_str.encode('UTF-8'), backend=default_backend())
+    except ValueError:
+        return None
 
 def verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)

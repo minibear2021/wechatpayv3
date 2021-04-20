@@ -13,7 +13,8 @@ class WeChatPay():
                  cert_serial_no,
                  appid,
                  apiv3_key,
-                 notify_url=None):
+                 notify_url=None,
+                 cert_dir=None):
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
@@ -22,6 +23,7 @@ class WeChatPay():
         :param appid: 应用ID，示例值：'wxd678efh567hg6787'
         :param mch_apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
+        :param cert_dir: 平台证书存放目录，须以/结尾，示例值：'/server/cert/'
         """
         self._type = wechatpay_type
         self._mchid = mchid
@@ -30,7 +32,8 @@ class WeChatPay():
         self._core = Core(mchid=self._mchid,
                           cert_serial_no=cert_serial_no,
                           private_key=parivate_key,
-                          apiv3_key=apiv3_key)
+                          apiv3_key=apiv3_key,
+                          cert_dir=cert_dir)
 
     def pay(self,
             description,
