@@ -347,6 +347,17 @@ class WeChatPay():
         path = '/v3/businesscircle/points/notify'
         return self._core.request(path, method=RequestType.POST, data=params)
 
+    def user_authorizations(self, openid):
+        """智慧商圈积分授权查询
+        :param openid: 用户标识，示例值：'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
+        """
+        if self._type != WeChatPayType.MINIPROG:
+            raise Exception('points notify only supports wechat mini prog')
+        if not openid:
+            raise Exception('openid is not assigned.')
+        path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, self._mchid)
+        return self._core.request(path)
+
 
 class WeChatPayType(Enum):
     JSAPI = 0

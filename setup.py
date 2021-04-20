@@ -6,9 +6,9 @@ with open("README.md", "r", encoding="utf8") as f:
 
 setup(
     name="wechatpayv3",
-    version="0.55",
+    version="1.0",
     author="minibear",
-    description="微信支付接口V3版python库",
+    description="微信支付接口V3版python库(python sdk for wechatpay v3)",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="BSD",
@@ -16,8 +16,8 @@ setup(
     url="https://github.com/minibear2021/wechatpayv3",
     packages=["wechatpayv3"],
     classifiers=[
-        "Development Status :: 4 - Beta",
-        "Topic :: Utilities",
+        "Development Status :: 5 - Production/Stable",
+        "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
