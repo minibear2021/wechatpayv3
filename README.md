@@ -137,7 +137,8 @@ wxpay = WeChatPay(
     cert_serial_no=CERT_SERIAL_NO,
     apiv3_key=APIV3_KEY,
     appid=APPID,
-    notify_url=NOTIFY_URL)
+    notify_url=NOTIFY_URL,
+    cert_dir='./certs')
 ```
 
 ### 接口
