@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from config import APIV3_KEY, APPID, CERT_SERIAL_NO, MCHID, NOTIFY_URL, PRIVATE_KEY
+from config import APIV3_KEY, APPID, CERT_SERIAL_NO, MCHID, NOTIFY_URL, PRIVATE_KEY, CERT_DIR
 from wechatpayv3 import WeChatPay, WeChatPayType
 
 wxpay = WeChatPay(
@@ -10,7 +10,7 @@ wxpay = WeChatPay(
     apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL,
-    cert_dir='./certs')
+    cert_dir=CERT_DIR)
 
 
 def pay():

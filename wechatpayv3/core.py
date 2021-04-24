@@ -141,6 +141,7 @@ class Core():
                 if file.lower().endswith('.pem'):
                     f = open(self._cert_dir + file, encoding="utf-8")
                     certificate = load_certificate(f.read())
+                    f.close()
                     now = datetime.utcnow()
                     if certificate:
                         if now >= certificate.not_valid_before and now <= certificate.not_valid_after:

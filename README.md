@@ -37,7 +37,7 @@
 
     智慧商圈 已适配
 
-#### 需要的接口适配怎么办？
+#### 需要的接口还没有适配怎么办？
 
 由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
 必填的参数建议加上空值检查，可选的参数默认传入None。参数类型对照参考下表：
@@ -129,6 +129,8 @@ APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
 APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.weixin.qq.com/wxpay/pay.php'
+# 维修支付平台证书缓存目录
+CERT_DIR = './cert'
 
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.MINIPROG,
@@ -138,7 +140,7 @@ wxpay = WeChatPay(
     apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL,
-    cert_dir='./certs')
+    cert_dir=CERT_DIR)
 ```
 
 ### 接口
