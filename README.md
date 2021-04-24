@@ -129,7 +129,7 @@ APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
 APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.weixin.qq.com/wxpay/pay.php'
-# 维修支付平台证书缓存目录
+# 微信支付平台证书缓存目录
 CERT_DIR = './cert'
 
 wxpay = WeChatPay(
