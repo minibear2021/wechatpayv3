@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .core import RequestType
-from .type import WeChatPayType
+from .type import RequestType, WeChatPayType
 
 
 def pay(self,

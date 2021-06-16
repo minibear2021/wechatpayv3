@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .core import RequestType
-from .type import WeChatPayType
+from .type import RequestType, WeChatPayType
 
 
 def points_notify(self, transaction_id, openid, earn_points, increased_points, points_update_time, no_points_remarks=None, total_points=None):

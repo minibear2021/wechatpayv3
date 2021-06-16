@@ -24,39 +24,43 @@ class Core():
     def _update_certificates(self):
         path = '/v3/certificates'
         code, message = self.request(path, skip_verify=False if self._certificates else True)
-        if code == 200:
-            self._certificates.clear()
-            data = json.loads(message).get('data')
-            for v in data:
-                serial_no = v.get('serial_no')
-                effective_time = v.get('effective_time')
-                expire_time = v.get('expire_time')
-                encrypt_certificate = v.get('encrypt_certificate')
-                algorithm = nonce = associated_data = ciphertext = None
-                if encrypt_certificate:
-                    algorithm = encrypt_certificate.get('algorithm')
-                    nonce = encrypt_certificate.get('nonce')
-                    associated_data = encrypt_certificate.get('associated_data')
-                    ciphertext = encrypt_certificate.get('ciphertext')
-                if not (serial_no and effective_time and expire_time and algorithm and nonce and associated_data and ciphertext):
-                    continue
-                cert_str = decrypt(
-                    nonce=nonce,
-                    ciphertext=ciphertext,
-                    associated_data=associated_data,
-                    apiv3_key=self._apiv3_key)
-                certificate = load_certificate(cert_str)
-                now = datetime.utcnow()
-                if certificate:
-                    if now >= certificate.not_valid_before and now <= certificate.not_valid_after:
-                        self._certificates.append(certificate)
-                        if self._cert_dir:
-                            if not os.path.exists(self._cert_dir):
-                                os.makedirs(self._cert_dir)
-                            if not os.path.exists(self._cert_dir + serial_no + '.pem'):
-                                f = open(self._cert_dir + serial_no + '.pem', 'w')
-                                f.write(cert_str)
-                                f.close()
+        if code != 200:
+            return
+        self._certificates.clear()
+        data = json.loads(message).get('data')
+        for value in data:
+            serial_no = value.get('serial_no')
+            effective_time = value.get('effective_time')
+            expire_time = value.get('expire_time')
+            encrypt_certificate = value.get('encrypt_certificate')
+            algorithm = nonce = associated_data = ciphertext = None
+            if encrypt_certificate:
+                algorithm = encrypt_certificate.get('algorithm')
+                nonce = encrypt_certificate.get('nonce')
+                associated_data = encrypt_certificate.get('associated_data')
+                ciphertext = encrypt_certificate.get('ciphertext')
+            if not (serial_no and effective_time and expire_time and algorithm and nonce and associated_data and ciphertext):
+                continue
+            cert_str = decrypt(
+                nonce=nonce,
+                ciphertext=ciphertext,
+                associated_data=associated_data,
+                apiv3_key=self._apiv3_key)
+            certificate = load_certificate(cert_str)
+            if not certificate:
+                continue
+            now = datetime.utcnow()
+            if now < certificate.not_valid_before or now > certificate.not_valid_after:
+                continue
+            self._certificates.append(certificate)
+            if not self._cert_dir:
+                continue
+            if not os.path.exists(self._cert_dir):
+                os.makedirs(self._cert_dir)
+            if not os.path.exists(self._cert_dir + serial_no + '.pem'):
+                f = open(self._cert_dir + serial_no + '.pem', 'w')
+                f.write(cert_str)
+                f.close()
 
     def _verify_signature(self, headers, body):
         signature = headers.get('Wechatpay-Signature')
@@ -108,42 +112,41 @@ class Core():
         return sign(self._private_key, sign_str)
 
     def decrypt_callback(self, headers, body):
-        if self._verify_signature(headers, body):
-            data = json.loads(body)
-            resource_type = data.get('resource_type')
-            if resource_type != 'encrypt-resource':
-                return None
-            resource = data.get('resource')
-            if not resource:
-                return None
-            algorithm = resource.get('algorithm')
-            if algorithm != 'AEAD_AES_256_GCM':
-                return None
-            nonce = resource.get('nonce')
-            ciphertext = resource.get('ciphertext')
-            associated_data = resource.get('associated_data')
-            if not (nonce and ciphertext):
-                return None
-            if not associated_data:
-                associated_data = ''
-            result = decrypt(
-                nonce=nonce,
-                ciphertext=ciphertext,
-                associated_data=associated_data,
-                apiv3_key=self._apiv3_key)
-            return result
-        else:
+        if not self._verify_signature(headers, body):
             return None
+        data = json.loads(body)
+        resource_type = data.get('resource_type')
+        if resource_type != 'encrypt-resource':
+            return None
+        resource = data.get('resource')
+        if not resource:
+            return None
+        algorithm = resource.get('algorithm')
+        if algorithm != 'AEAD_AES_256_GCM':
+            return None
+        nonce = resource.get('nonce')
+        ciphertext = resource.get('ciphertext')
+        associated_data = resource.get('associated_data')
+        if not (nonce and ciphertext):
+            return None
+        if not associated_data:
+            associated_data = ''
+        result = decrypt(
+            nonce=nonce,
+            ciphertext=ciphertext,
+            associated_data=associated_data,
+            apiv3_key=self._apiv3_key)
+        return result
 
     def _load_local_certificates(self):
-        if self._cert_dir and os.path.exists(self._cert_dir):
-            for file in os.listdir(self._cert_dir):
-                if file.lower().endswith('.pem'):
-                    f = open(self._cert_dir + file, encoding="utf-8")
-                    certificate = load_certificate(f.read())
-                    f.close()
-                    now = datetime.utcnow()
-                    if certificate:
-                        if now >= certificate.not_valid_before and now <= certificate.not_valid_after:
-                            self._certificates.append(certificate)
-                    f.close()
+        if not (self._cert_dir and os.path.exists(self._cert_dir)):
+            return
+        for file_name in os.listdir(self._cert_dir):
+            if not file_name.lower().endswith('.pem'):
+                continue
+            f = open(self._cert_dir + file_name, encoding="utf-8")
+            certificate = load_certificate(f.read())
+            f.close()
+            now = datetime.utcnow()
+            if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                self._certificates.append(certificate)
