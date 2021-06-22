@@ -176,7 +176,7 @@ def download_bill(self, url):
     :param url: 账单下载地址，示例值：'https://api.mch.weixin.qq.com/v3/billdownload/file?token=xxx'
     """
     path = url[len(self._core._gate_way):] if url.startswith(self._core._gate_way) else url
-    return self._core.request(path)
+    return self._core.request(path, skip_verify=True)
 
 
 def combine_pay(self,
