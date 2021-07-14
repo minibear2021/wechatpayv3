@@ -6,6 +6,7 @@ from enum import Enum
 class RequestType(Enum):
     GET = 0
     POST = 1
+    PATCH = 2
 
 
 class WeChatPayType(Enum):

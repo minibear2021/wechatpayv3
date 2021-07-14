@@ -37,6 +37,10 @@
 
     智慧商圈 已适配
 
+#### 经营能力
+
+    支付即服务 已适配
+
 #### 需要的接口还没有适配怎么办？
 
 由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
@@ -241,4 +245,46 @@ def points_notify():
 def user_authorization():
     code, message = wxpay.user_authorizations(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
     print('code: %s, message: %s' % (code, message))
+
+# 支付即服务人员注册
+def guides_register():
+    code, message = wxpay.guides_register(
+        corpid='1234567890',
+        store_id=1234,
+        userid='rebert',
+        name='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        mobile='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
+        avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
+        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
+    print('code: %s, message: %s' % (code, message))
+
+# 支付即服务人员分配
+def guides_assign():
+    code, message = wxpay.guides_assign(
+        guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
+        out_trade_no='20150806125346')
+    print('code: %s, message: %s' % (code, message))
+
+# 支付即服务人员查询
+def guides_query():
+    code, message = wxpay.guides_query(
+        store_id=1234,
+        userid='robert',
+        mobile='RXjWsWlqTZ0Y8Q+piBCS5ACusK6nz7mKQeypi9fKjAggRfvNFPf/bNxPvork4mMVgZkA==',
+        work_id='robert',
+        limit=5,
+        offset=0)
+    print('code: %s, message: %s' % (code, message))
+
+# 支付即服务人员信息更新
+def guides_update():
+    code, message = wxpay.guides_update(
+        guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
+        name='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        mobile='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
+        avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
+        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
+    print('code: %s, message: %s' % (code, message))    
 ```

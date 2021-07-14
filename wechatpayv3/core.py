@@ -93,7 +93,7 @@ class Core():
         headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
         authorization = build_authorization(
             path,
-            'GET' if method == RequestType.GET else 'POST',
+            'GET' if method == RequestType.GET else 'POST' if method == RequestType.POST else 'PATCH',
             self._mchid,
             self._cert_serial_no,
             self._private_key,
@@ -101,11 +101,13 @@ class Core():
         headers.update({'Authorization': authorization})
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
-        else:
+        elif method == RequestType.POST:
             response = requests.post(url=self._gate_way + path, json=data, headers=headers)
+        else:
+            response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
-                raise Exception('failed to verify signature')
+                raise Exception('failed to verify the signature')
         return response.status_code, response.text
 
     def sign(self, sign_str):

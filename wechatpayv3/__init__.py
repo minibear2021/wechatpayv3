@@ -51,3 +51,4 @@ class WeChatPay():
     from .transaction import (close, combine_close, combine_pay, combine_query,
                               download_bill, fundflow_bill, pay, query,
                               query_refund, refund, trade_bill)
+    from .smartguide import guides_register, guides_assign, guides_query,guides_update
