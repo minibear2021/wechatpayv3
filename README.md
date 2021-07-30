@@ -15,6 +15,7 @@
 
 1. 平台证书自动更新，无需开发者关注平台证书有效性，无需手动下载更新；
 2. 支持本地缓存平台证书，初始化时指定平台证书保存目录即可。
+3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理。
 
 ## 适配进度
 
@@ -252,8 +253,8 @@ def guides_register():
         corpid='1234567890',
         store_id=1234,
         userid='rebert',
-        name='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
-        mobile='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        name='robert',
+        mobile='13900000000',
         qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
         group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
@@ -271,7 +272,7 @@ def guides_query():
     code, message = wxpay.guides_query(
         store_id=1234,
         userid='robert',
-        mobile='RXjWsWlqTZ0Y8Q+piBCS5ACusK6nz7mKQeypi9fKjAggRfvNFPf/bNxPvork4mMVgZkA==',
+        mobile='13900000000',
         work_id='robert',
         limit=5,
         offset=0)
@@ -281,10 +282,10 @@ def guides_query():
 def guides_update():
     code, message = wxpay.guides_update(
         guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
-        name='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
-        mobile='pVd1HJ6v/69bDnuC4EL5Kz4jBHLiCa8MRtelw/wDa4SzfeespQO/0kjiwfqdfg==',
+        name='robert',
+        mobile='13900000000',
         qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
         group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
-    print('code: %s, message: %s' % (code, message))    
+    print('code: %s, message: %s' % (code, message))
 ```

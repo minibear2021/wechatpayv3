@@ -7,7 +7,7 @@ from datetime import datetime
 import requests
 
 from .type import RequestType
-from .utils import build_authorization, decrypt, load_certificate, sign, verify
+from .utils import build_authorization, aes_decrypt, load_certificate, rsa_sign, rsa_verify, rsa_encrypt, rsa_decrypt
 
 
 class Core():
@@ -41,7 +41,7 @@ class Core():
                 ciphertext = encrypt_certificate.get('ciphertext')
             if not (serial_no and effective_time and expire_time and algorithm and nonce and associated_data and ciphertext):
                 continue
-            cert_str = decrypt(
+            cert_str = aes_decrypt(
                 nonce=nonce,
                 ciphertext=ciphertext,
                 associated_data=associated_data,
@@ -82,27 +82,32 @@ class Core():
                     break
             if not cert_found:
                 return False
-        if not verify(timestamp, nonce, body, signature, certificate):
+        if not rsa_verify(timestamp, nonce, body, signature, certificate):
             return False
         return True
 
-    def request(self, path, method=RequestType.GET, data=None, skip_verify=False):
+    def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False):
         headers = {}
-        headers.update({'Content-Type': 'application/json'})
+        if files:
+            headers.update({'Content-Type': 'multipart/form-data;boundary=boundary'})
+        else:
+            headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
         headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
+        if cipher_data:
+            headers.update({'Wechatpay-Serial': hex(self._last_certificate().serial_number)[2:].upper()})
         authorization = build_authorization(
             path,
             'GET' if method == RequestType.GET else 'POST' if method == RequestType.POST else 'PATCH',
             self._mchid,
             self._cert_serial_no,
             self._private_key,
-            data=data)
+            data=sign_data if sign_data else data)
         headers.update({'Authorization': authorization})
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
-            response = requests.post(url=self._gate_way + path, json=data, headers=headers)
+            response = requests.post(url=self._gate_way + path, json=data, headers=headers, files=files)
         else:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
@@ -111,7 +116,7 @@ class Core():
         return response.status_code, response.text
 
     def sign(self, sign_str):
-        return sign(self._private_key, sign_str)
+        return rsa_sign(self._private_key, sign_str)
 
     def decrypt_callback(self, headers, body):
         if not self._verify_signature(headers, body):
@@ -133,7 +138,7 @@ class Core():
             return None
         if not associated_data:
             associated_data = ''
-        result = decrypt(
+        result = aes_decrypt(
             nonce=nonce,
             ciphertext=ciphertext,
             associated_data=associated_data,
@@ -152,3 +157,18 @@ class Core():
             now = datetime.utcnow()
             if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
                 self._certificates.append(certificate)
+
+    def decrypt(self, ciphtext):
+        return rsa_decrypt(ciphertext=ciphtext, private_key=self._private_key)
+
+    def encrypt(self, text):
+        return rsa_encrypt(text=text, certificate=self._last_certificate())
+    
+    def _last_certificate(self):
+        if not self._certificates:
+            self._update_certificates()
+        certificate = self._certificates[0]
+        for cert in self._certificates:
+            if certificate.not_valid_after < cert.not_valid_after:
+                certificate = cert
+        return certificate

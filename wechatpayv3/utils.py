@@ -7,9 +7,9 @@ from base64 import b64decode, b64encode
 
 from cryptography.exceptions import InvalidSignature, InvalidTag
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
+from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15, OAEP, MGF1
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.hazmat.primitives.hashes import SHA256, HashAlgorithm
+from cryptography.hazmat.primitives.hashes import SHA256, SHA1
 from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
 from cryptography.x509 import load_pem_x509_certificate
 
@@ -25,12 +25,12 @@ def build_authorization(path,
     nonce_str = nonce_str or ''.join(str(uuid.uuid4()).split('-')).upper()
     body = json.dumps(data) if data else ''
     sign_str = '%s\n%s\n%s\n%s\n%s\n' % (method, path, timeStamp, nonce_str, body)
-    signature = sign(private_key=mch_private_key, sign_str=sign_str)
+    signature = rsa_sign(private_key=mch_private_key, sign_str=sign_str)
     authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",signature="%s",timestamp="%s",serial_no="%s"' % (mchid, nonce_str, signature, timeStamp, serial_no)
     return authorization
 
 
-def sign(private_key, sign_str):
+def rsa_sign(private_key, sign_str):
     private_key = load_pem_private_key(data=format_private_key(private_key).encode('UTF-8'), password=None, backend=default_backend())
     message = sign_str.encode('UTF-8')
     signature = private_key.sign(data=message, padding=PKCS1v15(), algorithm=SHA256())
@@ -38,7 +38,7 @@ def sign(private_key, sign_str):
     return sign
 
 
-def decrypt(nonce, ciphertext, associated_data, apiv3_key):
+def aes_decrypt(nonce, ciphertext, associated_data, apiv3_key):
     key_bytes = apiv3_key.encode('UTF-8')
     nonce_bytes = nonce.encode('UTF-8')
     associated_data_bytes = associated_data.encode('UTF-8')
@@ -51,14 +51,14 @@ def decrypt(nonce, ciphertext, associated_data, apiv3_key):
     return result
 
 
-def format_private_key(private_key):
+def format_private_key(private_key_str):
     pem_start = '-----BEGIN PRIVATE KEY-----\n'
     pem_end = '\n-----END PRIVATE KEY-----'
-    if not private_key.startswith(pem_start):
-        private_key = pem_start + private_key
-    if not private_key.endswith(pem_end):
-        private_key = private_key + pem_end
-    return private_key
+    if not private_key_str.startswith(pem_start):
+        private_key_str = pem_start + private_key_str
+    if not private_key_str.endswith(pem_end):
+        private_key_str = private_key_str + pem_end
+    return private_key_str
 
 
 def load_certificate(certificate_str):
@@ -68,7 +68,7 @@ def load_certificate(certificate_str):
         return None
 
 
-def verify(timestamp, nonce, body, signature, certificate):
+def rsa_verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key = certificate.public_key()
     message = sign_str.encode('UTF-8')
@@ -78,3 +78,19 @@ def verify(timestamp, nonce, body, signature, certificate):
     except InvalidSignature:
         return False
     return True
+
+
+def rsa_encrypt(text, certificate):
+    data = text.encode('UTF-8')
+    public_key = certificate.public_key()
+    cipherbyte = public_key.encrypt(
+        plaintext=data,
+        padding=OAEP(mgf=MGF1(algorithm=SHA1()), algorithm=SHA1(), label=None)
+    )
+    return b64encode(cipherbyte).decode('UTF-8')
+
+
+def rsa_decrypt(ciphertext, private_key):
+    data = private_key.decrypt(ciphertext=b64decode(ciphertext), padding=OAEP(mgf=MGF1(algorithm=SHA1), algorithm=SHA1))
+    result = data.decode('UTF-8')
+    return result
