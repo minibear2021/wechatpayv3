@@ -69,7 +69,7 @@ def load_certificate(certificate_str):
 
 
 def rsa_verify(timestamp, nonce, body, signature, certificate):
-    sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
+    sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body if isinstance(body, str) else body.decode())
     public_key = certificate.public_key()
     message = sign_str.encode('UTF-8')
     signature = b64decode(signature)
