@@ -138,6 +138,7 @@ def guides_query():
         offset=0)
     print('code: %s, message: %s' % (code, message))
 
+
 def guides_update():
     code, message = wxpay.guides_update(
         guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
@@ -147,12 +148,14 @@ def guides_update():
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
         group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
     print('code: %s, message: %s' % (code, message))
-    
+
+
 def image_upload():
     code, message = wxpay.image_upload(
         filepath='./media/demo.png'
     )
     print('code: %s, message: %s' % (code, message))
+
 
 def video_upload():
     code, message = wxpay.video_upload(
@@ -160,6 +163,48 @@ def video_upload():
     )
     print('code: %s, message: %s' % (code, message))
 
+
+def parking_service_find():
+    code, message = wxpay.parking_service_find(
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        openid='oUpF8uMuAJOM2pxb1Q'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def parking_enter():
+    code, message = wxpay.parking_enter(
+        out_parking_no='1231243',
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        notify_url='https://yoursite.com/wxpay.html',
+        start_time='2017-08-26T10:43:39+08:00',
+        parking_name='欢乐海岸停车场',
+        free_duration=3600
+    )
+    print('code: %s, message: %s' % (code, message))
+
+def parking_order():
+    code, message = wxpay.parking_order(
+        description='停车场扣费',
+        out_trade_no='20150806125346',
+        notify_url='https://yoursite.com/wxpay.html',
+        total=888,
+        parking_id='5K8264ILTKCH16CQ250',
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        start_time='2017-08-26T10:43:39+08:00',
+        end_time='2017-08-26T10:43:39+08:00',
+        parking_name='欢乐海岸停车场',
+        charging_duration=3600,
+        device_id='12313'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+def parking_order_query():
+    code, message = wxpay.parking_order_query(out_trade_no='20150806125346')
+    print('code: %s, message: %s' % (code, message))
 
 if __name__ == '__main__':
     pay()
@@ -182,4 +227,8 @@ if __name__ == '__main__':
     guides_update()
     image_upload()
     video_upload()
+    parking_service_find()
+    parking_enter()
+    parking_order()
+    parking_order_query()
     pass

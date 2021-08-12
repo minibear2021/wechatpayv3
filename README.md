@@ -37,6 +37,7 @@
 #### 行业方案
 
     智慧商圈 已适配
+    微信支付分停车服务 已适配
 
 #### 经营能力
 
@@ -307,4 +308,49 @@ def video_upload():
         filepath='./media/demo.mp4'
     )
     print('code: %s, message: %s' % (code, message))
+
+# 查询车牌服务开通信息
+def parking_service_find():
+    code, message = wxpay.parking_service_find(
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        openid='oUpF8uMuAJOM2pxb1Q'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 创建停车入场
+def parking_enter():
+    code, message = wxpay.parking_enter(
+        out_parking_no='1231243',
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        notify_url='https://yoursite.com/wxpay.html',
+        start_time='2017-08-26T10:43:39+08:00',
+        parking_name='欢乐海岸停车场',
+        free_duration=3600
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 停车扣费受理
+def parking_order():
+    code, message = wxpay.parking_order(
+        description='停车场扣费',
+        out_trade_no='20150806125346',
+        notify_url='https://yoursite.com/wxpay.html',
+        total=888,
+        parking_id='5K8264ILTKCH16CQ250',
+        plate_number='粤B888888',
+        plate_color='BLUE',
+        start_time='2017-08-26T10:43:39+08:00',
+        end_time='2017-08-26T10:43:39+08:00',
+        parking_name='欢乐海岸停车场',
+        charging_duration=3600,
+        device_id='12313'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询停车扣费订单
+def parking_order_query():
+    code, message = wxpay.parking_order_query(out_trade_no='20150806125346')
+    print('code: %s, message: %s' % (code, message))    
 ```

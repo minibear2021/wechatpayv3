@@ -3,7 +3,7 @@
 import os.path
 from hashlib import sha256
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def _media_upload(self, filepath, filename, image=True):
@@ -23,7 +23,7 @@ def _media_upload(self, filepath, filename, image=True):
         files = [('file', (filename, content, 'image/' + os.path.split(filename)[1]))]
         path = '/v3/merchant/media/upload'
     else:
-        files = [('file', (filename, content, 'image/png'))]
+        files = [('file', (filename, content, 'video/' + os.path.split(filename)[1]))]
         path = '/v3/merchant/media/video_upload'
     return self._core.request(path, method=RequestType.POST, data=params, sign_data=params['meta'], files=files)
 

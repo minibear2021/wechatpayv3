@@ -44,6 +44,8 @@ class WeChatPay():
 
     def decrypt_callback(self, headers, body):
         """解密回调接口收到的信息
+        :param headers: 回调接口收到的headers
+        :param body: 回调接口收到的body
         """
         return self._core.decrypt_callback(headers, body)
 
@@ -53,3 +55,4 @@ class WeChatPay():
                               query_refund, refund, trade_bill)
     from .smartguide import guides_register, guides_assign, guides_query,guides_update
     from .media import image_upload, video_upload
+    from .parking import parking_service_find, parking_enter, parking_order, parking_order_query
