@@ -7,7 +7,7 @@ class WeChatPay():
     def __init__(self,
                  wechatpay_type,
                  mchid,
-                 parivate_key,
+                 private_key,
                  cert_serial_no,
                  appid,
                  apiv3_key,
@@ -31,7 +31,7 @@ class WeChatPay():
         self._notify_url = notify_url
         self._core = Core(mchid=self._mchid,
                           cert_serial_no=cert_serial_no,
-                          private_key=parivate_key,
+                          private_key=private_key,
                           apiv3_key=apiv3_key,
                           cert_dir=cert_dir)
 
@@ -52,3 +52,4 @@ class WeChatPay():
                               download_bill, fundflow_bill, pay, query,
                               query_refund, refund, trade_bill)
     from .smartguide import guides_register, guides_assign, guides_query,guides_update
+    from .media import image_upload, video_upload

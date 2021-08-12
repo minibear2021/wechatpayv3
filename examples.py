@@ -5,7 +5,7 @@ from wechatpayv3 import WeChatPay, WeChatPayType
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.MINIPROG,
     mchid=MCHID,
-    parivate_key=PRIVATE_KEY,
+    private_key=PRIVATE_KEY,
     cert_serial_no=CERT_SERIAL_NO,
     apiv3_key=APIV3_KEY,
     appid=APPID,
@@ -147,6 +147,18 @@ def guides_update():
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
         group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
     print('code: %s, message: %s' % (code, message))
+    
+def image_upload():
+    code, message = wxpay.image_upload(
+        filepath='./media/demo.png'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+def video_upload():
+    code, message = wxpay.video_upload(
+        filepath='./media/demo.mp4'
+    )
+    print('code: %s, message: %s' % (code, message))
 
 
 if __name__ == '__main__':
@@ -168,4 +180,6 @@ if __name__ == '__main__':
     guides_assign()
     guides_query()
     guides_update()
+    image_upload()
+    video_upload()
     pass

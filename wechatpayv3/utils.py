@@ -23,7 +23,7 @@ def build_authorization(path,
                         nonce_str=None):
     timeStamp = str(int(time.time()))
     nonce_str = nonce_str or ''.join(str(uuid.uuid4()).split('-')).upper()
-    body = json.dumps(data) if data else ''
+    body = data if isinstance(data, str) else json.dumps(data) if data else ''
     sign_str = '%s\n%s\n%s\n%s\n%s\n' % (method, path, timeStamp, nonce_str, body)
     signature = rsa_sign(private_key=mch_private_key, sign_str=sign_str)
     authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",signature="%s",timestamp="%s",serial_no="%s"' % (mchid, nonce_str, signature, timeStamp, serial_no)

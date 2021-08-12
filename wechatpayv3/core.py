@@ -107,7 +107,7 @@ class Core():
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
-            response = requests.post(url=self._gate_way + path, json=data, headers=headers, files=files)
+            response = requests.post(url=self._gate_way + path, json=data if not files else None, data=data if files else None, headers=headers, files=files)
         else:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
