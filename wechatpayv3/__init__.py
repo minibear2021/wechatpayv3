@@ -56,3 +56,4 @@ class WeChatPay():
     from .smartguide import guides_register, guides_assign, guides_query,guides_update
     from .media import image_upload, video_upload
     from .parking import parking_service_find, parking_enter, parking_order, parking_order_query
+    from .marketing import marketing_image_upload

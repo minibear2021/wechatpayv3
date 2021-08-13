@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf8") as f:
 
 setup(
     name="wechatpayv3",
-    version="1.0.8",
+    version="1.0.9",
     author="minibear",
     description="微信支付接口V3版python库(python sdk for wechatpay v3)",
     long_description=long_description,

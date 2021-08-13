@@ -23,10 +23,10 @@ class Core():
 
     def _update_certificates(self):
         path = '/v3/certificates'
-        code, message = self.request(path, skip_verify=False if self._certificates else True)
+        self._certificates.clear()
+        code, message = self.request(path, skip_verify=True)
         if code != 200:
             return
-        self._certificates.clear()
         data = json.loads(message).get('data')
         for value in data:
             serial_no = value.get('serial_no')
@@ -89,7 +89,7 @@ class Core():
     def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False):
         headers = {}
         if files:
-            headers.update({'Content-Type': 'multipart/form-data;boundary=boundary'})
+            headers.update({'Content-Type': 'multipart/form-data'})
         else:
             headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})

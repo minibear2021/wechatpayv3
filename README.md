@@ -39,6 +39,10 @@
     智慧商圈 已适配
     微信支付分停车服务 已适配
 
+#### 营销工具
+
+    图片上传(营销专用) 已适配
+
 #### 经营能力
 
     支付即服务 已适配
@@ -164,17 +168,22 @@ def pay():
         description='demo-description',
         out_trade_no='demo-trade-no',
         amount={'total': 100},
-        payer={'openid': 'demo-openid'})
+        payer={'openid': 'demo-openid'}
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 订单查询
 def query():
-    code, message = wxpay.query(transaction_id='demo-transation-id')
+    code, message = wxpay.query(
+        transaction_id='demo-transation-id'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 关闭订单
 def close():
-    code, message = wxpay.close(out_trade_no='demo-out-trade-no')
+    code, message = wxpay.close(
+        out_trade_no='demo-out-trade-no'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 申请退款
@@ -182,27 +191,36 @@ def refund():
     code, message=wxpay.refund(
         out_refund_no='demo-out-refund-no',
         amount={'refund': 100, 'total': 100, 'currency': 'CNY'},
-        transaction_id='1217752501201407033233368018')
+        transaction_id='1217752501201407033233368018'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 退款查询
 def query_refund():
-    code, message = wxpay.query_refund(out_refund_no='demo-out-refund-no')
+    code, message = wxpay.query_refund(
+        out_refund_no='demo-out-refund-no'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 申请交易账单
 def trade_bill():
-    code, message = wxpay.trade_bill(bill_date='2021-04-01')
+    code, message = wxpay.trade_bill(
+        bill_date='2021-04-01'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 申请资金流水账单
 def fundflow_bill():
-    code, message = wxpay.fundflow_bill(bill_date='2021-04-01')
+    code, message = wxpay.fundflow_bill(
+        bill_date='2021-04-01'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 下载账单
 def download_bill():
-    code, message = wxpay.download_bill(url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token')
+    code, message = wxpay.download_bill(
+        url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 合单支付下单
@@ -214,19 +232,23 @@ def combine_pay():
                      'amount':{'total_amount':100,'currency':'CNY'},
                      'out_trade_no':'20150806125346',
                      'description':'腾讯充值中心-QQ会员充值',
-                     'settle_info':{'profit_sharing':False, 'subsidy_amount':10}}])
+                     'settle_info':{'profit_sharing':False, 'subsidy_amount':10}}]
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 合单订单查询
 def combine_query():
-    code, message = wxpay.combine_query(combine_out_trade_no='demo_out_trade_no')
+    code, message = wxpay.combine_query(
+        combine_out_trade_no='demo_out_trade_no'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 合单订单关闭
 def combine_close():
     code, message = wxpay.combine_close(
         combine_out_trade_no='demo_out_trade_no', 
-        sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}])
+        sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}]
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 计算签名供调起支付时拼凑参数使用
@@ -245,12 +267,15 @@ def points_notify():
         openid='otPAN5xxxxxxxxrOEG6lUv_pzacc',
         earn_points=True,
         increased_points=100,
-        points_update_time='2020-05-20T13:29:35.120+08:00')
+        points_update_time='2020-05-20T13:29:35.120+08:00'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 智慧商圈积分授权查询
 def user_authorization():
-    code, message = wxpay.user_authorizations(openid='otPAN5xxxxxxxxrOEG6lUv_pzacc')
+    code, message = wxpay.user_authorizations(
+        openid='otPAN5xxxxxxxxrOEG6lUv_pzacc'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 支付即服务人员注册
@@ -263,14 +288,16 @@ def guides_register():
         mobile='13900000000',
         qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
-        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
+        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 支付即服务人员分配
 def guides_assign():
     code, message = wxpay.guides_assign(
         guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
-        out_trade_no='20150806125346')
+        out_trade_no='20150806125346'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 支付即服务人员查询
@@ -281,7 +308,8 @@ def guides_query():
         mobile='13900000000',
         work_id='robert',
         limit=5,
-        offset=0)
+        offset=0
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 支付即服务人员信息更新
@@ -292,7 +320,8 @@ def guides_update():
         mobile='13900000000',
         qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
         avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
-        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0')
+        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
+    )
     print('code: %s, message: %s' % (code, message))
 
 # 图片上传
@@ -351,6 +380,15 @@ def parking_order():
 
 # 查询停车扣费订单
 def parking_order_query():
-    code, message = wxpay.parking_order_query(out_trade_no='20150806125346')
-    print('code: %s, message: %s' % (code, message))    
+    code, message = wxpay.parking_order_query(
+        out_trade_no='20150806125346'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 图片上传(营销专用)
+def marking_image_upload():
+    code, message = wxpay.marketing_image_upload(
+        filepath='./media/demo.png'
+    )
+    print('code: %s, message: %s' % (code, message))
 ```
