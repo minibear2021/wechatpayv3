@@ -119,6 +119,8 @@ class Core():
         return rsa_sign(self._private_key, sign_str)
 
     def decrypt_callback(self, headers, body):
+        if isinstance(body, bytes):
+            body = body.decode()
         if not self._verify_signature(headers, body):
             return None
         data = json.loads(body)
@@ -163,7 +165,7 @@ class Core():
 
     def encrypt(self, text):
         return rsa_encrypt(text=text, certificate=self._last_certificate())
-    
+
     def _last_certificate(self):
         if not self._certificates:
             self._update_certificates()

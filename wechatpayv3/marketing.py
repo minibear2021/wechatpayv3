@@ -2,6 +2,7 @@
 
 from .media import _media_upload
 
+
 def marketing_image_upload(self, filepath, filename=None):
     """图片上传(营销专用)
     :param filepath: 图片文件路径

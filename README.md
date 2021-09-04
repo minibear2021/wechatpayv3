@@ -19,7 +19,8 @@
 
 1. 平台证书自动更新，无需开发者关注平台证书有效性，无需手动下载更新；
 2. 支持本地缓存平台证书，初始化时指定平台证书保存目录即可；
-3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理。
+3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理；
+4. 回调通知自动验证回调消息，自动解密resource对象，并返回解密后的数据。
 
 ## 适配进度
 
@@ -139,7 +140,8 @@ from wechatpayv3 import WeChatPay, WeChatPayType
 # 微信支付商户号
 MCHID = '1230000109'
 # 商户证书私钥
-PRIVATE_KEY = open('path_to_key/apiclient_key.pem').read()
+with open('path_to_key/apiclient_key.pem') as f:
+    PRIVATE_KEY = f.read()
 # 商户证书序列号
 CERT_SERIAL_NO = '444F4864EA9B34415...'
 # API v3密钥， https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_2.shtml
@@ -261,8 +263,8 @@ def sign():
     print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
 
 # 验证并解密回调消息，把回调接口收到的headers和body传入
-# 以flask框架为例
-def decrypt_callback(headers=request.headers, body=request.data.decode()):
+# 这里以flask框架为例，其他web框架如果遇到InvalidSignature，请确认传入的body和收到的一致，没有做额外的预处理
+def decrypt_callback(headers=request.headers, body=request.data):
     print(wxpay.decrypt_callback(headers, body))
 
 # 智慧商圈积分通知

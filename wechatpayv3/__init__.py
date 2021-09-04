@@ -50,10 +50,9 @@ class WeChatPay():
         return self._core.decrypt_callback(headers, body)
 
     from .businesscircle import points_notify, user_authorization
-    from .transaction import (close, combine_close, combine_pay, combine_query,
-                              download_bill, fundflow_bill, pay, query,
-                              query_refund, refund, trade_bill)
-    from .smartguide import guides_register, guides_assign, guides_query,guides_update
-    from .media import image_upload, video_upload
-    from .parking import parking_service_find, parking_enter, parking_order, parking_order_query
     from .marketing import marketing_image_upload
+    from .media import image_upload, video_upload
+    from .parking import parking_enter, parking_order, parking_order_query, parking_service_find
+    from .smartguide import guides_assign, guides_query, guides_register, guides_update
+    from .transaction import (close, combine_close, combine_pay, combine_query, download_bill,
+                              fundflow_bill, pay, query, query_refund, refund, trade_bill)

@@ -6,12 +6,12 @@ with open("README.md", "r", encoding="utf8") as f:
 
 setup(
     name="wechatpayv3",
-    version="1.0.9",
+    version="1.0.10",
     author="minibear",
     description="微信支付接口V3版python库(python sdk for wechatpay v3)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    license="BSD",
+    license="MIT",
     keywords="python sdk wechatpay api v3 微信支付",
     url="https://github.com/minibear2021/wechatpayv3",
     packages=["wechatpayv3"],

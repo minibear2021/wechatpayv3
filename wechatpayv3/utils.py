@@ -69,12 +69,12 @@ def load_certificate(certificate_str):
 
 
 def rsa_verify(timestamp, nonce, body, signature, certificate):
-    sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body if isinstance(body, str) else body.decode())
+    sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key = certificate.public_key()
     message = sign_str.encode('UTF-8')
     signature = b64decode(signature)
     try:
-        public_key.verify(signature, sign_str.encode('UTF-8'), PKCS1v15(), SHA256())
+        public_key.verify(signature, message, PKCS1v15(), SHA256())
     except InvalidSignature:
         return False
     return True
@@ -91,6 +91,9 @@ def rsa_encrypt(text, certificate):
 
 
 def rsa_decrypt(ciphertext, private_key):
-    data = private_key.decrypt(ciphertext=b64decode(ciphertext), padding=OAEP(mgf=MGF1(algorithm=SHA1), algorithm=SHA1))
+    data = private_key.decrypt(
+        ciphertext=b64decode(ciphertext),
+        padding=OAEP(mgf=MGF1(algorithm=SHA1), algorithm=SHA1)
+    )
     result = data.decode('UTF-8')
     return result

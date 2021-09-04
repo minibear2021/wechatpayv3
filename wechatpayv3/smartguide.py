@@ -64,6 +64,7 @@ def guides_assign(self, guide_id, out_trade_no):
     path = '/v3/smartguide/guides/%s/assign' % guide_id
     return self._core.request(path, method=RequestType.POST, data=params)
 
+
 def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=None, offset=0):
     """服务人员查询
     :params store_id: 门店ID, 示例值：1234
@@ -75,7 +76,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
     """
     params = {}
     if not store_id:
-        raise Exception('store_id is not assigned.')        
+        raise Exception('store_id is not assigned.')
     path = '/v3/smartguide/guides?store_id=%s' % store_id
     if userid:
         path = path + '&userid=%s' % userid
@@ -88,6 +89,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
     if offset:
         path = path + '&offset=%s' % offset
     return self._core.request(path, cipher_data=True)
+
 
 def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=None, group_qrcode=None):
     """服务人员信息更新
@@ -111,5 +113,5 @@ def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=N
     if avatar:
         params.update({'avatar': avatar})
     if group_qrcode:
-        params.update({'group_qrcode': group_qrcode})                                
+        params.update({'group_qrcode': group_qrcode})
     return self._core.request(path, method=RequestType.PATCH, data=params, cipher_data=True)
