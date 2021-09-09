@@ -53,6 +53,9 @@ class WeChatPay():
     from .marketing import marketing_image_upload
     from .media import image_upload, video_upload
     from .parking import parking_enter, parking_order, parking_order_query, parking_service_find
+    from .profitsharing import (profitsharing_add_receiver, profitsharing_amount_query, profitsharing_bill,
+                                profitsharing_delete_receiver, profitsharing_order, profitsharing_order_query,
+                                profitsharing_return, profitsharing_return_query, profitsharing_unfreeze)
     from .smartguide import guides_assign, guides_query, guides_register, guides_update
     from .transaction import (close, combine_close, combine_pay, combine_query, download_bill,
                               fundflow_bill, pay, query, query_refund, refund, trade_bill)

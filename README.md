@@ -36,8 +36,10 @@
     Native支付 已适配
     小程序支付 已适配
     合单支付 已适配
-    付款码支付 待官网更新
-    刷脸支付 无需适配
+
+#### 经营能力
+
+    支付即服务 已适配
 
 #### 行业方案
 
@@ -48,9 +50,9 @@
 
     图片上传(营销专用) 已适配
 
-#### 经营能力
+### 资金应用
 
-    支付即服务 已适配
+    分账 已适配
 
 #### 其他能力
 
@@ -360,7 +362,6 @@ def parking_enter():
         out_parking_no='1231243',
         plate_number='粤B888888',
         plate_color='BLUE',
-        notify_url='https://yoursite.com/wxpay.html',
         start_time='2017-08-26T10:43:39+08:00',
         parking_name='欢乐海岸停车场',
         free_duration=3600
@@ -372,7 +373,6 @@ def parking_order():
     code, message = wxpay.parking_order(
         description='停车场扣费',
         out_trade_no='20150806125346',
-        notify_url='https://yoursite.com/wxpay.html',
         total=888,
         parking_id='5K8264ILTKCH16CQ250',
         plate_number='粤B888888',
@@ -398,6 +398,85 @@ def marking_image_upload():
         filepath='./media/demo.png'
     )
     print('code: %s, message: %s' % (code, message))
+
+# 请求分账
+def profitsharing_order():
+    code, message = wxpay.profitsharing_order(
+        transaction_id='4208450740201411110007820472',
+        out_order_no='P20150806125346',
+        receivers={{'type': 'MERCHANT_ID', 'account': '86693852', 'amount': 888, 'description': '分给商户A'}},
+        unfreeze_unsplit=True
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询分账结果
+def profitsharing_order_query():
+    code, message = wxpay.profitsharing_order_query(
+        transaction_id='4208450740201411110007820472',
+        out_order_no='P20150806125346'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 请求分账回退
+def profitsharing_return():
+    code, message = wxpay.profitsharing_return(
+        order_id='3008450740201411110007820472',
+        out_return_no='R20190516001',
+        return_mchid='86693852',
+        amount=888,
+        description='用户退款')
+    print('code: %s, message: %s' % (code, message))
+
+# 查询分账回退结果
+def profitsharing_return_query():
+    code, message = wxpay.profitsharing_return_query(
+        out_order_no='P20150806125346',
+        out_return_no='R20190516001'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 解冻剩余资金
+def profitsharing_unfreeze():
+    code, message = wxpay.profitsharing_unfreeze(
+        transaction_id='4208450740201411110007820472',
+        out_order_no='P20150806125346',
+        description='解冻全部剩余资金'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询剩余待分金额
+def profitsharing_amount_query():
+    code, message = wxpay.profitsharing_amount_query(
+        transaction_id='4208450740201411110007820472'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 添加分账接收方
+def profitsharing_add_receiver():
+    code, message = wxpay.profitsharing_add_receiver(
+        account_type='MERCHANT_ID',
+        account='86693852',
+        relation_type='CUSTOM',
+        name='腾讯充值中心',
+        custom_relation='代理商'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 删除分账接收方
+def profitsharing_delete_receiver():
+    code, message = wxpay.profitsharing_delete_receiver(
+        account_type='MERCHANT_ID',
+        account='86693852'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 申请分账账单
+def profitsharing_bill():
+    code, message = wxpay.profitsharing_bill(
+        bill_date='2021-04-01'
+    )
+    print('code: %s, message: %s' % (code, message))
+
 ```
 
 
