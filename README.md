@@ -1,4 +1,4 @@
-# wechatpayv3
+# 微信支付 API v3 Python SDK
 
 [![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
 [![Download count](https://img.shields.io/pypi/dw/wechatpayv3)](https://img.shields.io/pypi/dw/wechatpayv3)
@@ -133,6 +133,11 @@ $ pip install wechatpayv3
 
 ### 准备
 参考微信官方文档准备好密钥, 证书文件和配置([证书/密钥/签名介绍](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_0.shtml))
+
++ **商户 API 证书私钥：PRIVATE_KEY**。商户申请商户 API 证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
+> :warning: 不要把私钥文件暴露在公共场合，如上传到 Github，写在客户端代码等。
++ **商户API证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao) 。
++ **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
 
 ### 初始化
 
@@ -479,6 +484,29 @@ def profitsharing_bill():
 
 ```
 
+## 回调验证失败处理
+开发者遇到的难点之一就是回调验证失败的问题，由于众多的python web框架对回调消息的处理不完全一致，如果出现回调验证失败，请务必确认传入的headers和body的值和类型。
+通常框架传过来的headers类型是dict，而body类型是bytes。使用以下方法可直接获取到解密后的实际内容。
+
+### flask框架
+
+直接传入request.headers和request.data即可。
+```python
+result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
+```
+### django框架
+由于django框架特殊性，会将headers做一定的预处理，可以参考以下方式调用。
+```python
+headers = {}
+headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE'))
+headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP'))
+headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE'))
+headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL'))
+result = wxpay.decrypt_callback(headers=headers, body=request.body)
+```
+
+### 其他框架
+参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
 
 ## 签名、验签、加密、解密的内部实现
 
