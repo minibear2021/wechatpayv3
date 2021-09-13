@@ -132,6 +132,7 @@ $ pip install wechatpayv3
 ## 使用方法
 
 ### 准备
+
 参考微信官方文档准备好密钥, 证书文件和配置([证书/密钥/签名介绍](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_0.shtml))
 
 + **商户 API 证书私钥：PRIVATE_KEY**。商户申请商户 API 证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
@@ -494,7 +495,9 @@ def profitsharing_bill():
 ```python
 result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
 ```
+
 ### django框架
+
 由于django框架特殊性，会将headers做一定的预处理，可以参考以下方式调用。
 ```python
 headers = {}
@@ -505,7 +508,15 @@ headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL'))
 result = wxpay.decrypt_callback(headers=headers, body=request.body)
 ```
 
+### tornado框架
+
+直接传入request.headers和request.body即可。
+```python
+result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
+```
+
 ### 其他框架
+
 参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
 
 ## 签名、验签、加密、解密的内部实现
