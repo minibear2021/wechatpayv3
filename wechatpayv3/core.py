@@ -96,9 +96,10 @@ class Core():
         headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
         if cipher_data:
             headers.update({'Wechatpay-Serial': hex(self._last_certificate().serial_number)[2:].upper()})
+        method_str = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
         authorization = build_authorization(
             path,
-            'GET' if method == RequestType.GET else 'POST' if method == RequestType.POST else 'PATCH',
+            method_str[method.value],
             self._mchid,
             self._cert_serial_no,
             self._private_key,
@@ -108,8 +109,14 @@ class Core():
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
             response = requests.post(url=self._gate_way + path, json=data if not files else None, data=data if files else None, headers=headers, files=files)
-        else:
+        elif method == RequestType.PATCH:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
+        elif method == RequestType.PUT:
+            response = requests.put(url=self._gate_way + path, headers=headers, json=data)
+        elif method == RequestType.DELETE:
+            response = requests.delete(url=self._gate_way+path, headers=headers)
+        else:
+            raise Exception('sdk does no support this request type.')
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify the signature')
@@ -132,7 +139,7 @@ class Core():
             return None
         algorithm = resource.get('algorithm')
         if algorithm != 'AEAD_AES_256_GCM':
-            return None
+            raise Exception('sdk does not support this algorithm')
         nonce = resource.get('nonce')
         ciphertext = resource.get('ciphertext')
         associated_data = resource.get('associated_data')

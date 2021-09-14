@@ -107,6 +107,10 @@ def sign():
     print(wxpay.sign(['wx888', '1414561699', '5K8264ILTKCH16CQ2502S....', 'prepay_id=wx201410272009395522657....']))
 
 
+def decrypt():
+    print(wxpay.decrypt(ciphtext='Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='))
+
+
 def decrypt_callback(headers, body):
     print(wxpay.decrypt_callback(headers, body))
 
@@ -319,6 +323,80 @@ def profitsharing_bill():
     print('code: %s, message: %s' % (code, message))
 
 
+def complant_list_query():
+    code, message = wxpay.complant_list_query(
+        begin_date='2019-01-01'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_detail_query():
+    code, message = wxpay.complant_detail_query(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_history_query():
+    code, message = wxpay.complant_history_query(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_notification_create():
+    code, message = wxpay.complant_notification_create(
+        url='https://www.xxx.com/notify'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_notification_query():
+    code, message = wxpay.complant_notification_query()
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_notification_update():
+    code, message = wxpay.complant_notification_update(
+        url='https://www.xxx.com/notify'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_notification_delete():
+    code, message = wxpay.complant_notification_delete()
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_response():
+    code, message = wxpay.complant_response(
+        complaint_id='200201820200101080076610000',
+        response_content='已与用户沟通解决'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_complete():
+    code, message = wxpay.complant_complete(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_image_upload():
+    code, message = wxpay.complant_image_upload(
+        filepath='./media/demo.png'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
+def complant_image_download():
+    code, message = wxpay.complant_image_download(
+        media_url='https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+
 if __name__ == '__main__':
     pay()
     query()
@@ -332,6 +410,7 @@ if __name__ == '__main__':
     combine_query()
     combine_close()
     sign()
+    decrypt()
     points_notify()
     user_authorization()
     guides_register()
@@ -354,4 +433,15 @@ if __name__ == '__main__':
     profitsharing_add_receiver()
     profitsharing_delete_receiver()
     profitsharing_bill()
+    complant_list_query()
+    complant_detail_query()
+    complant_history_query()
+    complant_notification_create()
+    complant_notification_query()
+    complant_notification_update()
+    complant_notification_delete()
+    complant_response()
+    complant_complete()
+    complant_image_upload()
+    complant_image_download()
     pass

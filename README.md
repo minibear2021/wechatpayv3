@@ -7,7 +7,7 @@
 
 微信支付接口V3版python库。
 
-欢迎微信支付开发者扫码进QQ群讨论：
+欢迎微信支付开发者扫码进QQ群(群号：973102221)讨论：
 
 ![image](qq.png)
 
@@ -53,6 +53,10 @@
 ### 资金应用
 
     分账 已适配
+
+### 风险合规
+
+    消费者投诉2.0 已适配
 
 #### 其他能力
 
@@ -270,6 +274,11 @@ def combine_close():
 def sign():
     print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
 
+# 解密部分接口返回的信息中的加密字段
+# https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_3.shtml
+def decrypt():
+    print(wxpay.decrypt(ciphtext='Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='))
+
 # 验证并解密回调消息，把回调接口收到的headers和body传入
 # 这里以flask框架为例，其他web框架如果遇到InvalidSignature，请确认传入的body和收到的一致，没有做额外的预处理
 def decrypt_callback(headers=request.headers, body=request.data):
@@ -480,6 +489,80 @@ def profitsharing_delete_receiver():
 def profitsharing_bill():
     code, message = wxpay.profitsharing_bill(
         bill_date='2021-04-01'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询投诉单列表
+def complant_list_query():
+    code, message = wxpay.complant_list_query(
+        begin_date='2019-01-01'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询投诉单详情
+def complant_detail_query():
+    code, message = wxpay.complant_detail_query(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询投诉协商历史
+def complant_history_query():
+    code, message = wxpay.complant_history_query(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 创建投诉通知回调地址
+def complant_notification_create():
+    code, message = wxpay.complant_notification_create(
+        url='https://www.xxx.com/notify'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 查询投诉通知回调地址
+def complant_notification_query():
+    code, message = wxpay.complant_notification_query()
+    print('code: %s, message: %s' % (code, message))
+
+# 更新投诉通知回调地址
+def complant_notification_update():
+    code, message = wxpay.complant_notification_update(
+        url='https://www.xxx.com/notify'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 删除投诉通知回调地址
+def complant_notification_delete():
+    code, message = wxpay.complant_notification_delete()
+    print('code: %s, message: %s' % (code, message))
+
+# 提交投诉回复
+def complant_response():
+    code, message = wxpay.complant_response(
+        complaint_id='200201820200101080076610000',
+        response_content='已与用户沟通解决'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 反馈投诉处理完成
+def complant_complete():
+    code, message = wxpay.complant_complete(
+        complaint_id='200201820200101080076610000'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 商户上传投诉反馈图片
+def complant_image_upload():
+    code, message = wxpay.complant_image_upload(
+        filepath='./media/demo.png'
+    )
+    print('code: %s, message: %s' % (code, message))
+
+# 下载客户投诉图片
+def complant_image_download():
+    code, message = wxpay.complant_image_download(
+        media_url='https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
     )
     print('code: %s, message: %s' % (code, message))
 

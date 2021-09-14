@@ -37,7 +37,7 @@ def _media_upload(self, filepath, filename, path):
     }
     media_type = os.path.splitext(filename)[-1]
     if media_type not in mimes:
-        raise Exception('media type does not support.')
+        raise Exception('sdk does not support this media type.')
     files = [('file', (filename, content, mimes[media_type]))]
     return self._core.request(path, method=RequestType.POST, data=params, sign_data=params['meta'], files=files)
 

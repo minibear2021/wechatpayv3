@@ -241,7 +241,7 @@ def combine_query(self, combine_out_trade_no):
     """
     params = {}
     if not combine_out_trade_no:
-        raise Exception('param combine_out_trade_no is not assigned')
+        raise Exception('combine_out_trade_no is not assigned')
     else:
         params.update({'combine_out_trade_no': combine_out_trade_no})
     path = '/v3/combine-transactions/out-trade-no/%s' % combine_out_trade_no
