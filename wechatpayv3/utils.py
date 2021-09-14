@@ -91,9 +91,10 @@ def rsa_encrypt(text, certificate):
 
 
 def rsa_decrypt(ciphertext, private_key):
+    private_key = load_pem_private_key(data=format_private_key(private_key).encode('UTF-8'), password=None, backend=default_backend())
     data = private_key.decrypt(
         ciphertext=b64decode(ciphertext),
-        padding=OAEP(mgf=MGF1(algorithm=SHA1), algorithm=SHA1)
+        padding=OAEP(mgf=MGF1(algorithm=SHA1()), algorithm=SHA1(), label=None)
     )
     result = data.decode('UTF-8')
     return result

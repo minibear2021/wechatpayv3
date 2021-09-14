@@ -274,12 +274,13 @@ def combine_close():
 def sign():
     print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
 
-# 解密部分接口返回的信息中的加密字段
+# 解密部分接口返回的敏感信息，详见官方文档说明：
 # https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_3.shtml
 def decrypt():
     print(wxpay.decrypt(ciphtext='Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='))
 
-# 验证并解密回调消息，把回调接口收到的headers和body传入
+# 验证并解密回调消息，把回调接口收到的headers和body传入，详见官方文档说明：
+# https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_2.shtml
 # 这里以flask框架为例，其他web框架如果遇到InvalidSignature，请确认传入的body和收到的一致，没有做额外的预处理
 def decrypt_callback(headers=request.headers, body=request.data):
     print(wxpay.decrypt_callback(headers, body))
