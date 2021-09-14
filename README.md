@@ -585,10 +585,10 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
 由于django框架特殊性，会将headers做一定的预处理，可以参考以下方式调用。
 ```python
 headers = {}
-headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE'))
-headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP'))
-headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE'))
-headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL'))
+headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE')})
+headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP')})
+headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE')})
+headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
 result = wxpay.decrypt_callback(headers=headers, body=request.body)
 ```
 
