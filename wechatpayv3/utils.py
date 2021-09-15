@@ -18,20 +18,19 @@ def build_authorization(path,
                         method,
                         mchid,
                         serial_no,
-                        mch_private_key,
+                        private_key,
                         data=None,
                         nonce_str=None):
     timeStamp = str(int(time.time()))
     nonce_str = nonce_str or ''.join(str(uuid.uuid4()).split('-')).upper()
     body = data if isinstance(data, str) else json.dumps(data) if data else ''
     sign_str = '%s\n%s\n%s\n%s\n%s\n' % (method, path, timeStamp, nonce_str, body)
-    signature = rsa_sign(private_key=mch_private_key, sign_str=sign_str)
+    signature = rsa_sign(private_key=private_key, sign_str=sign_str)
     authorization = 'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",signature="%s",timestamp="%s",serial_no="%s"' % (mchid, nonce_str, signature, timeStamp, serial_no)
     return authorization
 
 
 def rsa_sign(private_key, sign_str):
-    private_key = load_pem_private_key(data=format_private_key(private_key).encode('UTF-8'), password=None, backend=default_backend())
     message = sign_str.encode('UTF-8')
     signature = private_key.sign(data=message, padding=PKCS1v15(), algorithm=SHA256())
     sign = b64encode(signature).decode('UTF-8').replace('\n', '')
@@ -68,6 +67,13 @@ def load_certificate(certificate_str):
         return None
 
 
+def load_private_key(private_key_str):
+    try:
+        return load_pem_private_key(data=format_private_key(private_key_str).encode('UTF-8'), password=None, backend=default_backend())
+    except:
+        raise Exception('failed to load private key.')
+
+
 def rsa_verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key = certificate.public_key()
@@ -91,7 +97,6 @@ def rsa_encrypt(text, certificate):
 
 
 def rsa_decrypt(ciphertext, private_key):
-    private_key = load_pem_private_key(data=format_private_key(private_key).encode('UTF-8'), password=None, backend=default_backend())
     data = private_key.decrypt(
         ciphertext=b64decode(ciphertext),
         padding=OAEP(mgf=MGF1(algorithm=SHA1()), algorithm=SHA1(), label=None)

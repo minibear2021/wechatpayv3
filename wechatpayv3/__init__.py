@@ -16,10 +16,10 @@ class WeChatPay():
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
-        :param mch_private_key: 商户证书私钥，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
-        :param mch_key_serial_no: 商户证书序列号，示例值：'444F4864EA9B34415...'
+        :param private_key: 商户证书私钥，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+        :param cert_serial_no: 商户证书序列号，示例值：'444F4864EA9B34415...'
         :param appid: 应用ID，示例值：'wxd678efh567hg6787'
-        :param mch_apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
+        :param apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
         :param cert_dir: 平台证书存放目录，示例值：'/server/cert'
         """

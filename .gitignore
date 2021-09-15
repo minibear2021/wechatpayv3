@@ -1,8 +1,0 @@
-config.py
-*.pem
-.vscode/
-__pycache__
-build/
-dist/
-*.egg-info/
-publish.bat

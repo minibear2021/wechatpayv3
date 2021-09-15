@@ -7,14 +7,16 @@ from datetime import datetime
 import requests
 
 from .type import RequestType
-from .utils import build_authorization, aes_decrypt, load_certificate, rsa_sign, rsa_verify, rsa_encrypt, rsa_decrypt
+from .utils import (aes_decrypt, build_authorization, load_certificate,
+                    load_private_key, rsa_decrypt, rsa_encrypt, rsa_sign,
+                    rsa_verify)
 
 
 class Core():
     def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None):
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
-        self._private_key = private_key
+        self._private_key = load_private_key(private_key)
         self._apiv3_key = apiv3_key
         self._gate_way = 'https://api.mch.weixin.qq.com'
         self._certificates = []
@@ -96,10 +98,9 @@ class Core():
         headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
         if cipher_data:
             headers.update({'Wechatpay-Serial': hex(self._last_certificate().serial_number)[2:].upper()})
-        method_str = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE']
         authorization = build_authorization(
             path,
-            method_str[method.value],
+            method.value,
             self._mchid,
             self._cert_serial_no,
             self._private_key,
@@ -108,7 +109,7 @@ class Core():
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
-            response = requests.post(url=self._gate_way + path, json=data if not files else None, data=data if files else None, headers=headers, files=files)
+            response = requests.post(url=self._gate_way + path, json=None if files else data, data=data if files else None, headers=headers, files=files)
         elif method == RequestType.PATCH:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
         elif method == RequestType.PUT:
@@ -120,7 +121,7 @@ class Core():
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify the signature')
-        return response.status_code, response.text
+        return response.status_code, response.text if 'application/json' in response.headers.get('Content-Type') else response.content
 
     def sign(self, sign_str):
         return rsa_sign(self._private_key, sign_str)
@@ -160,9 +161,8 @@ class Core():
         for file_name in os.listdir(self._cert_dir):
             if not file_name.lower().endswith('.pem'):
                 continue
-            f = open(self._cert_dir + file_name, encoding="utf-8")
-            certificate = load_certificate(f.read())
-            f.close()
+            with open(self._cert_dir + file_name, encoding="utf-8") as f: 
+                certificate = load_certificate(f.read())
             now = datetime.utcnow()
             if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
                 self._certificates.append(certificate)

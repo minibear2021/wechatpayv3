@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from enum import Enum
+from enum import Enum, unique
 
-
+@unique
 class RequestType(Enum):
-    GET = 0
-    POST = 1
-    PATCH = 2
-    PUT = 3
-    DELETE = 4
+    GET = 'GET'
+    POST = 'POST'
+    PATCH = 'PATCH'
+    PUT = 'PUT'
+    DELETE = 'DELETE'
 
 
 class WeChatPayType(Enum):

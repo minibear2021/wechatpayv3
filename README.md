@@ -240,6 +240,9 @@ def download_bill():
         url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token'
     )
     print('code: %s, message: %s' % (code, message))
+    if code in range(200, 300) and isinstance(message, bytes):
+        with open("demo.txt.gz", 'wb') as f:
+            f.write(message)
 
 # 合单支付下单
 def combine_pay():
@@ -566,7 +569,9 @@ def complant_image_download():
         media_url='https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
     )
     print('code: %s, message: %s' % (code, message))
-
+    if code in range(200, 300) and isinstance(message, bytes):
+        with open("demo.bmp", 'wb') as f:
+            f.write(message)
 ```
 
 ## 回调验证失败处理
