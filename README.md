@@ -54,6 +54,7 @@
 | 行业方案 | 微信支付分停车服务 | 查询订单 | parking_query |
 | 营销工具 | 委托营销 | 建立合作关系 | marketing_partnership_build |
 | 营销工具 | 委托营销 | 查询合作关系列表 | marketing_partnership_query |
+| 营销工具 | 消费卡 | 发放消费卡 | marketing_card_send |
 | 营销工具 | 图片上传 | 图片上传(营销专用) | marketing_image_upload |
 | 资金应用 | 分账 | 请求分账 | profitsharing_order |
 | 资金应用 | 分账 | 查询分账结果 | profitsharing_order_query |
