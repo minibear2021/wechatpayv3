@@ -336,7 +336,7 @@ def rsa_encrypt(text, certificate):
 
 ```python
 def rsa_decrypt(ciphertext, private_key):
-    data = private_key.decrypt(ciphertext=b64decode(ciphertext), padding=OAEP(mgf=MGF1(algorithm=SHA1), algorithm=SHA1))
+    data = private_key.decrypt(ciphertext=b64decode(ciphertext), padding=OAEP(mgf=MGF1(algorithm=SHA1()), algorithm=SHA1()))
     result = data.decode('UTF-8')
     return result
 ```
