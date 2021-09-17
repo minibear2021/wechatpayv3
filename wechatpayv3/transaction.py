@@ -30,9 +30,9 @@ def pay(self,
     :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
-    params['appid'] = self._appid
-    params['mchid'] = self._mchid
-    params['notify_url'] = notify_url or self._notify_url
+    params.update({'appid': self._appid})
+    params.update({'mchid': self._mchid})
+    params.update({'notify_url': notify_url or self._notify_url})
     if description:
         params.update({'description': description})
     else:
@@ -120,7 +120,7 @@ def refund(self,
     :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
-    params['notify_url'] = notify_url or self._notify_url
+    params.update({'notify_url': notify_url or self._notify_url})
     if out_refund_no:
         params.update({'out_refund_no': out_refund_no})
     else:
@@ -201,9 +201,9 @@ def combine_pay(self,
     :param notify_url: 通知地址, 示例值：'https://yourapp.com/notify'
     """
     params = {}
-    params['combine_appid'] = combine_appid or self._appid
-    params['combine_mchid'] = combine_mchid or self._mchid
-    params['notify_url'] = notify_url or self._notify_url
+    params.update({'combine_appid': combine_appid or self._appid})
+    params.update({'combine_mchid': combine_mchid or self._mchid})
+    params.update({'notify_url': notify_url or self._notify_url})
     if combine_out_trade_no:
         params.update({'combine_out_trade_no': combine_out_trade_no})
     else:
@@ -255,8 +255,7 @@ def combine_close(self, combine_out_trade_no, sub_orders, combine_appid=None):
     :param combine_appid: 合单商户appid, 示例值：'wxd678efh567hg6787'
     """
     params = {}
-    params['combine_appid'] = combine_appid or self._appid
-
+    params.update({'combine_appid': combine_appid or self._appid})
     if not combine_out_trade_no:
         raise Exception('combine_out_trade_no is not assigned.')
     if not sub_orders:

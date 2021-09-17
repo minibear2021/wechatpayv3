@@ -88,8 +88,7 @@ class Core():
             return False
         return True
 
-    def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False):
-        headers = {}
+    def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False, headers={}):
         if files:
             headers.update({'Content-Type': 'multipart/form-data'})
         else:
@@ -113,7 +112,7 @@ class Core():
         elif method == RequestType.PATCH:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
         elif method == RequestType.PUT:
-            response = requests.put(url=self._gate_way + path, headers=headers, json=data)
+            response = requests.put(url=self._gate_way + path,  json=data, headers=headers)
         elif method == RequestType.DELETE:
             response = requests.delete(url=self._gate_way+path, headers=headers)
         else:
@@ -161,7 +160,7 @@ class Core():
         for file_name in os.listdir(self._cert_dir):
             if not file_name.lower().endswith('.pem'):
                 continue
-            with open(self._cert_dir + file_name, encoding="utf-8") as f: 
+            with open(self._cert_dir + file_name, encoding="utf-8") as f:
                 certificate = load_certificate(f.read())
             now = datetime.utcnow()
             if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:

@@ -22,59 +22,80 @@
 3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密resource对象，并返回解密后的数据。
 
-## 适配进度
+## 接口清单
 
-微信支付V3版API接口
+已适配的微信支付V3版API接口列表如下：
 
-其中：
+| 大类 | 小类 | 接口 | 接口函数 |
+| --- | --- | --- | --- |
+| 公用 | 公用 | 调起支付签名 | sign |
+| 公用 | 公用 | 回调通知解密 | decrypt_callback |
+| 公用 | 公用 | 敏感信息参数解密 | decrypt |
+| 公用 | 公用 | *下载账单 | download_bill |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 统一下单 | pay |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 查询订单 | query |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 关闭订单 | close |
+| 基础支付 | 合单支付 | 统一下单 | combine_pay |
+| 基础支付 | 合单支付 | 查询订单 | combine_query |
+| 基础支付 | 合单支付 | 关闭订单 | close |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款 | refund_query |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单 | trade_bill |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单 | fundflow_bill |
+| 经营能力 | 支付即服务 | 服务人员注册 | guides_register |
+| 经营能力 | 支付即服务 | 服务人员分配 | guides_assign |
+| 经营能力 | 支付即服务 | 服务人员查询 | guides_query |
+| 经营能力 | 支付即服务 | 服务人员信息更新 | guides_update |
+| 行业方案 | 智慧商圈 | 商圈积分同步 | points_notify |
+| 行业方案 | 智慧商圈 | 商圈积分授权查询 | user_authorization |
+| 行业方案 | 微信支付分停车服务 | 查询车牌服务开通信息 | parking_service_find |
+| 行业方案 | 微信支付分停车服务 | 创建停车入场 | parking_enter |
+| 行业方案 | 微信支付分停车服务 | 扣费受理 | parking_order |
+| 行业方案 | 微信支付分停车服务 | 查询订单 | parking_query |
+| 营销工具 | 委托营销 | 建立合作关系 | marketing_partnership_build |
+| 营销工具 | 委托营销 | 查询合作关系列表 | marketing_partnership_query |
+| 营销工具 | 图片上传 | 图片上传(营销专用) | marketing_image_upload |
+| 资金应用 | 分账 | 请求分账 | profitsharing_order |
+| 资金应用 | 分账 | 查询分账结果 | profitsharing_order_query |
+| 资金应用 | 分账 | 请求分账回退 | profitsharing_return |
+| 资金应用 | 分账 | 查询分账回退结果 | profitsharing_return_query |
+| 资金应用 | 分账 | 解冻剩余资金 | profitsharing_unfreeze |
+| 资金应用 | 分账 | 查询剩余待分金额 | profitsharing_amount_query |
+| 资金应用 | 分账 | 添加分账接收方 | profitsharing_add_receiver |
+| 资金应用 | 分账 | 删除分账接收方 | profitsharing_delete_receiver |
+| 资金应用 | 分账 | 申请分账账单 | profitsharing_bill |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complant_list_query |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complant_detail_query |
+| 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complant_history_query |
+| 风险合规 | 消费者投诉2.0 | 提交回复 | complant_response |
+| 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete |
+| 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload |
+| 风险合规 | 消费者投诉2.0 | *图片下载 | complant_image_download |
+| 其他能力 | 图片上传 | 图片上传 | image_upload |
+| 其他能力 | 视频上传 | 视频上传 | video_upload |
 
-#### 基础支付
+### 接口函数参数
 
-    JSAPI支付 已适配
-    APP支付 已适配
-    H5支付 已适配
-    Native支付 已适配
-    小程序支付 已适配
-    合单支付 已适配
+参数类型对照参考下表：
 
-#### 经营能力
-
-    支付即服务 已适配
-
-#### 行业方案
-
-    智慧商圈 已适配
-    微信支付分停车服务 已适配
-
-#### 营销工具
-
-    图片上传(营销专用) 已适配
-
-### 资金应用
-
-    分账 已适配
-
-### 风险合规
-
-    消费者投诉2.0 已适配
-
-#### 其他能力
-
-    图片上传 已适配
-    视频上传 已适配
-
-#### 需要的接口还没有适配怎么办？
-
-由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
-必填的参数建议加上空值检查，可选的参数默认传入None。参数类型对照参考下表：
-
-| 文档声明 | **wechatpayv3** |
+| 微信支付官方文档声明 | **wechatpayv3** SDK |
 | --- | --- |
-| string | string |
+| string | str |
 | int | int |
 | object | dict: {} |
 | array  | list: [] |
 | boolean | bool: True, False |
+| message | bytes |
+
+### 接口函数返回值
+
+每个接口均同步返回code和message，code为web请求得到的HTTP状态码，message为服务器返回的json字符串。
+**特别要注意：
+账单下载和图片下载两个接口的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
+
+### 需要的接口还没有适配怎么办？
+
+由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
 
 ```python
 def refund(self,
@@ -97,8 +118,7 @@ def refund(self,
     :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
-    params['notify_url'] = notify_url or self._notify_url
-    # 
+    params.update({'notify_url': notify_url or self._notify_url})
     if out_refund_no:
         params.update({'out_refund_no': out_refund_no})
     else:
@@ -144,435 +164,58 @@ $ pip install wechatpayv3
 + **商户API证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao) 。
 + **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
 
-### 初始化
+### 一个最小的后端
+
+[examples.py](examples.py) 演示了一个带有支付接口和支付通知接口的后端。
+首先，修改 **examplys.py** 里以下几项配置参数：
 
 ``` python
-from wechatpayv3 import WeChatPay, WeChatPayType
-
 # 微信支付商户号
 MCHID = '1230000109'
+
 # 商户证书私钥
 with open('path_to_key/apiclient_key.pem') as f:
     PRIVATE_KEY = f.read()
+
 # 商户证书序列号
 CERT_SERIAL_NO = '444F4864EA9B34415...'
+
 # API v3密钥， https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_2.shtml
 APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+
 # APPID
 APPID = 'wxd678efh567hg6787'
+
 # 回调地址，也可以在调用接口的时候覆盖
-NOTIFY_URL = 'https://www.weixin.qq.com/wxpay/pay.php'
+NOTIFY_URL = 'https://www.xxxx.com/notify'
+
 # 微信支付平台证书缓存目录
 CERT_DIR = './cert'
-
-wxpay = WeChatPay(
-    wechatpay_type=WeChatPayType.MINIPROG,
-    mchid=MCHID,
-    private_key=PRIVATE_KEY,
-    cert_serial_no=CERT_SERIAL_NO,
-    apiv3_key=APIV3_KEY,
-    appid=APPID,
-    notify_url=NOTIFY_URL,
-    cert_dir=CERT_DIR)
 ```
 
-### 接口
+检查一下参数无误，现在就可以用python解释器来运行：
 
-``` python
-
-# 统一下单
-def pay():
-    code, message = wxpay.pay(
-        description='demo-description',
-        out_trade_no='demo-trade-no',
-        amount={'total': 100},
-        payer={'openid': 'demo-openid'}
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 订单查询
-def query():
-    code, message = wxpay.query(
-        transaction_id='demo-transation-id'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 关闭订单
-def close():
-    code, message = wxpay.close(
-        out_trade_no='demo-out-trade-no'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 申请退款
-def refund():
-    code, message=wxpay.refund(
-        out_refund_no='demo-out-refund-no',
-        amount={'refund': 100, 'total': 100, 'currency': 'CNY'},
-        transaction_id='1217752501201407033233368018'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 退款查询
-def query_refund():
-    code, message = wxpay.query_refund(
-        out_refund_no='demo-out-refund-no'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 申请交易账单
-def trade_bill():
-    code, message = wxpay.trade_bill(
-        bill_date='2021-04-01'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 申请资金流水账单
-def fundflow_bill():
-    code, message = wxpay.fundflow_bill(
-        bill_date='2021-04-01'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 下载账单
-def download_bill():
-    code, message = wxpay.download_bill(
-        url='https://api.mch.weixin.qq.com/v3/billdownload/file?token=demo-token'
-    )
-    print('code: %s, message: %s' % (code, message))
-    if code in range(200, 300) and isinstance(message, bytes):
-        with open("demo.txt.gz", 'wb') as f:
-            f.write(message)
-
-# 合单支付下单
-def combine_pay():
-    code, message = wxpay.combine_pay(
-        combine_out_trade_no='demo_out_trade_no',
-        sub_orders=[{'mchid':'1900000109',
-                     'attach':'深圳分店',
-                     'amount':{'total_amount':100,'currency':'CNY'},
-                     'out_trade_no':'20150806125346',
-                     'description':'腾讯充值中心-QQ会员充值',
-                     'settle_info':{'profit_sharing':False, 'subsidy_amount':10}}]
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 合单订单查询
-def combine_query():
-    code, message = wxpay.combine_query(
-        combine_out_trade_no='demo_out_trade_no'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 合单订单关闭
-def combine_close():
-    code, message = wxpay.combine_close(
-        combine_out_trade_no='demo_out_trade_no', 
-        sub_orders=[{'mchid': '1900000109', 'out_trade_no': '20150806125346'}]
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 计算签名供调起支付时拼凑参数使用
-# 注意事项：注意参数顺序，某个参数为空时不能省略，以空字符串''占位
-def sign():
-    print(wxpay.sign(['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']))
-
-# 解密部分接口返回的敏感信息，详见官方文档说明：
-# https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_3.shtml
-def decrypt():
-    print(wxpay.decrypt(ciphtext='Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='))
-
-# 验证并解密回调消息，把回调接口收到的headers和body传入，详见官方文档说明：
-# https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_2.shtml
-# 这里以flask框架为例，其他web框架如果遇到InvalidSignature，请确认传入的body和收到的一致，没有做额外的预处理
-def decrypt_callback(headers=request.headers, body=request.data):
-    print(wxpay.decrypt_callback(headers, body))
-
-# 智慧商圈积分通知
-def points_notify():
-    code, message = wxpay.points_notify(
-        transaction_id='4200000533202000000000000000',
-        openid='otPAN5xxxxxxxxrOEG6lUv_pzacc',
-        earn_points=True,
-        increased_points=100,
-        points_update_time='2020-05-20T13:29:35.120+08:00'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 智慧商圈积分授权查询
-def user_authorization():
-    code, message = wxpay.user_authorizations(
-        openid='otPAN5xxxxxxxxrOEG6lUv_pzacc'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 支付即服务人员注册
-def guides_register():
-    code, message = wxpay.guides_register(
-        corpid='1234567890',
-        store_id=1234,
-        userid='rebert',
-        name='robert',
-        mobile='13900000000',
-        qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
-        avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
-        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 支付即服务人员分配
-def guides_assign():
-    code, message = wxpay.guides_assign(
-        guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
-        out_trade_no='20150806125346'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 支付即服务人员查询
-def guides_query():
-    code, message = wxpay.guides_query(
-        store_id=1234,
-        userid='robert',
-        mobile='13900000000',
-        work_id='robert',
-        limit=5,
-        offset=0
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 支付即服务人员信息更新
-def guides_update():
-    code, message = wxpay.guides_update(
-        guide_id='LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic',
-        name='robert',
-        mobile='13900000000',
-        qr_code='https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx',
-        avatar='http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0',
-        group_qrcode='http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 图片上传
-def image_upload():
-    code, message = wxpay.image_upload(
-        filepath='./media/demo.png'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 视频上传
-def video_upload():
-    code, message = wxpay.video_upload(
-        filepath='./media/demo.mp4'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询车牌服务开通信息
-def parking_service_find():
-    code, message = wxpay.parking_service_find(
-        plate_number='粤B888888',
-        plate_color='BLUE',
-        openid='oUpF8uMuAJOM2pxb1Q'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 创建停车入场
-def parking_enter():
-    code, message = wxpay.parking_enter(
-        out_parking_no='1231243',
-        plate_number='粤B888888',
-        plate_color='BLUE',
-        start_time='2017-08-26T10:43:39+08:00',
-        parking_name='欢乐海岸停车场',
-        free_duration=3600
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 停车扣费受理
-def parking_order():
-    code, message = wxpay.parking_order(
-        description='停车场扣费',
-        out_trade_no='20150806125346',
-        total=888,
-        parking_id='5K8264ILTKCH16CQ250',
-        plate_number='粤B888888',
-        plate_color='BLUE',
-        start_time='2017-08-26T10:43:39+08:00',
-        end_time='2017-08-26T10:43:39+08:00',
-        parking_name='欢乐海岸停车场',
-        charging_duration=3600,
-        device_id='12313'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询停车扣费订单
-def parking_order_query():
-    code, message = wxpay.parking_order_query(
-        out_trade_no='20150806125346'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 图片上传(营销专用)
-def marking_image_upload():
-    code, message = wxpay.marketing_image_upload(
-        filepath='./media/demo.png'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 请求分账
-def profitsharing_order():
-    code, message = wxpay.profitsharing_order(
-        transaction_id='4208450740201411110007820472',
-        out_order_no='P20150806125346',
-        receivers={{'type': 'MERCHANT_ID', 'account': '86693852', 'amount': 888, 'description': '分给商户A'}},
-        unfreeze_unsplit=True
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询分账结果
-def profitsharing_order_query():
-    code, message = wxpay.profitsharing_order_query(
-        transaction_id='4208450740201411110007820472',
-        out_order_no='P20150806125346'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 请求分账回退
-def profitsharing_return():
-    code, message = wxpay.profitsharing_return(
-        order_id='3008450740201411110007820472',
-        out_return_no='R20190516001',
-        return_mchid='86693852',
-        amount=888,
-        description='用户退款')
-    print('code: %s, message: %s' % (code, message))
-
-# 查询分账回退结果
-def profitsharing_return_query():
-    code, message = wxpay.profitsharing_return_query(
-        out_order_no='P20150806125346',
-        out_return_no='R20190516001'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 解冻剩余资金
-def profitsharing_unfreeze():
-    code, message = wxpay.profitsharing_unfreeze(
-        transaction_id='4208450740201411110007820472',
-        out_order_no='P20150806125346',
-        description='解冻全部剩余资金'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询剩余待分金额
-def profitsharing_amount_query():
-    code, message = wxpay.profitsharing_amount_query(
-        transaction_id='4208450740201411110007820472'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 添加分账接收方
-def profitsharing_add_receiver():
-    code, message = wxpay.profitsharing_add_receiver(
-        account_type='MERCHANT_ID',
-        account='86693852',
-        relation_type='CUSTOM',
-        name='腾讯充值中心',
-        custom_relation='代理商'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 删除分账接收方
-def profitsharing_delete_receiver():
-    code, message = wxpay.profitsharing_delete_receiver(
-        account_type='MERCHANT_ID',
-        account='86693852'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 申请分账账单
-def profitsharing_bill():
-    code, message = wxpay.profitsharing_bill(
-        bill_date='2021-04-01'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询投诉单列表
-def complant_list_query():
-    code, message = wxpay.complant_list_query(
-        begin_date='2019-01-01'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询投诉单详情
-def complant_detail_query():
-    code, message = wxpay.complant_detail_query(
-        complaint_id='200201820200101080076610000'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询投诉协商历史
-def complant_history_query():
-    code, message = wxpay.complant_history_query(
-        complaint_id='200201820200101080076610000'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 创建投诉通知回调地址
-def complant_notification_create():
-    code, message = wxpay.complant_notification_create(
-        url='https://www.xxx.com/notify'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 查询投诉通知回调地址
-def complant_notification_query():
-    code, message = wxpay.complant_notification_query()
-    print('code: %s, message: %s' % (code, message))
-
-# 更新投诉通知回调地址
-def complant_notification_update():
-    code, message = wxpay.complant_notification_update(
-        url='https://www.xxx.com/notify'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 删除投诉通知回调地址
-def complant_notification_delete():
-    code, message = wxpay.complant_notification_delete()
-    print('code: %s, message: %s' % (code, message))
-
-# 提交投诉回复
-def complant_response():
-    code, message = wxpay.complant_response(
-        complaint_id='200201820200101080076610000',
-        response_content='已与用户沟通解决'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 反馈投诉处理完成
-def complant_complete():
-    code, message = wxpay.complant_complete(
-        complaint_id='200201820200101080076610000'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 商户上传投诉反馈图片
-def complant_image_upload():
-    code, message = wxpay.complant_image_upload(
-        filepath='./media/demo.png'
-    )
-    print('code: %s, message: %s' % (code, message))
-
-# 下载客户投诉图片
-def complant_image_download():
-    code, message = wxpay.complant_image_download(
-        media_url='https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
-    )
-    print('code: %s, message: %s' % (code, message))
-    if code in range(200, 300) and isinstance(message, bytes):
-        with open("demo.bmp", 'wb') as f:
-            f.write(message)
+```shell
+$ python examples.py
+ * Serving Flask app "examples" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
+
+现在访问 http://127.0.0.1:5000/pay ，如果一切正常，你会看到下面一串json字符串：
+```python
+{"code":-1,"result":{"reason":"PARAM_ERROR"}}
+```
+
+因为我们还没有将实际业务系统的参数更新到/pay接口中，将代码中的参数更新为实际的业务参数后就可以获得类似下面的json字符串：
+```python
+{"code": 0, "result": {"appId": "wx2421b1c4370ec43b", "timeStamp": "1395712654", "nonceStr": "e61463f8efa94090b1f366cccfbbb444", "package": "prepay_id=up_wx21201855730335ac86f8c43d1889123400", "signType": "RSA", 'paySign': "oR9d8PuhnIc...KNqZLhLw4jq\/xDg=="}
+```
+
+到这一步统一下单的后端就完成了，前端只需要将上面的参数传到对应的调起支付接口中即可引导用户完成支付。
 
 ## 回调验证失败处理
 开发者遇到的难点之一就是回调验证失败的问题，由于众多的python web框架对回调消息的处理不完全一致，如果出现回调验证失败，请务必确认传入的headers和body的值和类型。
