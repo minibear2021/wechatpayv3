@@ -107,10 +107,10 @@ class Core():
             data=sign_data if sign_data else data)
         headers.update({'Authorization': authorization})
         if self._logger:
-            self._logger.info('Url: %s' % self._gate_way + path)
-            self._logger.info('Type: %s' % method.value)
-            self._logger.info('Headers: %s' % headers)
-            self._logger.info('Params: %s' % data)
+            self._logger.debug('Request url: %s' % self._gate_way + path)
+            self._logger.debug('Request type: %s' % method.value)
+            self._logger.debug('Request headers: %s' % headers)
+            self._logger.debug('Request params: %s' % data)
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
@@ -124,8 +124,9 @@ class Core():
         else:
             raise Exception('sdk does no support this request type.')
         if self._logger:
-            self._logger.info('Status code: %s' % response.status_code)
-            self._logger.info('Content: %s' % response.text)
+            self._logger.debug('Response status code: %s' % response.status_code)
+            self._logger.debug('Response headers: %s' % response.headers)
+            self._logger.debug('Response content: %s' % response.text)
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify the signature')
@@ -138,8 +139,8 @@ class Core():
         if isinstance(body, bytes):
             body = body.decode()
         if self._logger:
-            self._logger.info('Callback Header: %s' % headers)
-            self._logger.info('Callback Body: %s' % body)
+            self._logger.debug('Callback Header: %s' % headers)
+            self._logger.debug('Callback Body: %s' % body)
         if not self._verify_signature(headers, body):
             return None
         data = json.loads(body)
@@ -165,7 +166,7 @@ class Core():
             associated_data=associated_data,
             apiv3_key=self._apiv3_key)
         if self._logger:
-            self._logger.info('Callback resource: %s' % result)
+            self._logger.debug('Callback resource: %s' % result)
         return result
 
     def _load_local_certificates(self):
