@@ -72,6 +72,11 @@ NOTIFY_URL = 'https://www.xxxx.com/notify'
 
 # 微信支付平台证书缓存目录
 CERT_DIR = './cert'
+
+# 日志记录器，记录web请求和回调细节，便于调试排错
+logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
+LOGGER = logging.getLogger("demo")
+
 ```
 
 检查一下参数无误，现在就可以用python解释器来运行：
