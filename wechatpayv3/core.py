@@ -13,7 +13,7 @@ from .utils import (aes_decrypt, build_authorization, load_certificate,
 
 
 class Core():
-    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None):
+    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None):
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
         self._private_key = load_private_key(private_key)
@@ -22,6 +22,7 @@ class Core():
         self._certificates = []
         self._cert_dir = cert_dir + '/' if cert_dir else None
         self._load_local_certificates()
+        self._logger = logger
 
     def _update_certificates(self):
         path = '/v3/certificates'
@@ -94,7 +95,7 @@ class Core():
         else:
             headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
-        headers.update({'User-Agent': 'wechatpay v3 python sdk(https://github.com/minibear2021/wechatpayv3)'})
+        headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
         if cipher_data:
             headers.update({'Wechatpay-Serial': hex(self._last_certificate().serial_number)[2:].upper()})
         authorization = build_authorization(
@@ -105,6 +106,11 @@ class Core():
             self._private_key,
             data=sign_data if sign_data else data)
         headers.update({'Authorization': authorization})
+        if self._logger:
+            self._logger.info('Url: %s' % self._gate_way + path)
+            self._logger.info('Type: %s' % method.value)
+            self._logger.info('Headers: %s' % headers)
+            self._logger.info('Params: %s' % data)
         if method == RequestType.GET:
             response = requests.get(url=self._gate_way + path, headers=headers)
         elif method == RequestType.POST:
@@ -117,6 +123,9 @@ class Core():
             response = requests.delete(url=self._gate_way+path, headers=headers)
         else:
             raise Exception('sdk does no support this request type.')
+        if self._logger:
+            self._logger.info('Status code: %s' % response.status_code)
+            self._logger.info('Content: %s' % response.text)
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify the signature')
@@ -128,6 +137,9 @@ class Core():
     def decrypt_callback(self, headers, body):
         if isinstance(body, bytes):
             body = body.decode()
+        if self._logger:
+            self._logger.info('Callback Header: %s' % headers)
+            self._logger.info('Callback Body: %s' % body)
         if not self._verify_signature(headers, body):
             return None
         data = json.loads(body)
@@ -152,6 +164,8 @@ class Core():
             ciphertext=ciphertext,
             associated_data=associated_data,
             apiv3_key=self._apiv3_key)
+        if self._logger:
+            self._logger.info('Callback resource: %s' % result)
         return result
 
     def _load_local_certificates(self):

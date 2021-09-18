@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+import logging
+import os
+from random import sample
+from string import digits, ascii_letters
+from time import time
 
 from flask import Flask, jsonify, request
 
@@ -27,6 +32,10 @@ NOTIFY_URL = 'https://www.xxxx.com/notify'
 # 微信支付平台证书缓存目录
 CERT_DIR = './cert'
 
+# 日志记录器，记录web请求和回调细节
+logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
+LOGGER = logging.getLogger("demo")
+
 # 初始化
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.MINIPROG,
@@ -36,7 +45,8 @@ wxpay = WeChatPay(
     apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL,
-    cert_dir=CERT_DIR)
+    cert_dir=CERT_DIR,
+    logger=LOGGER)
 
 app = Flask(__name__)
 
@@ -56,8 +66,8 @@ def pay():
     result = json.loads(message)
     if code in range(200, 300):
         prepay_id = result.get('prepay_id')
-        timestamp = 'demo-timestamp'
-        noncestr = 'demo-nocestr'
+        timestamp = str(int(time()))
+        noncestr = ''.join(sample(ascii_letters + digits, 8))
         package = 'prepay_id=' + prepay_id
         paysign = wxpay.sign([APPID, timestamp, noncestr, package])
         signtype = 'RSA'
@@ -65,7 +75,7 @@ def pay():
             'appId': APPID,
             'timeStamp': timestamp,
             'nonceStr': noncestr,
-            'package': 'prepay_id=%s' % prepay_id,
+            'package': package,
             'signType': signtype,
             'paySign': paysign
         }})

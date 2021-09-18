@@ -12,7 +12,8 @@ class WeChatPay():
                  appid,
                  apiv3_key,
                  notify_url=None,
-                 cert_dir=None):
+                 cert_dir=None,
+                 logger=None):
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
@@ -22,6 +23,7 @@ class WeChatPay():
         :param apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
         :param cert_dir: 平台证书存放目录，示例值：'/server/cert'
+        :param logger: 日志记录器，示例值logging.getLoger('demo')
         """
         from .core import Core
 
@@ -33,7 +35,8 @@ class WeChatPay():
                           cert_serial_no=cert_serial_no,
                           private_key=private_key,
                           apiv3_key=apiv3_key,
-                          cert_dir=cert_dir)
+                          cert_dir=cert_dir,
+                          logger=logger)
 
     def sign(self, data):
         """计算签名值paySign，供JSAPI、APP、NATIVE调起支付时使用

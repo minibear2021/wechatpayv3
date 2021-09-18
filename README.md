@@ -22,126 +22,6 @@
 3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密resource对象，并返回解密后的数据。
 
-## 接口清单
-
-已适配的微信支付V3版API接口列表如下：
-
-| 大类 | 小类 | 接口 | 接口函数 |
-| --- | --- | --- | --- |
-| 公用 | 公用 | 调起支付签名 | sign |
-| 公用 | 公用 | 回调通知解密 | decrypt_callback |
-| 公用 | 公用 | 敏感信息参数解密 | decrypt |
-| 公用 | 公用 | *下载账单 | download_bill |
-| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 统一下单 | pay |
-| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 查询订单 | query |
-| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 关闭订单 | close |
-| 基础支付 | 合单支付 | 统一下单 | combine_pay |
-| 基础支付 | 合单支付 | 查询订单 | combine_query |
-| 基础支付 | 合单支付 | 关闭订单 | close |
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund |
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款 | refund_query |
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单 | trade_bill |
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单 | fundflow_bill |
-| 经营能力 | 支付即服务 | 服务人员注册 | guides_register |
-| 经营能力 | 支付即服务 | 服务人员分配 | guides_assign |
-| 经营能力 | 支付即服务 | 服务人员查询 | guides_query |
-| 经营能力 | 支付即服务 | 服务人员信息更新 | guides_update |
-| 行业方案 | 智慧商圈 | 商圈积分同步 | points_notify |
-| 行业方案 | 智慧商圈 | 商圈积分授权查询 | user_authorization |
-| 行业方案 | 微信支付分停车服务 | 查询车牌服务开通信息 | parking_service_find |
-| 行业方案 | 微信支付分停车服务 | 创建停车入场 | parking_enter |
-| 行业方案 | 微信支付分停车服务 | 扣费受理 | parking_order |
-| 行业方案 | 微信支付分停车服务 | 查询订单 | parking_query |
-| 营销工具 | 委托营销 | 建立合作关系 | marketing_partnership_build |
-| 营销工具 | 委托营销 | 查询合作关系列表 | marketing_partnership_query |
-| 营销工具 | 消费卡 | 发放消费卡 | marketing_card_send |
-| 营销工具 | 图片上传 | 图片上传(营销专用) | marketing_image_upload |
-| 资金应用 | 分账 | 请求分账 | profitsharing_order |
-| 资金应用 | 分账 | 查询分账结果 | profitsharing_order_query |
-| 资金应用 | 分账 | 请求分账回退 | profitsharing_return |
-| 资金应用 | 分账 | 查询分账回退结果 | profitsharing_return_query |
-| 资金应用 | 分账 | 解冻剩余资金 | profitsharing_unfreeze |
-| 资金应用 | 分账 | 查询剩余待分金额 | profitsharing_amount_query |
-| 资金应用 | 分账 | 添加分账接收方 | profitsharing_add_receiver |
-| 资金应用 | 分账 | 删除分账接收方 | profitsharing_delete_receiver |
-| 资金应用 | 分账 | 申请分账账单 | profitsharing_bill |
-| 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complant_list_query |
-| 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complant_detail_query |
-| 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complant_history_query |
-| 风险合规 | 消费者投诉2.0 | 提交回复 | complant_response |
-| 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete |
-| 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload |
-| 风险合规 | 消费者投诉2.0 | *图片下载 | complant_image_download |
-| 其他能力 | 图片上传 | 图片上传 | image_upload |
-| 其他能力 | 视频上传 | 视频上传 | video_upload |
-
-### 接口函数参数
-
-参数类型对照参考下表：
-
-| 微信支付官方文档声明 | **wechatpayv3** SDK |
-| --- | --- |
-| string | str |
-| int | int |
-| object | dict: {} |
-| array  | list: [] |
-| boolean | bool: True, False |
-| message | bytes |
-
-### 接口函数返回值
-
-每个接口均同步返回code和message，code为web请求得到的HTTP状态码，message为服务器返回的json字符串。
-**特别要注意：
-账单下载和图片下载两个接口的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
-
-### 需要的接口还没有适配怎么办？
-
-由于**wechatpayv3**包内核心的core.py已经封装了请求签名和消息验证过程，开发者无需关心web请求细节，直接根据官方文档参考以下基础支付的[申请退款](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_9.shtml)接口代码自行适配，测试OK的话，欢迎提交代码。
-
-```python
-def refund(self,
-           out_refund_no,
-           amount,
-           transaction_id=None,
-           out_trade_no=None,
-           reason=None,
-           funds_account=None,
-           goods_detail=None,
-           notify_url=None):
-    """申请退款
-    :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
-    :param amount: 金额信息，示例值：{'refund':888, 'total':888, 'currency':'CNY'}
-    :param transaction_id: 微信支付订单号，示例值：'1217752501201407033233368018'
-    :param out_trade_no: 商户订单号，示例值：'1217752501201407033233368018'
-    :param reason: 退款原因，示例值：'商品已售完'
-    :param funds_account: 退款资金来源，示例值：'AVAILABLE'
-    :param goods_detail: 退款商品，示例值：{'merchant_goods_id':'1217752501201407033233368018', 'wechatpay_goods_id':'1001', 'goods_name':'iPhone6s 16G', 'unit_price':528800, 'refund_amount':528800, 'refund_quantity':1}
-    :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
-    """
-    params = {}
-    params.update({'notify_url': notify_url or self._notify_url})
-    if out_refund_no:
-        params.update({'out_refund_no': out_refund_no})
-    else:
-        raise Exception('out_refund_no is not assigned.')
-    if amount:
-        params.update({'amount': amount})
-    else:
-        raise Exception('amount is not assigned.')
-    if transaction_id:
-        params.update({'transaction_id': transaction_id})
-    if out_trade_no:
-        params.update({'out_trade_no': out_trade_no})
-    if reason:
-        params.update({'reason': reason})
-    if funds_account:
-        params.update({'funds_account': funds_account})
-    if goods_detail:
-        params.update({'goods_detail': goods_detail})
-    path = '/v3/refund/domestic/refunds'
-    return self._core.request(path, method=RequestType.POST, data=params)
-```
-
 ## 源码
 
 [github](https://github.com/minibear2021/wechatpayv3)
@@ -251,6 +131,79 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 ### 其他框架
 
 参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
+
+## 接口清单
+
+已适配的微信支付V3版API接口列表如下：
+
+| 大类 | 小类 | 接口 | 接口函数 |
+| --- | --- | --- | --- |
+| 公用 | 公用 | 调起支付签名 | sign |
+| 公用 | 公用 | 回调通知解密 | decrypt_callback |
+| 公用 | 公用 | 敏感信息参数解密 | decrypt |
+| 公用 | 公用 | *下载账单 | download_bill |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 统一下单 | pay |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 查询订单 | query |
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 关闭订单 | close |
+| 基础支付 | 合单支付 | 统一下单 | combine_pay |
+| 基础支付 | 合单支付 | 查询订单 | combine_query |
+| 基础支付 | 合单支付 | 关闭订单 | close |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款 | refund_query |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单 | trade_bill |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单 | fundflow_bill |
+| 经营能力 | 支付即服务 | 服务人员注册 | guides_register |
+| 经营能力 | 支付即服务 | 服务人员分配 | guides_assign |
+| 经营能力 | 支付即服务 | 服务人员查询 | guides_query |
+| 经营能力 | 支付即服务 | 服务人员信息更新 | guides_update |
+| 行业方案 | 智慧商圈 | 商圈积分同步 | points_notify |
+| 行业方案 | 智慧商圈 | 商圈积分授权查询 | user_authorization |
+| 行业方案 | 微信支付分停车服务 | 查询车牌服务开通信息 | parking_service_find |
+| 行业方案 | 微信支付分停车服务 | 创建停车入场 | parking_enter |
+| 行业方案 | 微信支付分停车服务 | 扣费受理 | parking_order |
+| 行业方案 | 微信支付分停车服务 | 查询订单 | parking_query |
+| 营销工具 | 委托营销 | 建立合作关系 | marketing_partnership_build |
+| 营销工具 | 委托营销 | 查询合作关系列表 | marketing_partnership_query |
+| 营销工具 | 消费卡 | 发放消费卡 | marketing_card_send |
+| 营销工具 | 图片上传 | 图片上传(营销专用) | marketing_image_upload |
+| 资金应用 | 分账 | 请求分账 | profitsharing_order |
+| 资金应用 | 分账 | 查询分账结果 | profitsharing_order_query |
+| 资金应用 | 分账 | 请求分账回退 | profitsharing_return |
+| 资金应用 | 分账 | 查询分账回退结果 | profitsharing_return_query |
+| 资金应用 | 分账 | 解冻剩余资金 | profitsharing_unfreeze |
+| 资金应用 | 分账 | 查询剩余待分金额 | profitsharing_amount_query |
+| 资金应用 | 分账 | 添加分账接收方 | profitsharing_add_receiver |
+| 资金应用 | 分账 | 删除分账接收方 | profitsharing_delete_receiver |
+| 资金应用 | 分账 | 申请分账账单 | profitsharing_bill |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complant_list_query |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complant_detail_query |
+| 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complant_history_query |
+| 风险合规 | 消费者投诉2.0 | 提交回复 | complant_response |
+| 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete |
+| 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload |
+| 风险合规 | 消费者投诉2.0 | *图片下载 | complant_image_download |
+| 其他能力 | 图片上传 | 图片上传 | image_upload |
+| 其他能力 | 视频上传 | 视频上传 | video_upload |
+
+### 接口函数参数
+
+参数类型对照参考下表：
+
+| 微信支付官方文档声明 | **wechatpayv3** SDK |
+| --- | --- |
+| string | str |
+| int | int |
+| object | dict: {} |
+| array  | list: [] |
+| boolean | bool: True, False |
+| message | bytes |
+
+### 接口函数返回值
+
+每个接口均同步返回code和message，code为web请求得到的HTTP状态码，message为服务器返回的json字符串。
+**特别要注意：
+账单下载和图片下载两个接口的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
+
 
 ## 签名、验签、加密、解密的内部实现
 
