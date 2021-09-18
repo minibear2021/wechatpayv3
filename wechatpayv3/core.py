@@ -21,8 +21,8 @@ class Core():
         self._gate_way = 'https://api.mch.weixin.qq.com'
         self._certificates = []
         self._cert_dir = cert_dir + '/' if cert_dir else None
-        self._load_local_certificates()
         self._logger = logger
+        self._init_certificates()
 
     def _update_certificates(self):
         path = '/v3/certificates'
@@ -169,17 +169,18 @@ class Core():
             self._logger.debug('Callback resource: %s' % result)
         return result
 
-    def _load_local_certificates(self):
-        if not (self._cert_dir and os.path.exists(self._cert_dir)):
-            return
-        for file_name in os.listdir(self._cert_dir):
-            if not file_name.lower().endswith('.pem'):
-                continue
-            with open(self._cert_dir + file_name, encoding="utf-8") as f:
-                certificate = load_certificate(f.read())
-            now = datetime.utcnow()
-            if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
-                self._certificates.append(certificate)
+    def _init_certificates(self):
+        if self._cert_dir and os.path.exists(self._cert_dir):
+            for file_name in os.listdir(self._cert_dir):
+                if not file_name.lower().endswith('.pem'):
+                    continue
+                with open(self._cert_dir + file_name, encoding="utf-8") as f:
+                    certificate = load_certificate(f.read())
+                now = datetime.utcnow()
+                if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                    self._certificates.append(certificate)
+        if not self._certificates:
+            self._update_certificates()
 
     def decrypt(self, ciphtext):
         return rsa_decrypt(ciphertext=ciphtext, private_key=self._private_key)

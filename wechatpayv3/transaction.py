@@ -131,8 +131,10 @@ def refund(self,
         raise Exception('amount is not assigned.')
     if transaction_id:
         params.update({'transaction_id': transaction_id})
-    if out_trade_no:
+    elif out_trade_no:
         params.update({'out_trade_no': out_trade_no})
+    else:
+        raise Exception('transaction_id is not assigned.')
     if reason:
         params.update({'reason': reason})
     if funds_account:
