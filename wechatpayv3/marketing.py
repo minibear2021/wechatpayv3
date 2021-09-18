@@ -93,3 +93,130 @@ def marketing_partnership_query(self, business_type, stock_id, partner_type=None
     if offset:
         path = '%s&offset=%s' % (path, offset)
     return self._core.request(path)
+
+
+def marketing_paygift_activity_create(self, activity_base_info, award_send_rule, advanced_setting=None):
+    """创建全场满额送活动
+    :param activity_base_info: 活动基本信息
+    :param award_send_rule: 活动奖品发放规则
+    :param advanced_setting: 活动高级设置
+    """
+    params = {}
+    if not activity_base_info or not award_send_rule:
+        raise Exception('activity_base_info or award_send_rule is not assigned.')
+    params.update({'activity_base_info': activity_base_info})
+    params.update({'award_send_rule': award_send_rule})
+    if advanced_setting:
+        params.update({'advanced_setting': advanced_setting})
+    path = '/v3/marketing/paygiftactivity/unique-threshold-activity'
+    return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def marketing_paygift_activity_detail(self, activity_id):
+    """查询活动详情接口
+    :param activity_id: 活动id，示例值：'10028001'
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    return self._core.request(path)
+
+
+def marketing_paygift_merchants_list(self, activity_id, offset=0, limit=20):
+    """查询活动发券商户号
+    :param activity_id: 活动id，示例值：'10028001'
+    :param offset:分页页码，页面从0开始。示例值：1
+    :param limit: 分页大小，限制分页最大数据条目。示例值：20
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s/merchants' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    path = '%s?offset=%s&limit=%s' % (path, offset, limit)
+    return self._core.request(path)
+
+
+def marketing_paygift_goods_list(self, activity_id, offset=0, limit=20):
+    """查询活动指定商品列表
+    :param activity_id: 活动id，示例值：'10028001'
+    :param offset:分页页码，页面从0开始。示例值：1
+    :param limit: 分页大小，限制分页最大数据条目。示例值：20
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s/goods' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    path = '%s?offset=%s&limit=%s' % (path, offset, limit)
+    return self._core.request(path)
+
+
+def marketing_paygift_activity_terminate(self, activity_id):
+    """终止活动
+    :param activity_id: 活动id，示例值：'10028001'
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s/terminate' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    return self._core.request(path, method=RequestType.POST)
+
+
+def marketing_paygift_merchant_add(self, activity_id, add_request_no, merchant_id_list=[]):
+    """新增活动发券商户号
+    :param activity_id: 活动id，示例值：'10028001'
+    :param add_request_no: 请求业务单据号，商户添加发券商户号的凭据号，商户侧需保持唯一性。示例值：'100002322019090134234sfdf'
+    :param merchant_id_list: 发券商户号，新增到活动中的发券商户号列表，特殊规则：最小字符长度为8，最大为15，条目个数限制：[1，500]。示例值：["10000022"，"10000023"]
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s/merchants/add' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    params = {}
+    if add_request_no:
+        params.update({'add_request_no': add_request_no})
+    else:
+        raise Exception('add_request_no is not assigned.')
+    if merchant_id_list:
+        params.update({'merchant_id_list': merchant_id_list})
+    return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def marketing_paygift_activity_list(self, offset=0, limit=20, activity_name=None, activity_status=None, award_type=None):
+    """获取支付有礼活动列表
+    :param offset:分页页码，页面从0开始。示例值：1
+    :param limit: 分页大小，限制分页最大数据条目。示例值：20
+    :param activity_name: 活动名称，支持模糊搜索。示例值：'良品铺子回馈活动'
+    :param activity_status: 活动状态，枚举值：'ACT_STATUS_UNKNOWN'：状态未知，'CREATE_ACT_STATUS'：已创建，'ONGOING_ACT_STATUS'：运行中，'TERMINATE_ACT_STATUS'：已终止，
+                            'STOP_ACT_STATUS'：已暂停，'OVER_TIME_ACT_STATUS'：已过期，'CREATE_ACT_FAILED'：创建活动失败。示例值：'CREATE_ACT_STATUS'
+    :param award_type: 奖品类型，暂时只支持商家券。'BUSIFAVOR'：商家券。示例值：'BUSIFAVOR'
+    """
+    params = {}
+    params.update({'offset': offset})
+    params.update({'limit': limit})
+    if activity_name:
+        params.update({'activity_name': activity_name})
+    if activity_status:
+        params.update({'activity_status': activity_status})
+    if award_type:
+        params.update({'award_type': award_type})
+    path = '/v3/marketing/paygiftactivity/activities'
+    return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def marketing_paygift_merchant_delete(self, activity_id, merchant_id_list=[], delete_request_no=None):
+    """删除活动发券商户号
+    :param activity_id: 活动id，示例值：'10028001'
+    :param delete_request_no: 请求业务单据号，商户创建批次凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性，可包含英文字母，数字，｜，_，*，-等内容，不允许出现其他不合法符号。示例值：'100002322019090134234sfdf'
+    :param merchant_id_list: 删除的发券商户号，从活动已有的发券商户号中移除的商户号列表，特殊规则：最小字符长度为8，最大为15，条目个数限制：[1，500]。示例值：["10000022"，"10000023"]
+    """
+    if activity_id:
+        path = '/v3/marketing/paygiftactivity/activities/%s/merchants/delete' % activity_id
+    else:
+        raise Exception('activity_id is not assigned.')
+    params = {}
+    if merchant_id_list:
+        params.update({'merchant_id_list': merchant_id_list})
+    if delete_request_no:
+        params.update({'delete_request_no': delete_request_no})
+    return self._core.request(path, method=RequestType.POST, data=params)

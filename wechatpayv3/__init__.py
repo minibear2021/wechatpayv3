@@ -58,50 +58,37 @@ class WeChatPay():
         """
         return self._core.decrypt(ciphtext)
 
-    from .businesscircle import (points_notify,
-                                 user_authorization)
-    from .complaint import (complant_complete,
-                            complant_detail_query,
-                            complant_history_query,
-                            complant_image_download,
-                            complant_image_upload,
-                            complant_list_query,
+    from .businesscircle import points_notify, user_authorization
+    from .complaint import (complant_complete, complant_detail_query,
+                            complant_history_query, complant_image_download,
+                            complant_image_upload, complant_list_query,
                             complant_notification_create,
                             complant_notification_delete,
                             complant_notification_query,
-                            complant_notification_update,
-                            complant_response)
-    from .marketing import (marketing_card_send,
-                            marketing_image_upload,
+                            complant_notification_update, complant_response)
+    from .marketing import (marketing_card_send, marketing_image_upload,
                             marketing_partnership_build,
-                            marketing_partnership_query)
-    from .media import (image_upload,
-                        video_upload)
-    from .parking import (parking_enter,
-                          parking_order,
-                          parking_order_query,
+                            marketing_partnership_query,
+                            marketing_paygift_activity_create,
+                            marketing_paygift_activity_detail,
+                            marketing_paygift_activity_list,
+                            marketing_paygift_activity_terminate,
+                            marketing_paygift_goods_list,
+                            marketing_paygift_merchant_add,
+                            marketing_paygift_merchant_delete,
+                            marketing_paygift_merchants_list)
+    from .media import image_upload, video_upload
+    from .parking import (parking_enter, parking_order, parking_order_query,
                           parking_service_find)
     from .profitsharing import (profitsharing_add_receiver,
-                                profitsharing_amount_query,
-                                profitsharing_bill,
+                                profitsharing_amount_query, profitsharing_bill,
                                 profitsharing_delete_receiver,
-                                profitsharing_order,
-                                profitsharing_order_query,
+                                profitsharing_order, profitsharing_order_query,
                                 profitsharing_return,
                                 profitsharing_return_query,
                                 profitsharing_unfreeze)
-    from .smartguide import (guides_assign,
-                             guides_query,
-                             guides_register,
+    from .smartguide import (guides_assign, guides_query, guides_register,
                              guides_update)
-    from .transaction import (close,
-                              combine_close,
-                              combine_pay,
-                              combine_query,
-                              download_bill,
-                              fundflow_bill,
-                              pay,
-                              query,
-                              query_refund,
-                              refund,
-                              trade_bill)
+    from .transaction import (close, combine_close, combine_pay, combine_query,
+                              download_bill, fundflow_bill, pay, query,
+                              query_refund, refund, trade_bill)

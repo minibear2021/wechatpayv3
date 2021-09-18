@@ -170,6 +170,14 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 营销工具 | 委托营销 | 建立合作关系 | marketing_partnership_build |
 | 营销工具 | 委托营销 | 查询合作关系列表 | marketing_partnership_query |
 | 营销工具 | 消费卡 | 发放消费卡 | marketing_card_send |
+| 营销工具 | 支付有礼 | 创建全场满额送活动 | marketing_paygift_activity_create |
+| 营销工具 | 支付有礼 | 查询活动详情接口 | marketing_paygift_activity_detail |
+| 营销工具 | 支付有礼 | 查询活动发券商户号 | marketing_paygift_merchants_list |
+| 营销工具 | 支付有礼 | 查询活动指定商品列表 | marketing_paygift_goods_list |
+| 营销工具 | 支付有礼 | 终止活动 | marketing_paygift_activity_terminate |
+| 营销工具 | 支付有礼 | 新增活动发券商户号 | marketing_paygift_merchant_add |
+| 营销工具 | 支付有礼 | 获取支付有礼活动列表 | marketing_paygift_activity_list |
+| 营销工具 | 支付有礼 | 删除活动发券商户号 | marketing_paygift_merchant_delete |
 | 营销工具 | 图片上传 | 图片上传(营销专用) | marketing_image_upload |
 | 资金应用 | 分账 | 请求分账 | profitsharing_order |
 | 资金应用 | 分账 | 查询分账结果 | profitsharing_order_query |
