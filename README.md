@@ -152,7 +152,7 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 关闭订单 | close |
 | 基础支付 | 合单支付 | 统一下单 | combine_pay |
 | 基础支付 | 合单支付 | 查询订单 | combine_query |
-| 基础支付 | 合单支付 | 关闭订单 | close |
+| 基础支付 | 合单支付 | 关闭订单 | combine_close |
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund |
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款 | refund_query |
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单 | trade_bill |
