@@ -137,7 +137,7 @@ class Core():
 
     def decrypt_callback(self, headers, body):
         if isinstance(body, bytes):
-            body = body.decode()
+            body = body.decode('UTF-8')
         if self._logger:
             self._logger.debug('Callback Header: %s' % headers)
             self._logger.debug('Callback Body: %s' % body)

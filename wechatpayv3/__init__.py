@@ -80,6 +80,13 @@ class WeChatPay():
     from .media import image_upload, video_upload
     from .parking import (parking_enter, parking_order, parking_order_query,
                           parking_service_find)
+    from .payscore import (payscore_cancel, payscore_complete, payscore_create,
+                           payscore_direct_complete, payscore_modify,
+                           payscore_pay, payscore_permission,
+                           payscore_permission_query,
+                           payscore_permission_terminate, payscore_query,
+                           payscore_refund, payscore_refund_query,
+                           payscore_sync)
     from .profitsharing import (profitsharing_add_receiver,
                                 profitsharing_amount_query, profitsharing_bill,
                                 profitsharing_delete_receiver,
