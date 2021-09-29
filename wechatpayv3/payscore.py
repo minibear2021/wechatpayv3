@@ -380,3 +380,23 @@ def payscore_refund_query(self, out_refund_no):
     :param out_refund_no: 商户退款单号，示例值：'1217752501201407033233368018'
     """
     return query_refund(self, out_refund_no=out_refund_no)
+
+
+def payscore_merchant_bill(self, bill_date, service_id, tar_type='GZIP', encryption_algorithm='AEAD_AES_256_GCM'):
+    """商户申请获取对账单
+    :param bill_date: 账单日期，格式'YYYY-MM-DD'，仅支持下载近三个月的账单。示例值：'2021-01-01'
+    :param service_id: 支付分服务ID。示例值：'2002000000000558128851361561536'
+    :param tar_type: 账单的压缩类型，'GZIP'：文件压缩方式为gzip，返回.gzip格式的压缩文件。示例值：'GZIP'
+    :param encryption_algorithm: 加密算法，对返回账单原文加密的算法'AEAD_AES_256_GCM'，账单使用AEAD_AES_256_GCM加密算法进行加密。示例值：'AEAD_AES_256_GCM'
+    """
+    if bill_date:
+        path = '/v3/payscore/merchant-bill?bill_date=%s' % bill_date
+    else:
+        raise Exception('bill_date is not assigned.')
+    if service_id:
+        path = '%s&service_id=%s' % (path, service_id)
+    else:
+        raise Exception('service_id is not assigned.')
+    path = '%s&tar_type=%s' % (path, tar_type if tar_type else 'GZIP')
+    path = '%s&encryption_algorithm=%s' % (path, encryption_algorithm if encryption_algorithm else 'AEAD_AES_256_GCM')
+    return self._core.request(path)

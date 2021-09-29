@@ -172,6 +172,7 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 经营能力 | 微信支付分（公共API） | 同步服务订单信息 | payscore_sync |
 | 经营能力 | 微信支付分（公共API） | 申请退款 | payscore_refund |
 | 经营能力 | 微信支付分（公共API） | 查询单笔退款 | payscore_refund_query |
+| 经营能力 | 微信支付分（公共API） | 商户申请获取对账单 | payscore_merchant_bill |
 | 经营能力 | 支付即服务 | 服务人员注册 | guides_register |
 | 经营能力 | 支付即服务 | 服务人员分配 | guides_assign |
 | 经营能力 | 支付即服务 | 服务人员查询 | guides_query |

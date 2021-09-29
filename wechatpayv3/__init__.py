@@ -81,8 +81,8 @@ class WeChatPay():
     from .parking import (parking_enter, parking_order, parking_order_query,
                           parking_service_find)
     from .payscore import (payscore_cancel, payscore_complete, payscore_create,
-                           payscore_direct_complete, payscore_modify,
-                           payscore_pay, payscore_permission,
+                           payscore_direct_complete, payscore_merchant_bill,
+                           payscore_modify, payscore_pay, payscore_permission,
                            payscore_permission_query,
                            payscore_permission_terminate, payscore_query,
                            payscore_refund, payscore_refund_query,
