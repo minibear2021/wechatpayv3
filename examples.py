@@ -38,7 +38,7 @@ LOGGER = logging.getLogger("demo")
 
 # 初始化
 wxpay = WeChatPay(
-    wechatpay_type=WeChatPayType.MINIPROG,
+    wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
     private_key=PRIVATE_KEY,
     cert_serial_no=CERT_SERIAL_NO,
@@ -53,6 +53,7 @@ app = Flask(__name__)
 
 @app.route('/pay')
 def pay():
+    # 以native下单为例，下单成功后即可获取到'code_url'，将'code_url'转换为二维码，并用微信扫码即可进行支付测试。
     out_trade_no = 'demo-trade-no'
     description = 'demo-description'
     amount = 100
@@ -60,27 +61,9 @@ def pay():
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
-        amount={'total': amount},
-        payer={'openid': openid}
+        amount={'total': amount}
     )
-    result = json.loads(message)
-    if code in range(200, 300):
-        prepay_id = result.get('prepay_id')
-        timestamp = str(int(time()))
-        noncestr = ''.join(sample(ascii_letters + digits, 8))
-        package = 'prepay_id=' + prepay_id
-        paysign = wxpay.sign([APPID, timestamp, noncestr, package])
-        signtype = 'RSA'
-        return jsonify({'code': 0, 'result': {
-            'appId': APPID,
-            'timeStamp': timestamp,
-            'nonceStr': noncestr,
-            'package': package,
-            'signType': signtype,
-            'paySign': paysign
-        }})
-    else:
-        return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
+    return jsonify({'code': code, 'message': message})
 
 
 @app.route('/notify', methods=['POST'])
@@ -100,10 +83,10 @@ def notify():
         success_time = resp.get('success_time')
         payer = resp.get('payer')
         amount = resp.get('amount').get('total')
-        #TODO: 根据返回参数进行必要的业务处理
-        return 'SUCCESS'
+        # TODO: 根据返回参数进行必要的业务处理
+        return jsonify({'code': 'SUCCESS', 'message': '成功'})
     else:
-        return 'FAILED'
+        return jsonify({'code': 'FAILED', 'message': '失败'})
 
 
 if __name__ == '__main__':
