@@ -29,8 +29,9 @@ APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
-# 微信支付平台证书缓存目录
-CERT_DIR = './cert'
+# 微信支付平台证书缓存目录，减少证书下载调用次数
+# 初始调试时可不设置，调试通过后再设置，示例值：'./cert'
+CERT_DIR = None
 
 # 日志记录器，记录web请求和回调细节
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
