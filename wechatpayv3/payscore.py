@@ -177,7 +177,7 @@ def payscore_query(self, service_id, out_order_no=None, query_id=None):
     :param query_id: 回跳查询ID，微信侧回跳到商户前端时用于查单的单据查询id。商户单号与回跳查询id必填其中一个。不允许都填写或都不填写。示例值：'15646546545165651651'
     """
     if service_id:
-        path = '/v3/payscore/serviceorder?service_id=%s&appid=%s' % (service_id, self._mchid)
+        path = '/v3/payscore/serviceorder?service_id=%s&appid=%s' % (service_id, self._appid)
     else:
         raise Exception('service_id is not assigned.')
     if out_order_no:

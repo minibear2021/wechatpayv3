@@ -63,7 +63,7 @@ def format_private_key(private_key_str):
 def load_certificate(certificate_str):
     try:
         return load_pem_x509_certificate(data=certificate_str.encode('UTF-8'), backend=default_backend())
-    except ValueError:
+    except:
         return None
 
 

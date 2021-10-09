@@ -93,15 +93,13 @@ $ python examples.py
 
 现在访问 http://127.0.0.1:5000/pay ，如果一切正常，你会看到下面一串json字符串：
 ```python
-{"code":-1,"result":{"reason":"PARAM_ERROR"}}
+{
+  "code": 200, 
+  "message": "{\"code_url\":\"weixin://wxpay/bizpayurl?pr=abcdefghi\"}"
+}
 ```
 
-因为我们还没有将实际业务系统的参数更新到/pay接口中，将代码中的参数更新为实际的业务参数后就可以获得类似下面的json字符串：
-```python
-{"code": 0, "result": {"appId": "wx2421b1c4370ec43b", "timeStamp": "1395712654", "nonceStr": "e61463f8efa94090b1f366cccfbbb444", "package": "prepay_id=up_wx21201855730335ac86f8c43d1889123400", "signType": "RSA", 'paySign': "oR9d8PuhnIc...KNqZLhLw4jq\/xDg=="}
-```
-
-到这一步统一下单的后端就完成了，前端只需要将上面的参数传到对应的调起支付接口中即可引导用户完成支付。
+到这一步统一下单的后端就完成了，现在将code_url的值即"weixin://wxpay/bizpayurl?pr=abcdefghi"用[草料](https://cli.im/)转换为二维码即可用微信扫码进行支付测试。
 
 **以上步骤如果不能正确执行，务必仔细检查各项初始化参数，必要的情况下，登录微信支付后台，将所有参数重置。**
 
