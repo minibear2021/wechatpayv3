@@ -83,10 +83,10 @@ def notify():
         success_time = resp.get('success_time')
         payer = resp.get('payer')
         amount = resp.get('amount').get('total')
-        # TODO: 根据返回参数进行必要的业务处理
+        # TODO: 根据返回参数进行必要的业务处理，处理完后返回200或204
         return jsonify({'code': 'SUCCESS', 'message': '成功'})
     else:
-        return jsonify({'code': 'FAILED', 'message': '失败'})
+        return jsonify({'code': 'FAILED', 'message': '失败'}), 500
 
 
 if __name__ == '__main__':
