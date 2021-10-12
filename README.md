@@ -47,7 +47,7 @@ $ pip install wechatpayv3
 
 ### 一个最小的后端
 
-[examples.py](examples.py) 演示了一个带有Native支付下单接口和支付通知接口的后端。
+[examples.py](examples.py) 演示了一个带有[Native支付下单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml)接口和[支付通知](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_5.shtml)接口的后端。
 首先，修改 **examplys.py** 里以下几项配置参数：
 
 ``` python
