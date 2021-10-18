@@ -147,7 +147,6 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 公用 | 公用 | 调起支付签名 | sign |
 | 公用 | 公用 | 回调通知解密 | decrypt_callback |
 | 公用 | 公用 | 敏感信息参数解密 | decrypt |
-| 公用 | 公用 | *下载账单 | download_bill |
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 统一下单 | pay |
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 查询订单 | query |
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付 | 关闭订单 | close |
@@ -158,6 +157,7 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款 | refund_query |
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单 | trade_bill |
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单 | fundflow_bill |
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 下载账单 | download_bill |
 | 经营能力 | 微信支付分（免确认模式） | 创单结单合并 | payscore_direct_complete |
 | 经营能力 | 微信支付分（免确认预授权模式） | 商户预授权 | payscore_permission |
 | 经营能力 | 微信支付分（免确认预授权模式） | 查询用户授权记录 | payscore_permission_query |
@@ -239,7 +239,7 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 | 风险合规 | 消费者投诉2.0 | 提交回复 | complant_response |
 | 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete |
 | 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload |
-| 风险合规 | 消费者投诉2.0 | *图片下载 | complant_image_download |
+| 风险合规 | 消费者投诉2.0 | 图片下载 | complant_image_download |
 | 其他能力 | 图片上传 | 图片上传 | image_upload |
 | 其他能力 | 视频上传 | 视频上传 | video_upload |
 
@@ -259,7 +259,7 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 ### 接口函数返回值
 
 每个接口均同步返回code和message，code为web请求得到的HTTP状态码，message为服务器返回的json字符串。
-**特别要注意：账单下载和图片下载两个接口的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
+**特别要注意：下载账单和图片下载两个接口返回的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
 
 ## 常见问题
 
