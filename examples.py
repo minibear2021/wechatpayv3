@@ -66,6 +66,123 @@ def pay():
     return jsonify({'code': code, 'message': message})
 
 
+@app.route('/pay_jsapi')
+def pay_jsapi():
+    # jsapi下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.JSAPI。
+    # 下单成功后，将prepay_id和其他必须的参数组合传递给JSSDK的wx.chooseWXPay接口唤起支付
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    payer = {'openid': 'demo-openid'}
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount},
+        payer=payer
+    )
+    result = json.loads(message)
+    if code in range(200, 300):
+        prepay_id = result.get('prepay_id')
+        timestamp = 'demo-timestamp'
+        noncestr = 'demo-nocestr'
+        package = 'prepay_id=' + prepay_id
+        paysign = wxpay.sign([APPID, timestamp, noncestr, package])
+        signtype = 'RSA'
+        return jsonify({'code': 0, 'result': {
+            'appId': APPID,
+            'timeStamp': timestamp,
+            'nonceStr': noncestr,
+            'package': 'prepay_id=%s' % prepay_id,
+            'signType': signtype,
+            'paySign': paysign
+        }})
+    else:
+        return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
+
+
+@app.route('/pay_h5')
+def pay_h5():
+    # h5支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.H5。
+    # 下单成功后，将获取的的h5_url传递给前端跳转唤起支付。
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    scene_info = {'payer_client_ip': '1.2.3.4', 'h5_info': {'type': 'Wap'}}
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount},
+        scene_info=scene_info
+    )
+    return jsonify({'code': code, 'message': message})
+
+
+@app.route('/pay_miniprog')
+def pay_miniprog():
+    # 小程序支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.MINIPROG。
+    # 下单成功后，将prepay_id和其他必须的参数组合传递给小程序的wx.requestPayment接口唤起支付
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    payer = {'openid': 'demo-openid'}
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount},
+        payer=payer
+    )
+    result = json.loads(message)
+    if code in range(200, 300):
+        prepay_id = result.get('prepay_id')
+        timestamp = 'demo-timestamp'
+        noncestr = 'demo-nocestr'
+        package = 'prepay_id=' + prepay_id
+        paysign = wxpay.sign([APPID, timestamp, noncestr, package])
+        signtype = 'RSA'
+        return jsonify({'code': 0, 'result': {
+            'appId': APPID,
+            'timeStamp': timestamp,
+            'nonceStr': noncestr,
+            'package': 'prepay_id=%s' % prepay_id,
+            'signType': signtype,
+            'paySign': paysign
+        }})
+    else:
+        return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
+
+
+@app.route('/pay_app')
+def pay_app():
+    # app支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.APP。
+    # 下单成功后，将prepay_id和其他必须的参数组合传递给IOS或ANDROID SDK接口唤起支付
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount}
+    )
+    result = json.loads(message)
+    if code in range(200, 300):
+        prepay_id = result.get('prepay_id')
+        timestamp = 'demo-timestamp'
+        noncestr = 'demo-nocestr'
+        package = 'Sign=WXPay'
+        paysign = 'demo-sign'
+        return jsonify({'code': 0, 'result': {
+            'appid': APPID,
+            'partnerid': MCHID,
+            'prepayid': prepay_id,
+            'package': package,
+            'nonceStr': noncestr,
+            'timestamp': timestamp,
+            'sign': paysign
+        }})
+    else:
+        return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
+
+
 @app.route('/notify', methods=['POST'])
 def notify():
     result = wxpay.decrypt_callback(request.headers, request.data)
