@@ -12,12 +12,13 @@ def marketing_image_upload(self, filepath, filename=None):
     return _media_upload(self, filepath, filename, '/v3/marketing/favor/media/image-upload')
 
 
-def marketing_card_send(self, card_id, openid, out_request_no, send_time):
+def marketing_card_send(self, card_id, openid, out_request_no, send_time, appid=None):
     """发放消费卡
     :card_id: 消费卡ID。示例值：'pIJMr5MMiIkO_93VtPyIiEk2DZ4w'
     :openid: 用户openid，待发卡用户的openid。示例值：'obLatjhnqgy2syxrXVM3MJirbkdI'
     :out_request_no: 商户单据号。示例值：'oTYhjfdsahnssddj_0136'
     :send_time: 请求发卡时间，单次请求发卡时间，消费卡在商户系统的实际发放时间，为东八区标准时间（UTC+8）。示例值：'2019-12-31T13:29:35.120+08:00'
+    :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值：'wx1234567890abcdef'
     """
     params = {}
     if card_id:
@@ -36,7 +37,7 @@ def marketing_card_send(self, card_id, openid, out_request_no, send_time):
         params.update({'send_time': send_time})
     else:
         raise Exception('send_time is not assigned.')
-    params.update({'appid': self._appid})
+    params.update({'appid': appid if appid else self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -317,7 +318,8 @@ def marketing_favor_stock_send(self,
                                out_request_no,
                                stock_creator_mchid,
                                coupon_value=None,
-                               coupon_minimum=None):
+                               coupon_minimum=None,
+                               appid=None):
     """发放代金券批次
     :param stock_id: 批次号。示例值：'9856000'
     :param openid: 用户openid，示例值：'2323dfsdf342342'
@@ -325,6 +327,7 @@ def marketing_favor_stock_send(self,
     :param stock_creator_mchid: 创建批次的商户号，示例值：'8956000'
     :param coupon_value: 指定面额发券，面额。示例值：100
     :param coupon_minimum: 指定面额发券，券门槛。示例值：100
+    :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值：'wx1234567890abcdef'
     """
     params = {}
     if stock_id:
@@ -347,7 +350,7 @@ def marketing_favor_stock_send(self,
         params.update({'coupon_value': coupon_value})
     if coupon_minimum:
         params.update({'coupon_minimum': coupon_minimum})
-    params.update({'appid': self._appid})
+    params.update({'appid': appid if appid else self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -531,13 +534,14 @@ def marketing_favor_refund_flow(self, stock_id):
     return self._core.request(path)
 
 
-def marketing_favor_callback_update(self, notify_url=None, switch=True):
+def marketing_favor_callback_update(self, notify_url=None, switch=True, mchid=None):
     """设置消息通知地址
     :param notify_url: 支付通知商户url地址。示例值：'https://pay.weixin.qq.com'
     :param switch: 回调开关，枚举值：True：开启推送，False：停止推送。示例值：True
+    :param mchid: 微信支付商户号，可不填，默认传入初始化的mchid。示例值：'9856888'
     """
     params = {}
-    params.update({'mchid': self._mchid})
+    params.update({'mchid': mchid if mchid else self._mchid})
     if notify_url:
         params.update({'notify_url': notify_url})
     else:
@@ -638,13 +642,15 @@ def marketing_busifavor_coupon_use(self,
                                    use_time,
                                    use_request_no,
                                    stock_id=None,
-                                   openid=None):
+                                   openid=None,
+                                   appid=None):
     """核销用户券
     :param coupon_code: 券code，券的唯一标识。示例值：'sxxe34343434'
     :param use_time: 请求核销时间，格式为YYYY-MM-DDTHH:mm:ss+TIMEZONE。示例值：'2015-05-20T13:29:35+08:00'
     :param use_request_no: 核销请求单据号，每次核销请求的唯一标识，商户需保证唯一。示例值：'1002600620019090123143254435'
     :param stock_id: 批次号。示例值：1212
     :param openid: 用户标识。示例值：'xsd3434454567676'
+    :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值：'wx1234567890abcdef'
     """
     params = {}
     if coupon_code:
@@ -663,7 +669,7 @@ def marketing_busifavor_coupon_use(self,
         params.update({'stock_id': stock_id})
     if openid:
         params.update({'openid': openid})
-    params.update({'appid': self._appid})
+    params.update({'appid': appid if appid else self._appid})
     path = '/v3/marketing/busifavor/coupons/use'
     return self._core.request(path, method=RequestType.POST, data=params)
 
@@ -740,7 +746,7 @@ def marketing_busifavor_couponcode_upload(self,
 
 def marketing_busifavor_callback_update(self, mchid=None, notify_url=None):
     """设置商家券事件通知地址
-    :param mchid: 商户号，不填默认使用初始化的mchid。示例值：'10000098'
+    :param mchid: 商户号，可不填，默认传入初始化的mchid。示例值：'10000098'
     :param notify_url: 通知URL地址，用于接收商家券事件通知的url地址，不填默认使用初始化的notify_url。示例值：'https://pay.weixin.qq.com'
     """
     params = {}

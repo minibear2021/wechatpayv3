@@ -13,7 +13,8 @@ class WeChatPay():
                  apiv3_key,
                  notify_url=None,
                  cert_dir=None,
-                 logger=None):
+                 logger=None,
+                 partner_mode=False):
         """
         :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值：'1230000109'
@@ -24,6 +25,7 @@ class WeChatPay():
         :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
         :param cert_dir: 平台证书存放目录，示例值：'/server/cert'
         :param logger: 日志记录器，示例值logging.getLoger('demo')
+        :param partner_mode: 接入模式，默认False为直连商户模式，True为服务商模式
         """
         from .core import Core
 
@@ -37,6 +39,7 @@ class WeChatPay():
                           apiv3_key=apiv3_key,
                           cert_dir=cert_dir,
                           logger=logger)
+        self._partner_mode = partner_mode
 
     def sign(self, data):
         """计算签名值paySign，供JSAPI、APP、NATIVE调起支付时使用
@@ -58,6 +61,8 @@ class WeChatPay():
         """
         return self._core.decrypt(ciphtext)
 
+    from .applyment import (applyment_query, applyment_settlement_modify,
+                            applyment_settlement_query, applyment_submit)
     from .businesscircle import points_notify, user_authorization
     from .complaint import (complant_complete, complant_detail_query,
                             complant_history_query, complant_image_download,
@@ -66,6 +71,10 @@ class WeChatPay():
                             complant_notification_delete,
                             complant_notification_query,
                             complant_notification_update, complant_response)
+    from .goldplan import (goldplan_advertising_close,
+                           goldplan_advertising_filter,
+                           goldplan_advertising_open,
+                           goldplan_custompage_change, goldplan_plan_change)
     from .marketing import (marketing_busifavor_callback_query,
                             marketing_busifavor_callback_update,
                             marketing_busifavor_coupon_associate,
@@ -118,8 +127,18 @@ class WeChatPay():
                            payscore_permission_terminate, payscore_query,
                            payscore_refund, payscore_refund_query,
                            payscore_sync)
-    from .profitsharing import (profitsharing_add_receiver,
+    from .profitsharing import (brand_profitsharing_add_receiver,
+                                brand_profitsharing_amount_query,
+                                brand_profitsharing_config_query,
+                                brand_profitsharing_delete_receiver,
+                                brand_profitsharing_order,
+                                brand_profitsharing_order_query,
+                                brand_profitsharing_return,
+                                brand_profitsharing_return_query,
+                                brand_profitsharing_unfreeze,
+                                profitsharing_add_receiver,
                                 profitsharing_amount_query, profitsharing_bill,
+                                profitsharing_config_query,
                                 profitsharing_delete_receiver,
                                 profitsharing_order, profitsharing_order_query,
                                 profitsharing_return,
@@ -129,4 +148,5 @@ class WeChatPay():
                              guides_update)
     from .transaction import (close, combine_close, combine_pay, combine_query,
                               download_bill, fundflow_bill, pay, query,
-                              query_refund, refund, trade_bill)
+                              query_refund, refund, submch_fundflow_bill,
+                              trade_bill)

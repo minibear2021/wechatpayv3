@@ -10,7 +10,7 @@ from flask import Flask, jsonify, request
 
 from wechatpayv3 import WeChatPay, WeChatPayType
 
-# 微信支付商户号
+# 微信支付商户号（直连模式）或服务商商户号（服务商模式，即sp_mchid)
 MCHID = '1234567890'
 
 # 商户证书私钥
@@ -23,7 +23,7 @@ CERT_SERIAL_NO = '444F4864EA9B34415...'
 # API v3密钥， https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_2.shtml
 APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
 
-# APPID
+# APPID，应用ID或服务商模式下的sp_appid
 APPID = 'wxd678efh567hg6787'
 
 # 回调地址，也可以在调用接口的时候覆盖
@@ -37,6 +37,9 @@ CERT_DIR = None
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
 LOGGER = logging.getLogger("demo")
 
+# 接入模式：False=直连商户模式，True=服务商模式
+PARTNER_MODE = False
+
 # 初始化
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
@@ -47,7 +50,8 @@ wxpay = WeChatPay(
     appid=APPID,
     notify_url=NOTIFY_URL,
     cert_dir=CERT_DIR,
-    logger=LOGGER)
+    logger=LOGGER,
+    partner_mode=PARTNER_MODE)
 
 app = Flask(__name__)
 
