@@ -57,7 +57,7 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
 
 
 def applyment_query(self, business_code=None, applyment_id=None):
-    """提交申请单
+    """查询申请单状态
     :param business_code: 业务申请编号，示例值：'APPLYMENT_00000000001'
     :param applyment_id: 申请单号，示例值：'2000001234567890'
     """
@@ -109,7 +109,8 @@ def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, ban
 
 
 def applyment_settlement_query(self, sub_mchid):
-    """
+    """查询结算账户
+    :param sub_mchid: 特约商户号，示例值：'1511101111'
     """
     if sub_mchid:
         path = '/v3/apply4sub/sub_merchants/%s/settlement' % sub_mchid
