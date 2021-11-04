@@ -65,7 +65,7 @@ def pay(self,
         params.update({'detail': detail})
     if settle_info:
         params.update({'settle_info': settle_info})
-    if self._partener_mode:
+    if self._partner_mode:
         params.update({'sp_appid': appid if appid else self._appid})
         params.update({'sp_mchid': mchid if mchid else self._mchid})
         if sub_mchid:
@@ -110,7 +110,7 @@ def close(self, out_trade_no, mchid=None, sub_mchid=None):
     :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值：'987654321'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'
     """
-    if self._partener_mode:
+    if self._partner_mode:
         if out_trade_no:
             path = '/v3/pay/partner/transactions/out-trade-no/%s/close' % out_trade_no
         else:
@@ -135,7 +135,7 @@ def query(self, transaction_id=None, out_trade_no=None, mchid=None, sub_mchid=No
     :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值：'987654321'    
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'
     """
-    if self._partener_mode:
+    if self._partner_mode:
         if transaction_id:
             path = '/v3/pay/partner/transactions/id/%s' % transaction_id
         elif out_trade_no:
@@ -197,7 +197,7 @@ def refund(self,
         params.update({'funds_account': funds_account})
     if goods_detail:
         params.update({'goods_detail': goods_detail})
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             params.update({'sub_mchid': sub_mchid})
         else:
@@ -212,7 +212,7 @@ def query_refund(self, out_refund_no, sub_mchid=None):
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'    
     """
     path = '/v3/refund/domestic/refunds/%s' % out_refund_no
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             path = '%s?sub_mchid=%s' % (path, sub_mchid)
         else:
@@ -228,7 +228,7 @@ def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP', sub_mchid=None
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109' 
     """
     path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (bill_date, bill_type, tar_type)
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         path = '%s&sub_mchid=%s' % (path, sub_mchid)
     return self._core.request(path)
 

@@ -46,7 +46,7 @@ def guides_register(self, corpid, store_id, userid, name, mobile, qr_code, avata
         raise Exception('avatar is not assigned.')
     if group_qrcode:
         params.update({'group_qrcode': group_qrcode})
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         params.update({'sub_mchid': sub_mchid})
     path = '/v3/smartguide/guides'
     return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True)
@@ -63,7 +63,7 @@ def guides_assign(self, guide_id, out_trade_no, sub_mchid=None):
         params.update({'out_trade_no': out_trade_no})
     else:
         raise Exception('out_trade_no is not assigned.')
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         params.update({'sub_mchid': sub_mchid})
     if guide_id:
         path = '/v3/smartguide/guides/%s/assign' % guide_id
@@ -96,7 +96,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
         path = '%s&limit=%s' % (path, limit)
     if offset:
         path = '%s&offset=%s' % (path, offset)
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         path = '%s&sub_mchid=%s' % (path, sub_mchid)
     return self._core.request(path, cipher_data=True)
 
@@ -125,6 +125,6 @@ def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=N
         params.update({'avatar': avatar})
     if group_qrcode:
         params.update({'group_qrcode': group_qrcode})
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         params.update({'sub_mchid': sub_mchid})
     return self._core.request(path, method=RequestType.PATCH, data=params, cipher_data=True)

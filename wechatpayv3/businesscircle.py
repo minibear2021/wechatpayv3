@@ -44,7 +44,7 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
         params.update({'no_points_remarks': no_points_remarks})
     if total_points:
         params.update({'total_points': total_points})
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         params.update({'sub_mchid': sub_mchid})
     path = '/v3/businesscircle/points/notify'
     return self._core.request(path, method=RequestType.POST, data=params)
@@ -59,7 +59,7 @@ def user_authorization(self, openid, appid=None, sub_mcid=None):
     if self._type != WeChatPayType.MINIPROG:
         raise Exception('API only available in mini program.')
     if openid:
-        if self._partener_mode:
+        if self._partner_mode:
             path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, appid if appid else self._appid)
             if sub_mcid:
                 path = '%s&sub_mchid=%s' % (path, sub_mcid)

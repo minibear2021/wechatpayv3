@@ -23,7 +23,7 @@ def parking_service_find(self, plate_number, plate_color, openid, sub_mchid=None
         path = '%s&openid=%s' % (path, openid)
     else:
         raise Exception('openid is not assigned.')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             path = '%s&sub_mchid=%s' % (path, sub_mchid)
         else:
@@ -68,7 +68,7 @@ def parking_enter(self, out_parking_no, plate_number, plate_color, start_time, p
         params.update({'free_duration': free_duration})
     else:
         raise Exception('free_duration is not assigned')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             params.update({'sub_mchid': sub_mchid})
         else:
@@ -169,7 +169,7 @@ def parking_order(self, description, out_trade_no, total, parking_id, plate_numb
         params.update({'goods_tag': goods_tag})
     params.update({'amount': amount})
     params.update({'parking_info': parking_info})
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
         else:
@@ -191,7 +191,7 @@ def parking_order_query(self, out_trade_no, sub_mchid=None):
         path = '/v3/vehicle/transactions/out-trade-no/%s' % out_trade_no
     else:
         raise Exception('out_trade_no is not assigned')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             path = '%s?sub_mchid=%s' % (path, sub_mchid)
         else:

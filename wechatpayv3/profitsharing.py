@@ -32,7 +32,7 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
     else:
         raise Exception('transaction_id is not assigned')
     params.update({'appid': appid if appid else self._core._appid})
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
         if sub_mchid:
@@ -53,7 +53,7 @@ def profitsharing_order_query(self, transaction_id, out_order_no, sub_mchid=None
         path = '/v3/profitsharing/orders/%s?transaction_id=%s' % (out_order_no, transaction_id)
     else:
         raise Exception('transaction_id or out_order_no is not assigned.')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             path = '%s&sub_mchid=%s' % (path, sub_mchid)
         else:
@@ -97,7 +97,7 @@ def profitsharing_return(self, out_return_no, return_mchid, amount, description,
         params.update({'description': description})
     else:
         raise Exception('description is not assigned')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             params.update({'sub_mchid': sub_mchid})
         else:
@@ -116,7 +116,7 @@ def profitsharing_return_query(self, out_order_no, out_return_no, sub_mchid=None
         path = '/v3/profitsharing/return-orders/%s?&out_order_no=%s' % (out_return_no, out_order_no)
     else:
         raise Exception('out_order_no or out_return_no is not assigned')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             path = '%s&sub_mchid=%s' % (path, sub_mchid)
         else:
@@ -144,7 +144,7 @@ def profitsharing_unfreeze(self, transaction_id, out_order_no, description, sub_
         params.update({'description': description})
     else:
         raise Exception('description is not assigned')
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_mchid:
             params.update({'sub_mchid': sub_mchid})
         else:
@@ -212,7 +212,7 @@ def profitsharing_add_receiver(self, account_type, account, relation_type, name=
         else:
             raise Exception('custom_relation is not assigned')
     params.update({'appid': appid if appid else self._appid})
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
         if sub_mchid:
@@ -241,7 +241,7 @@ def profitsharing_delete_receiver(self, account_type, account, appid=None, sub_a
     else:
         raise Exception('account is not assigned')
     params.update({'appid': appid if appid else self._appid})
-    if self._partener_mode:
+    if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
         if sub_mchid:
@@ -259,7 +259,7 @@ def profitsharing_bill(self, bill_date, tar_type='GZIP', sub_mchid=None):
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'
     """
     path = '/v3/profitsharing/bills?bill_date=%s&tar_type=%s' % (bill_date, tar_type)
-    if self._partener_mode and sub_mchid:
+    if self._partner_mode and sub_mchid:
         path = '%s&sub_mchid=%s' % (path, sub_mchid)
     return self._core.request(path)
 
