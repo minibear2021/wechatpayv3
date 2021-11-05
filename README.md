@@ -80,6 +80,9 @@ LOGGER = logging.getLogger("demo")
 
 # 接入模式：False=直连商户模式，True=服务商模式
 PARTNER_MODE = False
+
+# 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见https://docs.python-requests.org/zh_CN/latest/user/advanced.html
+PROXY = None
 ```
 
 检查一下参数无误，现在就可以用python解释器来运行：

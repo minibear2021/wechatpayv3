@@ -13,7 +13,8 @@ from .utils import (aes_decrypt, build_authorization, load_certificate,
 
 
 class Core():
-    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None):
+    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None, proxy=None):
+        self._proxy = proxy
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
         self._private_key = load_private_key(private_key)
@@ -112,15 +113,15 @@ class Core():
             self._logger.debug('Request headers: %s' % headers)
             self._logger.debug('Request params: %s' % data)
         if method == RequestType.GET:
-            response = requests.get(url=self._gate_way + path, headers=headers)
+            response = requests.get(url=self._gate_way + path, headers=headers, proxies=self._proxy)
         elif method == RequestType.POST:
-            response = requests.post(url=self._gate_way + path, json=None if files else data, data=data if files else None, headers=headers, files=files)
+            response = requests.post(url=self._gate_way + path, json=None if files else data, data=data if files else None, headers=headers, files=files, proxies=self._proxy)
         elif method == RequestType.PATCH:
-            response = requests.patch(url=self._gate_way + path, json=data, headers=headers)
+            response = requests.patch(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy)
         elif method == RequestType.PUT:
-            response = requests.put(url=self._gate_way + path,  json=data, headers=headers)
+            response = requests.put(url=self._gate_way + path,  json=data, headers=headers, proxies=self._proxy)
         elif method == RequestType.DELETE:
-            response = requests.delete(url=self._gate_way+path, headers=headers)
+            response = requests.delete(url=self._gate_way+path, headers=headers, proxies=self._proxy)
         else:
             raise Exception('sdk does no support this request type.')
         if self._logger:

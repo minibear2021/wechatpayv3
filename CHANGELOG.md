@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.3] - 2021-11-05
+### Added
+- 访问请求支持代理
+
 ## [1.2.2] - 2021-11-05
 ### Fixed
 - 特约商户进件缺少Wechatpay-Serial的bug
