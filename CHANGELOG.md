@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2] - 2021-11-05
+### Fixed
+- 特约商户进件缺少Wechatpay-Serial的bug
+
 ## [1.2.1] - 2021-11-04
 ### Fixed
 - 拼写错误

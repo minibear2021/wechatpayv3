@@ -40,20 +40,27 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
         raise Exception('bank_account_info is not assigned.')
     if addition_info:
         params.update({'addition_info': addition_info})
+    cipher_data = False
     if params.get('contact_info').get('contact_name'):
         params['contact_info']['contact_name'] = self._core.encrypt(params['contact_info']['contact_name'])
+        cipher_data = True
     if params.get('contact_info').get('contact_id_number'):
         params['contact_info']['contact_id_number'] = self._core.encrypt(params['contact_info']['contact_id_number'])
+        cipher_data = True
     if params.get('contact_info').get('mobile_phone'):
         params['contact_info']['mobile_phone'] = self._core.encrypt(params['contact_info']['mobile_phone'])
+        cipher_data = True
     if params.get('contact_info').get('contact_email'):
         params['contact_info']['contact_email'] = self._core.encrypt(params['contact_info']['contact_email'])
+        cipher_data = True
     if params.get('bank_account_info').get('account_name'):
         params['bank_account_info']['account_name'] = self._core.encrypt(params['bank_account_info']['account_name'])
+        cipher_data = True
     if params.get('bank_account_info').get('account_number'):
         params['bank_account_info']['account_number'] = self._core.encrypt(params['bank_account_info']['account_number'])
+        cipher_data = True
     path = '/v3/applyment4sub/applyment'
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def applyment_query(self, business_code=None, applyment_id=None):
@@ -105,7 +112,7 @@ def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, ban
         params.update({'bank_name': bank_name})
     if bank_branch_id:
         params.update({'bank_branch_id': bank_branch_id})
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True if account_number else False)
 
 
 def applyment_settlement_query(self, sub_mchid):
