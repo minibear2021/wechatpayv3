@@ -111,40 +111,6 @@ $ python examples.py
 
 Native支付调试最简单便捷，调试通过没有问题证明初始化参数正确之后，如果需要采用其他（小程序、H5、JSAPI、APP）支付下单，可继续参考examples.py。
 
-## 回调验证失败处理
-开发者遇到的难点之一就是回调验证失败的问题，由于众多的python web框架对回调消息的处理不完全一致，如果出现回调验证失败，请务必确认传入的headers和body的值和类型。
-通常框架传过来的headers类型是dict，而body类型是bytes。使用以下方法可直接获取到解密后的实际内容。
-
-### flask框架
-
-直接传入request.headers和request.data即可。
-```python
-result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
-```
-
-### django框架
-
-由于django框架特殊性，会将headers做一定的预处理，可以参考以下方式调用。
-```python
-headers = {}
-headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE')})
-headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP')})
-headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE')})
-headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
-result = wxpay.decrypt_callback(headers=headers, body=request.body)
-```
-
-### tornado框架
-
-直接传入request.headers和request.body即可。
-```python
-result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
-```
-
-### 其他框架
-
-参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
-
 ## 接口清单
 
 已适配的微信支付V3版API接口列表如下，部分接口调用示例可以参考[这里](interface.md)：
@@ -295,6 +261,40 @@ result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
 **特别要注意：下载账单和图片下载两个接口返回的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
 
 ## 常见问题
+
+### 回调验证失败处理
+开发者遇到的难点之一就是回调验证失败的问题，由于众多的python web框架对回调消息的处理不完全一致，如果出现回调验证失败，请务必确认传入的headers和body的值和类型。
+通常框架传过来的headers类型是dict，而body类型是bytes。使用以下方法可直接获取到解密后的实际内容。
+
+#### flask框架
+
+直接传入request.headers和request.data即可。
+```python
+result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
+```
+
+#### django框架
+
+由于django框架特殊性，会将headers做一定的预处理，可以参考以下方式调用。
+```python
+headers = {}
+headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE')})
+headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP')})
+headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE')})
+headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
+result = wxpay.decrypt_callback(headers=headers, body=request.body)
+```
+
+#### tornado框架
+
+直接传入request.headers和request.body即可。
+```python
+result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
+```
+
+#### 其他框架
+
+参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
 
 ### 接口清单里怎么没有回调接口
 
