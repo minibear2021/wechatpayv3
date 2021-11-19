@@ -28,9 +28,9 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
     else:
         raise Exception('unfreeze_unsplit is not assigned')
     if receivers:
-        params.update({'transaction_id': transaction_id})
+        params.update({'receivers': receivers})
     else:
-        raise Exception('transaction_id is not assigned')
+        raise Exception('receivers is not assigned')
     params.update({'appid': appid if appid else self._core._appid})
     if self._partner_mode:
         if sub_appid:
@@ -294,9 +294,9 @@ def brand_profitsharing_order(self, brand_mchid, sub_mchid, transaction_id, out_
     else:
         raise Exception('out_order_no is not assigned')
     if receivers:
-        params.update({'transaction_id': transaction_id})
+        params.update({'receivers': receivers})
     else:
-        raise Exception('transaction_id is not assigned')
+        raise Exception('receivers is not assigned')
     if finish:
         params.update({'finish': finish})
     else:
