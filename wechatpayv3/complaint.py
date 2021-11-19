@@ -91,11 +91,13 @@ def complant_notification_delete(self):
     return self._core.request(path, method=RequestType.DELETE)
 
 
-def complant_response(self, complaint_id, response_content, response_images=None):
+def complant_response(self, complaint_id, response_content, response_images=None, jump_url=None, jump_url_text=None):
     """提交投诉回复
     :param complaint_id: 投诉单对应的投诉单号。示例值：'200201820200101080076610000'
     :param response_content: 回复内容，具体的投诉处理方案，限制200个字符以内。示例值：'已与用户沟通解决'
     :param response_images: 回复图片，传入调用商户上传反馈图片接口返回的media_id，最多上传4张图片凭证。示例值：['file23578_21798531.jpg', 'file23578_21798532.jpg']
+    :param jump_url: 跳转链接，附加跳转链接，引导用户跳转至商户客诉处理页面，链接需满足https格式。示例值："https://www.xxx.com/notify"
+    :param jump_url_text: 转链接文案，展示给用户的文案，附在回复内容之后。用户点击文案，即可进行跳转。示例值："查看订单详情"
     """
     params = {}
     if not complaint_id:
@@ -107,6 +109,10 @@ def complant_response(self, complaint_id, response_content, response_images=None
     params.update({'complainted_mchid': self._core._mchid})
     if response_images:
         params.update({'response_images': response_images})
+    if jump_url:
+        params.update({'jump_url': jump_url})
+    if jump_url_text:
+        params.update({'jump_url_text': jump_url_text})
     path = '/v3/merchant-service/complaints-v2/%s/response' % complaint_id
     return self._core.request(path, method=RequestType.POST, data=params)
 

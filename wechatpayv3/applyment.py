@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def applyment_submit(self, business_code, contact_info, subject_info, business_info, settlement_info, bank_account_info, addition_info=None):
@@ -66,7 +66,7 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
 def applyment_query(self, business_code=None, applyment_id=None):
     """查询申请单状态
     :param business_code: 业务申请编号，示例值：'APPLYMENT_00000000001'
-    :param applyment_id: 申请单号，示例值：'2000001234567890'
+    :param applyment_id: 申请单号，示例值：2000001234567890
     """
     if business_code:
         path = '/v3/applyment4sub/applyment/business_code/%s' % business_code

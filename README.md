@@ -231,6 +231,10 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 资金应用 | 连锁品牌分账 | 删除分账接收方 | brand_profitsharing_delete_receiver | 否 | 是 |
 | 资金应用 | 连锁品牌分账 | 申请分账账单 | profitsharing_bill | 否 | 是 |
 | 资金应用 | 连锁品牌分账 | 下载账单 | download_bill | 是 | 是 |
+| 风险合规 | 商户开户意愿确认 | 提交申请单 | apply4subject_submit | 否 | 是 |
+| 风险合规 | 商户开户意愿确认 | 撤销申请单 | apply4subject_cancel | 否 | 是 |
+| 风险合规 | 商户开户意愿确认 | 查询申请单审核结果 | apply4subject_query | 否 | 是 |
+| 风险合规 | 商户开户意愿确认 | 获取商户开户意愿确认状态 | apply4subject_state | 否 | 是 |
 | 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complant_list_query | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complant_detail_query | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complant_history_query | 是 | 是 |
@@ -238,6 +242,10 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 图片下载 | complant_image_download | 是 | 是 |
+| 风险合规 | 商户违规通知回调 | 创建商户违规通知回调地址 | merchantrisk_callback_create | 否 | 是 |
+| 风险合规 | 商户违规通知回调 | 查询商户违规通知回调地址 | merchantrisk_callback_query | 否 | 是 |
+| 风险合规 | 商户违规通知回调 | 修改商户违规通知回调地址 | merchantrisk_callback_update | 否 | 是 |
+| 风险合规 | 商户违规通知回调 | 删除商户违规通知回调地址 | merchantrisk_callback_delete | 否 | 是 |
 | 其他能力 | 图片上传 | 图片上传 | image_upload | 是 | 是 |
 | 其他能力 | 视频上传 | 视频上传 | video_upload | 是 | 是 |
 

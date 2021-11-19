@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def guides_register(self, corpid, store_id, userid, name, mobile, qr_code, avatar, group_qrcode=None, sub_mchid=None):

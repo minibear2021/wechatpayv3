@@ -64,6 +64,8 @@ class WeChatPay():
         """
         return self._core.decrypt(ciphtext)
 
+    from .apply4subject import (apply4subject_cancel, apply4subject_query,
+                                apply4subject_state, apply4subject_submit)
     from .applyment import (applyment_query, applyment_settlement_modify,
                             applyment_settlement_query, applyment_submit)
     from .businesscircle import points_notify, user_authorization
@@ -121,6 +123,10 @@ class WeChatPay():
                             marketing_paygift_merchant_delete,
                             marketing_paygift_merchants_list)
     from .media import image_upload, video_upload
+    from .merchantrisk import (merchantrisk_callback_create,
+                               merchantrisk_callback_delete,
+                               merchantrisk_callback_query,
+                               merchantrisk_callback_update)
     from .parking import (parking_enter, parking_order, parking_order_query,
                           parking_service_find)
     from .payscore import (payscore_cancel, payscore_complete, payscore_create,

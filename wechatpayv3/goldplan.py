@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def goldplan_plan_change(self, sub_mchid, operation_type):
