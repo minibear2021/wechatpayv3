@@ -193,9 +193,9 @@ def pay_app():
 
 @app.route('/notify', methods=['POST'])
 def notify():
-    result = wxpay.decrypt_callback(request.headers, request.data)
-    if result:
-        resp = json.loads(result)
+    result = wxpay.callback(request.headers, request.data)
+    if result and result.get('event_type') == 'TRANSACTION.SUCCESS':
+        resp = result.get('resource')
         appid = resp.get('appid')
         mchid = resp.get('mchid')
         out_trade_no = resp.get('out_trade_no')

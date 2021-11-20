@@ -118,7 +118,7 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 大类 | 小类 | 接口 | 接口函数 | 直连商户适用 | 服务商适用 |
 | --- | --- | --- | --- | --- | --- |
 | 公用 | 公用 | 调起支付签名 | sign | 是 | 是 |
-| 公用 | 公用 | 回调通知解密 | decrypt_callback | 是 | 是 |
+| 公用 | 公用 | 回调通知解密 | callback | 是 | 是 |
 | 公用 | 公用 | 敏感信息参数解密 | decrypt | 是 | 是 |
 | 公用 | 公用 | 下载账单 | download_bill | 是 | 是 |
 | 商户进件 | 特约商户进件 | 提交申请单 | applyment_submit | 否 | 是 |
@@ -278,7 +278,7 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 
 直接传入request.headers和request.data即可。
 ```python
-result = wxpay.decrypt_callback(headers=request.headers, body=request.data)
+result = wxpay.callback(headers=request.headers, body=request.data)
 ```
 
 #### django框架
@@ -290,23 +290,23 @@ headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATUR
 headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP')})
 headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE')})
 headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
-result = wxpay.decrypt_callback(headers=headers, body=request.body)
+result = wxpay.callback(headers=headers, body=request.body)
 ```
 
 #### tornado框架
 
 直接传入request.headers和request.body即可。
 ```python
-result = wxpay.decrypt_callback(headers=request.headers, body=request.body)
+result = wxpay.callback(headers=request.headers, body=request.body)
 ```
 
 #### 其他框架
 
-参考以上处理方法，大原则就是保证传给decrypt_callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
+参考以上处理方法，大原则就是保证传给callback的参数值和收到的值一致，不要转换为dict，也不要转换为string。
 
 ### 接口清单里怎么没有回调接口
 
-所有的回调接口都通过公用接口decrypt_callback处理，因此清单里没有一一罗列。
+所有的回调接口都通过公用接口callback处理，因此清单里没有一一罗列。
 
 ### 服务商模式如何接入
 
@@ -322,7 +322,7 @@ SDK 内部已经实现了自动下载和加载平台证书，无需预先下载�
 
 ### 回调接口始终校验失败
 
-查阅web框架文档，确保传入decrypt_callback的body参数没有经过任何转义，通常为bytes类型。
+查阅web框架文档，确保传入callback的body参数没有经过任何转义，通常为bytes类型。
 
 ### 下载平台证书时解析失败
 

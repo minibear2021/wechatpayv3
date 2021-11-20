@@ -170,6 +170,17 @@ class Core():
             self._logger.debug('Callback resource: %s' % result)
         return result
 
+    def callback(self, headers, body):
+        if isinstance(body, bytes):
+            body = body.decode('UTF-8')
+        result = self.decrypt_callback(headers=headers, body=body)
+        if result:
+            data = json.loads(body)
+            data.update({'resource': json.loads(result)})
+            return data
+        else:
+            return result
+
     def _init_certificates(self):
         if self._cert_dir and os.path.exists(self._cert_dir):
             for file_name in os.listdir(self._cert_dir):

@@ -52,11 +52,18 @@ class WeChatPay():
         return self._core.sign(sign_str)
 
     def decrypt_callback(self, headers, body):
-        """解密回调接口收到的信息
+        """解密回调接口收到的信息，仅返回resource解密后的参数字符串，此接口为兼容旧版本而保留，建议调用callback()
         :param headers: 回调接口收到的headers
         :param body: 回调接口收到的body
         """
         return self._core.decrypt_callback(headers, body)
+
+    def callback(self, headers, body):
+        """解密回调接口收到的信息，返回所有传入的参数
+        :param headers: 回调接口收到的headers
+        :param body: 回调接口收到的body
+        """
+        return self._core.callback(headers, body)
 
     def decrypt(self, ciphtext):
         """解密微信支付平台返回的信息中的敏感字段

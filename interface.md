@@ -107,8 +107,8 @@ def decrypt():
 # 验证并解密回调消息，把回调接口收到的headers和body传入，详见官方文档说明：
 # https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_2.shtml
 # 这里以flask框架为例，其他web框架如果遇到InvalidSignature，请确认传入的body和收到的一致，没有做额外的预处理
-def decrypt_callback(headers=request.headers, body=request.data):
-    print(wxpay.decrypt_callback(headers, body))
+def callback(headers=request.headers, body=request.data):
+    print(wxpay.callback(headers, body))
 
 # 智慧商圈积分通知
 def points_notify():
