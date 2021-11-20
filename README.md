@@ -21,7 +21,7 @@
 2. 支持本地缓存平台证书，初始化时指定平台证书保存目录即可；
 3. 敏感信息直接传入明文参数，SDK内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密resource对象，并返回解密后的数据；
-5. 支持微信支付直连模式和服务商模式，截至2021年10月12日，已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有v3版接口。
+5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有v3版接口。
 
 ## 源码
 
