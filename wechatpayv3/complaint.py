@@ -6,7 +6,7 @@ from .media import _media_upload
 from .type import RequestType
 
 
-def complant_list_query(self, begin_date=None, end_date=None, limit=10, offset=0, complainted_mchid=None):
+def complaint_list_query(self, begin_date=None, end_date=None, limit=10, offset=0, complainted_mchid=None):
     """查询投诉单列表
     :param begin_date: 开始日期，投诉发生的开始日期，格式为YYYY-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询。示例值：'2019-01-01'
     :param end_date: 结束日期，投诉发生的结束日期，格式为YYYY-MM-DD。注意，查询日期跨度不超过30天，当前查询为实时查询。示例值：'2019-01-01'
@@ -25,7 +25,7 @@ def complant_list_query(self, begin_date=None, end_date=None, limit=10, offset=0
     return self._core.request(path)
 
 
-def complant_detail_query(self, complaint_id):
+def complaint_detail_query(self, complaint_id):
     """查询投诉单详情
     :param complaint_id: 投诉单对应的投诉单号。示例值：'200201820200101080076610000'
     """
@@ -35,7 +35,7 @@ def complant_detail_query(self, complaint_id):
     return self._core.request(path)
 
 
-def complant_history_query(self, complaint_id, limit=100, offset=0):
+def complaint_history_query(self, complaint_id, limit=100, offset=0):
     """查询投诉协商历史
     :param complaint_id: 投诉单对应的投诉单号。示例值：'200201820200101080076610000'
     :param limit: 分页大小，设置该次请求返回的最大协商历史条数，范围[1,300]，不传默认为100。。示例值：5
@@ -49,7 +49,7 @@ def complant_history_query(self, complaint_id, limit=100, offset=0):
     return self._core.request(path)
 
 
-def complant_notification_create(self, url):
+def complaint_notification_create(self, url):
     """创建投诉通知回调地址
     :param: url: 通知地址，仅支持https。示例值：'https://www.xxx.com/notify'
     """
@@ -62,7 +62,7 @@ def complant_notification_create(self, url):
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
-def complant_notification_query(self):
+def complaint_notification_query(self):
     """查询投诉通知回调地址
     :param: url: 通知地址，仅支持https。示例值：'https://www.xxx.com/notify'
     """
@@ -70,7 +70,7 @@ def complant_notification_query(self):
     return self._core.request(path)
 
 
-def complant_notification_update(self, url):
+def complaint_notification_update(self, url):
     """更新投诉通知回调地址
     :param: url: 通知地址，仅支持https。示例值：'https://www.xxx.com/notify'
     """
@@ -83,7 +83,7 @@ def complant_notification_update(self, url):
     return self._core.request(path, method=RequestType.PUT, data=params)
 
 
-def complant_notification_delete(self):
+def complaint_notification_delete(self):
     """删除投诉通知回调地址
     :param: url: 通知地址，仅支持https。示例值：'https://www.xxx.com/notify'
     """
@@ -91,7 +91,7 @@ def complant_notification_delete(self):
     return self._core.request(path, method=RequestType.DELETE)
 
 
-def complant_response(self, complaint_id, response_content, response_images=None, jump_url=None, jump_url_text=None):
+def complaint_response(self, complaint_id, response_content, response_images=None, jump_url=None, jump_url_text=None):
     """提交投诉回复
     :param complaint_id: 投诉单对应的投诉单号。示例值：'200201820200101080076610000'
     :param response_content: 回复内容，具体的投诉处理方案，限制200个字符以内。示例值：'已与用户沟通解决'
@@ -117,7 +117,7 @@ def complant_response(self, complaint_id, response_content, response_images=None
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
-def complant_complete(self, complaint_id):
+def complaint_complete(self, complaint_id):
     """反馈投诉处理完成
     :param complaint_id: 投诉单对应的投诉单号。示例值：'200201820200101080076610000'
     """
@@ -129,7 +129,7 @@ def complant_complete(self, complaint_id):
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
-def complant_image_upload(self, filepath, filename=None):
+def complaint_image_upload(self, filepath, filename=None):
     """商户上传投诉反馈图片
     :param filepath: 图片文件路径
     :param filename: 文件名称，未指定则从filepath参数中截取
@@ -137,7 +137,7 @@ def complant_image_upload(self, filepath, filename=None):
     return _media_upload(self, filepath, filename, '/v3/merchant-service/images/upload')
 
 
-def complant_image_download(self, media_url):
+def complaint_image_download(self, media_url):
     """下载客户投诉图片
     :param media_url: 图片下载地址，示例值：'https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
     """

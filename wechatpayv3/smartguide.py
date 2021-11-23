@@ -98,7 +98,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
         path = '%s&offset=%s' % (path, offset)
     if self._partner_mode and sub_mchid:
         path = '%s&sub_mchid=%s' % (path, sub_mchid)
-    return self._core.request(path, cipher_data=True)
+    return self._core.request(path, cipher_data=True if mobile else False)
 
 
 def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=None, group_qrcode=None, sub_mchid=None):
@@ -115,10 +115,13 @@ def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=N
     if not guide_id:
         raise Exception('guide_id is not assigned.')
     path = '/v3/smartguide/guides/%s' % guide_id
+    cipher_data = False
     if name:
         params.update({'name': self._core.encrypt(name)})
+        cipher_data = True
     if mobile:
         params.update({'mobile': self._core.encrypt(mobile)})
+        cipher_data = True
     if qr_code:
         params.update({'qr_code': qr_code})
     if avatar:
@@ -127,4 +130,4 @@ def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=N
         params.update({'group_qrcode': group_qrcode})
     if self._partner_mode and sub_mchid:
         params.update({'sub_mchid': sub_mchid})
-    return self._core.request(path, method=RequestType.PATCH, data=params, cipher_data=True)
+    return self._core.request(path, method=RequestType.PATCH, data=params, cipher_data=cipher_data)

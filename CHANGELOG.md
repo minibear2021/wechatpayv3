@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.7] - 2021-11-23
+### Fixed
+- 拼写错误
+
 ## [1.2.6] - 2021-11-20
 ### Added
 - 新增callback接口，解密并保留所有回调参数，替代原decrypt_callback接口

@@ -13,7 +13,7 @@
 
 ## 适用对象
 
-**wechatpayv3**同时支持微信支付商户直连模式及服务商模式，接口说明详见官网 [直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)、[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml)。
+**wechatpayv3**同时支持微信支付[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)及[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml)，接口说明详见官网 。
 
 ## 特性
 
@@ -118,7 +118,7 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 大类 | 小类 | 接口 | 接口函数 | 直连商户适用 | 服务商适用 |
 | --- | --- | --- | --- | --- | --- |
 | 公用 | 公用 | 调起支付签名 | sign | 是 | 是 |
-| 公用 | 公用 | 回调通知解密 | callback | 是 | 是 |
+| 公用 | 公用 | 回调通知 | callback | 是 | 是 |
 | 公用 | 公用 | 敏感信息参数解密 | decrypt | 是 | 是 |
 | 公用 | 公用 | 下载账单 | download_bill | 是 | 是 |
 | 商户进件 | 特约商户进件 | 提交申请单 | applyment_submit | 否 | 是 |
@@ -235,13 +235,13 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 商户开户意愿确认 | 撤销申请单 | apply4subject_cancel | 否 | 是 |
 | 风险合规 | 商户开户意愿确认 | 查询申请单审核结果 | apply4subject_query | 否 | 是 |
 | 风险合规 | 商户开户意愿确认 | 获取商户开户意愿确认状态 | apply4subject_state | 否 | 是 |
-| 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complant_list_query | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complant_detail_query | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complant_history_query | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 提交回复 | complant_response | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complant_complete | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complant_image_upload | 是 | 是 |
-| 风险合规 | 消费者投诉2.0 | 图片下载 | complant_image_download | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complaint_list_query | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complaint_detail_query | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complaint_history_query | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 提交回复 | complaint_response | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complaint_complete | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complaint_image_upload | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 图片下载 | complaint_image_download | 是 | 是 |
 | 风险合规 | 商户违规通知回调 | 创建商户违规通知回调地址 | merchantrisk_callback_create | 否 | 是 |
 | 风险合规 | 商户违规通知回调 | 查询商户违规通知回调地址 | merchantrisk_callback_query | 否 | 是 |
 | 风险合规 | 商户违规通知回调 | 修改商户违规通知回调地址 | merchantrisk_callback_update | 否 | 是 |
@@ -266,7 +266,9 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 ### 接口函数返回值
 
 每个接口均同步返回code和message，code为web请求得到的HTTP状态码，message为服务器返回的json字符串。
-**特别要注意：下载账单和图片下载两个接口返回的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。**
+例外：
+1. 回调通知（callback）接口将收到的参数解密后返回，回调验证不合规或解密失败则返回None；
+2. 下载账单（download_bill）和消费者投诉2.0的图片下载（complaint_image_download）接口返回的message为bytes类型，直接将message写入磁盘即可获得对应的目标文件。
 
 ## 常见问题
 

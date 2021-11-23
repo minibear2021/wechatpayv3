@@ -319,75 +319,75 @@ def profitsharing_bill():
     print('code: %s, message: %s' % (code, message))
 
 # 查询投诉单列表
-def complant_list_query():
-    code, message = wxpay.complant_list_query(
+def complaint_list_query():
+    code, message = wxpay.complaint_list_query(
         begin_date='2019-01-01'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 查询投诉单详情
-def complant_detail_query():
-    code, message = wxpay.complant_detail_query(
+def complaint_detail_query():
+    code, message = wxpay.complaint_detail_query(
         complaint_id='200201820200101080076610000'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 查询投诉协商历史
-def complant_history_query():
-    code, message = wxpay.complant_history_query(
+def complaint_history_query():
+    code, message = wxpay.complaint_history_query(
         complaint_id='200201820200101080076610000'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 创建投诉通知回调地址
-def complant_notification_create():
-    code, message = wxpay.complant_notification_create(
+def complaint_notification_create():
+    code, message = wxpay.complaint_notification_create(
         url='https://www.xxx.com/notify'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 查询投诉通知回调地址
-def complant_notification_query():
-    code, message = wxpay.complant_notification_query()
+def complaint_notification_query():
+    code, message = wxpay.complaint_notification_query()
     print('code: %s, message: %s' % (code, message))
 
 # 更新投诉通知回调地址
-def complant_notification_update():
-    code, message = wxpay.complant_notification_update(
+def complaint_notification_update():
+    code, message = wxpay.complaint_notification_update(
         url='https://www.xxx.com/notify'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 删除投诉通知回调地址
-def complant_notification_delete():
-    code, message = wxpay.complant_notification_delete()
+def complaint_notification_delete():
+    code, message = wxpay.complaint_notification_delete()
     print('code: %s, message: %s' % (code, message))
 
 # 提交投诉回复
-def complant_response():
-    code, message = wxpay.complant_response(
+def complaint_response():
+    code, message = wxpay.complaint_response(
         complaint_id='200201820200101080076610000',
         response_content='已与用户沟通解决'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 反馈投诉处理完成
-def complant_complete():
-    code, message = wxpay.complant_complete(
+def complaint_complete():
+    code, message = wxpay.complaint_complete(
         complaint_id='200201820200101080076610000'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 商户上传投诉反馈图片
-def complant_image_upload():
-    code, message = wxpay.complant_image_upload(
+def complaint_image_upload():
+    code, message = wxpay.complaint_image_upload(
         filepath='./media/demo.png'
     )
     print('code: %s, message: %s' % (code, message))
 
 # 下载客户投诉图片
-def complant_image_download():
-    code, message = wxpay.complant_image_download(
+def complaint_image_download():
+    code, message = wxpay.complaint_image_download(
         media_url='https://api.mch.weixin.qq.com/v3/merchant-service/images/xxxxx'
     )
     print('code: %s, message: %s' % (code, message))

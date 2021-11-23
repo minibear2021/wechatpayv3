@@ -76,13 +76,13 @@ class WeChatPay():
     from .applyment import (applyment_query, applyment_settlement_modify,
                             applyment_settlement_query, applyment_submit)
     from .businesscircle import points_notify, user_authorization
-    from .complaint import (complant_complete, complant_detail_query,
-                            complant_history_query, complant_image_download,
-                            complant_image_upload, complant_list_query,
-                            complant_notification_create,
-                            complant_notification_delete,
-                            complant_notification_query,
-                            complant_notification_update, complant_response)
+    from .complaint import (complaint_complete, complaint_detail_query,
+                            complaint_history_query, complaint_image_download,
+                            complaint_image_upload, complaint_list_query,
+                            complaint_notification_create,
+                            complaint_notification_delete,
+                            complaint_notification_query,
+                            complaint_notification_update, complaint_response)
     from .goldplan import (goldplan_advertising_close,
                            goldplan_advertising_filter,
                            goldplan_advertising_open,
