@@ -238,6 +238,10 @@ Native支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 消费者投诉2.0 | 查询投诉单列表 | complaint_list_query | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 查询投诉单详情 | complaint_detail_query | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 查询投诉协商历史 | complaint_history_query | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 创建投诉通知回调地址 | complaint_notification_create | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 查询投诉通知回调地址 | complaint_notification_query | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 更新投诉通知回调地址 | complaint_notification_update | 是 | 是 |
+| 风险合规 | 消费者投诉2.0 | 删除投诉通知回调地址 | complaint_notification_delete | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 提交回复 | complaint_response | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 反馈处理完成 | complaint_complete | 是 | 是 |
 | 风险合规 | 消费者投诉2.0 | 商户上传反馈图片 | complaint_image_upload | 是 | 是 |
