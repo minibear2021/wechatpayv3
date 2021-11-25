@@ -85,6 +85,38 @@ PARTNER_MODE = False
 PROXY = None
 ```
 
+接下来初始化WechatPay实例并配置一个合适的接口：
+
+```python
+wxpay = WeChatPay(
+    wechatpay_type=WeChatPayType.NATIVE,
+    mchid=MCHID,
+    private_key=PRIVATE_KEY,
+    cert_serial_no=CERT_SERIAL_NO,
+    apiv3_key=APIV3_KEY,
+    appid=APPID,
+    notify_url=NOTIFY_URL,
+    cert_dir=CERT_DIR,
+    logger=LOGGER,
+    partner_mode=PARTNER_MODE,
+    proxy=PROXY)
+    
+app = Flask(__name__)
+
+@app.route('/pay')
+def pay():
+    # 以native下单为例，下单成功后即可获取到'code_url'，将'code_url'转换为二维码，并用微信扫码即可进行支付测试。
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount}
+    )
+    return jsonify({'code': code, 'message': message})    
+```
+
 检查一下参数无误，现在就可以用python解释器来运行：
 
 ```shell
