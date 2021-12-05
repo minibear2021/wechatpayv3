@@ -8,7 +8,7 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
     """请求分账
     :param transaction_id: 微信支付订单号，示例值：'4208450740201411110007820472'
     :param out_order_no: 商户分账单号，只能是数字、大小写字母_-|*@，示例值：'P20150806125346'
-    :param receivers: 分账接收方列表，最多可有50个分账接收方，示例值：{{'type':'MERCHANT_ID', 'account':'86693852', 'amount':888, 'description':'分给商户A'}}
+    :param receivers: 分账接收方列表，最多可有50个分账接收方，示例值：[{'type':'MERCHANT_ID', 'account':'86693852', 'amount':888, 'description':'分给商户A'}]
     :param unfreeze_unsplit: 是否解冻剩余未分资金，示例值：True, False
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值：'wx1234567890abcdef'
     :param sub_appid: (服务商模式)子商户应用ID，示例值：'wxd678efh567hg6999'
@@ -27,12 +27,13 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
         params.update({'unfreeze_unsplit': unfreeze_unsplit})
     else:
         raise Exception('unfreeze_unsplit is not assigned')
-    if receivers:
+    if isinstance(receivers, list):
         params.update({'receivers': receivers})
     else:
         raise Exception('receivers is not assigned')
-    if params.get('receivers').get('name'):
-        params['receivers']['name'] = self._core.encrypt(params['receivers']['name'])
+    for receiver in params.get('receivers'):
+        if receiver.get('name'):
+            receiver['name'] = self._core.encrypt(receiver.get('name'))
     params.update({'appid': appid if appid else self._appid})
     if self._partner_mode:
         if sub_appid:
