@@ -422,7 +422,7 @@ def marketing_favor_stock_detail(self, stock_creator_mchid, stock_id):
     :param stock_id: 批次号，示例值：'9856000'
     """
     if stock_id:
-        path = '/v3/marketing/favor/stocks/%s'
+        path = '/v3/marketing/favor/stocks/%s' % stock_id
     else:
         raise Exception('stock_id is not assigned.')
     if stock_creator_mchid:
