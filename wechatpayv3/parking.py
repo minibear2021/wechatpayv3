@@ -55,6 +55,8 @@ def parking_enter(self, out_parking_no, plate_number, plate_color, start_time, p
         params.update({'plate_color': plate_color})
     else:
         raise Exception('plate_color is not assigned')
+    if not (notify_url or self._notify_url):
+        raise Exception('notify_url is not assigned.')
     params.update({'notify_url': notify_url or self._notify_url})
     if start_time:
         params.update({'start_time': start_time})
@@ -105,7 +107,7 @@ def parking_order(self, description, out_trade_no, total, parking_id, plate_numb
     params = {}
     amount = {}
     parking_info = {}
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if description:
         params.update({'description': description})
     else:

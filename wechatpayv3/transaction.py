@@ -38,6 +38,8 @@ def pay(self,
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'
     """
     params = {}
+    if not (notify_url or self._notify_url):
+        raise Exception('notify_url is not assigned.')
     params.update({'notify_url': notify_url or self._notify_url})
     if description:
         params.update({'description': description})
@@ -66,8 +68,8 @@ def pay(self,
     if settle_info:
         params.update({'settle_info': settle_info})
     if self._partner_mode:
-        params.update({'sp_appid': appid if appid else self._appid})
-        params.update({'sp_mchid': mchid if mchid else self._mchid})
+        params.update({'sp_appid': appid or self._appid})
+        params.update({'sp_mchid': mchid or self._mchid})
         if sub_mchid:
             params.update({'sub_mchid': sub_mchid})
         else:
@@ -87,8 +89,8 @@ def pay(self,
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/pay/partner/transactions/native'
     else:
-        params.update({'appid': appid if appid else self._appid})
-        params.update({'mchid': mchid if mchid else self._mchid})
+        params.update({'appid': appid or self._appid})
+        params.update({'mchid': mchid or self._mchid})
         if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not payer:
                 raise Exception('payer is not assigned')
@@ -116,7 +118,7 @@ def close(self, out_trade_no, mchid=None, sub_mchid=None):
         else:
             raise Exception('out_trade_no is not assigned.')
         if sub_mchid:
-            params = {'sp_mchid': mchid if mchid else self._mchid, 'sub_mchid': sub_mchid}
+            params = {'sp_mchid': mchid or self._mchid, 'sub_mchid': sub_mchid}
         else:
             raise Exception('sub_mchid is not assigned.')
     else:
@@ -124,7 +126,7 @@ def close(self, out_trade_no, mchid=None, sub_mchid=None):
             path = '/v3/pay/transactions/out-trade-no/%s/close' % out_trade_no
         else:
             raise Exception('out_trade_no is not assigned.')
-        params = {'mchid': mchid if mchid else self._mchid}
+        params = {'mchid': mchid or self._mchid}
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -142,7 +144,7 @@ def query(self, transaction_id=None, out_trade_no=None, mchid=None, sub_mchid=No
             path = '/v3/pay/partner/transactions/out-trade-no/%s' % out_trade_no
         else:
             raise Exception('transaction_id or out_trade_no is not assigned.')
-        path = '%s?sp_mchid=%s&sub_mchid=%s' % (path, mchid if mchid else self._mchid, sub_mchid)
+        path = '%s?sp_mchid=%s&sub_mchid=%s' % (path, mchid or self._mchid, sub_mchid)
     else:
         if transaction_id:
             path = '/v3/pay/transactions/id/%s' % transaction_id
@@ -150,7 +152,7 @@ def query(self, transaction_id=None, out_trade_no=None, mchid=None, sub_mchid=No
             path = '/v3/pay/transactions/out-trade-no/%s' % out_trade_no
         else:
             raise Exception('transaction_id out_trade_no is not assigned.')
-        path = '%s?mchid=%s' % (path, mchid if mchid else self._mchid)
+        path = '%s?mchid=%s' % (path, mchid or self._mchid)
     return self._core.request(path)
 
 
@@ -176,7 +178,8 @@ def refund(self,
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值：'1900000109'
     """
     params = {}
-    params.update({'notify_url': notify_url or self._notify_url})
+    if notify_url or self._notify_url:
+        params.update({'notify_url': notify_url or self._notify_url})
     if out_refund_no:
         params.update({'out_refund_no': out_refund_no})
     else:
@@ -306,6 +309,8 @@ def combine_pay(self,
     params = {}
     params.update({'combine_appid': combine_appid or self._appid})
     params.update({'combine_mchid': combine_mchid or self._mchid})
+    if not (notify_url or self._notify_url):
+        raise Exception('notify_url is not assigned.')
     params.update({'notify_url': notify_url or self._notify_url})
     if combine_out_trade_no:
         params.update({'combine_out_trade_no': combine_out_trade_no})

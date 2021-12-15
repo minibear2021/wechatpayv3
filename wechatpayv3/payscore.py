@@ -26,7 +26,7 @@ def payscore_direct_complete(self, out_order_no, openid, service_id, service_int
     params = {}
     if not (out_order_no and openid and service_id and service_introduction and post_payments and time_range and total_amount):
         raise Exception('ut_order_no or openid or service_id or service_introduction or post_payments or time_range or total_amount is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     params.update({'out_order_no': out_order_no})
     params.update({'openid': openid})
     params.update({'service_id': service_id})
@@ -50,6 +50,8 @@ def payscore_direct_complete(self, out_order_no, openid, service_id, service_int
             payment = True
             break
     if payment:
+        if not (notify_url or self._notify_url):
+            raise Exception('notify_url is not assigned.')
         params.update({'notify_url': notify_url or self._notify_url})
     path = '/payscore/serviceorder/direct-complete'
     return self._core.request(path, method=RequestType.POST, data=params)
@@ -65,7 +67,7 @@ def payscore_permission(self, service_id, authorization_code, notify_url=None, a
     params = {}
     if not (service_id and authorization_code):
         raise Exception('service_id or authorization_code is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     params.update({'service_id': service_id})
     params.update({'authorization_code': authorization_code})
     params.update({'notify_url': notify_url or self._notify_url})
@@ -106,7 +108,7 @@ def payscore_permission_terminate(self, service_id, reason, authorization_code=N
     if authorization_code:
         path = 'v3/payscore/permissions/authorization-code/%s/terminate' % authorization_code
     elif openid:
-        params.update({'appid': appid if appid else self._appid})
+        params.update({'appid': appid or self._appid})
         path = '/v3/payscore/permissions/openid/%s/terminate' % openid
     else:
         raise Exception('authorization_code or openid is not assigned.')
@@ -136,7 +138,7 @@ def payscore_create(self, out_order_no, service_id, service_introduction, time_r
         params.update({'out_order_no': out_order_no})
     else:
         raise Exception('out_order_no is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if service_id:
         params.update({'service_id': service_id})
     else:
@@ -214,7 +216,7 @@ def payscore_cancel(self, out_order_no, service_id, reason, appid=None):
         params.update({'reason': reason})
     else:
         raise Exception('reason is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -251,7 +253,7 @@ def payscore_modify(self, out_order_no, service_id, post_payments, total_amount,
         raise Exception('reason is not assigned.')
     if post_discounts:
         params.update({'post_discounts': post_discounts})
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -295,7 +297,7 @@ def payscore_complete(self, out_order_no, service_id, post_payments, total_amoun
     if goods_tag:
         params.update({'goods_tag': goods_tag})
     params.update({'profit_sharing': profit_sharing})
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -314,7 +316,7 @@ def payscore_pay(self, out_order_no, service_id, appid=None):
         params.update({'service_id': service_id})
     else:
         raise Exception('service_id is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -343,7 +345,7 @@ def payscore_sync(self, out_order_no, service_id, scene_type='Order_Paid', detai
         params.update({'detail': detail})
     else:
         raise Exception('detail is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 

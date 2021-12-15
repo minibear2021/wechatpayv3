@@ -6,7 +6,6 @@ from .type import RequestType, WeChatPayType
 def points_notify(self, transaction_id, openid, earn_points, increased_points, points_update_time, no_points_remarks=None, total_points=None, appid=None, sub_mchid=None):
     """智慧商圈积分同步
     :param transaction_id: 微信订单号，示例值：'1217752501201407033233368018'
-    :param appid: 小程序appid，示例值：'wx1234567890abcdef'
     :param openid: 用户标识，示例值：'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
     :param earn_points: 是否获得积分，示例值：True
     :param increased_points: 订单新增积分值，示例值：100
@@ -19,7 +18,7 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
     if self._type != WeChatPayType.MINIPROG:
         raise Exception('points notify only supports wechat mini prog')
     params = {}
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if transaction_id:
         params.update({'transaction_id': transaction_id})
     else:
@@ -60,7 +59,7 @@ def user_authorization(self, openid, appid=None, sub_mcid=None):
         raise Exception('API only available in mini program.')
     if openid:
         if self._partner_mode:
-            path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, appid if appid else self._appid)
+            path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, appid or self._appid)
             if sub_mcid:
                 path = '%s&sub_mchid=%s' % (path, sub_mcid)
         else:

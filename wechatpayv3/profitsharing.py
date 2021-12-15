@@ -34,7 +34,7 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
     for receiver in params.get('receivers'):
         if receiver.get('name'):
             receiver['name'] = self._core.encrypt(receiver.get('name'))
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
@@ -214,7 +214,7 @@ def profitsharing_add_receiver(self, account_type, account, relation_type, name=
             params.update({'custom_relation': custom_relation})
         else:
             raise Exception('custom_relation is not assigned')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
@@ -243,7 +243,7 @@ def profitsharing_delete_receiver(self, account_type, account, appid=None, sub_a
         params.update({'account': account})
     else:
         raise Exception('account is not assigned')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if self._partner_mode:
         if sub_appid:
             params.update({'sub_appid': sub_appid})
@@ -304,7 +304,7 @@ def brand_profitsharing_order(self, brand_mchid, sub_mchid, transaction_id, out_
         params.update({'finish': finish})
     else:
         raise Exception('unfreeze_unsplit is not assigned')
-    params.update({'appid': appid if appid else self._core._appid})
+    params.update({'appid': appid or self._appid})
     if sub_appid:
         params.update({'sub_appid': sub_appid})
     path = '/v3/brand/profitsharing/orders'
@@ -479,7 +479,7 @@ def brand_profitsharing_add_receiver(self, brand_mchid, account_type, account, r
         raise Exception('relation_type is not assigned')
     if name:
         params.update({'name': self._core.encrypt(name)})
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if sub_appid:
         params.update({'sub_appid': sub_appid})
     path = '/v3/brand/profitsharing/receivers/add'
@@ -507,7 +507,7 @@ def brand_profitsharing_delete_receiver(self, brand_mchid, account_type, account
         params.update({'account': account})
     else:
         raise Exception('account is not assigned')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     if sub_appid:
         params.update({'sub_appid': sub_appid})
     path = '/v3/profitsharing/receivers/delete'

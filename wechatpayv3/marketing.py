@@ -37,7 +37,7 @@ def marketing_card_send(self, card_id, openid, out_request_no, send_time, appid=
         params.update({'send_time': send_time})
     else:
         raise Exception('send_time is not assigned.')
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -350,7 +350,7 @@ def marketing_favor_stock_send(self,
         params.update({'coupon_value': coupon_value})
     if coupon_minimum:
         params.update({'coupon_minimum': coupon_minimum})
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -541,11 +541,10 @@ def marketing_favor_callback_update(self, notify_url=None, switch=True, mchid=No
     :param mchid: 微信支付商户号，可不填，默认传入初始化的mchid。示例值：'9856888'
     """
     params = {}
-    params.update({'mchid': mchid if mchid else self._mchid})
-    if notify_url:
-        params.update({'notify_url': notify_url})
-    else:
-        params.update({'notify_url': self._notify_url})
+    params.update({'mchid': mchid or self._mchid})
+    if not (notify_url or self._notify_url):
+        raise Exception('notify_url is not assigned.')
+    params.update({'notify_url': notify_url or self._notify_url})
     params.update({'switch': switch})
     path = '/v3/marketing/favor/callbacks'
     return self._core.request(path, method=RequestType.POST, data=params)
@@ -669,7 +668,7 @@ def marketing_busifavor_coupon_use(self,
         params.update({'stock_id': stock_id})
     if openid:
         params.update({'openid': openid})
-    params.update({'appid': appid if appid else self._appid})
+    params.update({'appid': appid or self._appid})
     path = '/v3/marketing/busifavor/coupons/use'
     return self._core.request(path, method=RequestType.POST, data=params)
 
@@ -750,8 +749,10 @@ def marketing_busifavor_callback_update(self, mchid=None, notify_url=None):
     :param notify_url: 通知URL地址，用于接收商家券事件通知的url地址，不填默认使用初始化的notify_url。示例值：'https://pay.weixin.qq.com'
     """
     params = {}
-    params.update({'mchid': mchid if mchid else self._mchid})
-    params.update({'notify_url': notify_url if notify_url else self._notify_url})
+    params.update({'mchid': mchid or self._mchid})
+    if not (notify_url or self._notify_url):
+        raise Exception('notify_url is not assigned.')
+    params.update({'notify_url': notify_url or self._notify_url})
     path = '/v3/marketing/busifavor/callbacks'
     return self._core.request(path, method=RequestType.POST, data=params)
 
@@ -760,7 +761,7 @@ def marketing_busifavor_callback_query(self, mchid=None):
     """查询商家券事件通知地址
     :param mchid: 商户号，不填默认使用初始化的mchid。示例值：'10000098'
     """
-    path = '/v3/marketing/busifavor/callbacks?mchid=%s' % mchid if mchid else self._mchid
+    path = '/v3/marketing/busifavor/callbacks?mchid=%s' % mchid or self._mchid
     return self._core.request(path)
 
 
