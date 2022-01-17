@@ -7,9 +7,10 @@ from base64 import b64decode, b64encode
 
 from cryptography.exceptions import InvalidSignature, InvalidTag
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15, OAEP, MGF1
+from cryptography.hazmat.primitives.asymmetric.padding import MGF1, OAEP, PKCS1v15
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.hazmat.primitives.hashes import SHA256, SHA1
+from cryptography.hazmat.primitives.hashes import SHA1, SHA256
+from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
 from cryptography.x509 import load_pem_x509_certificate
 
@@ -103,3 +104,10 @@ def rsa_decrypt(ciphertext, private_key):
     )
     result = data.decode('UTF-8')
     return result
+
+
+def hmac_sign(key, sign_str):
+    hmac = HMAC(key.encode('UTF-8'), SHA256())
+    hmac.update(sign_str.encode('UTF-8'))
+    sign = hmac.finalize().hex().upper()
+    return sign

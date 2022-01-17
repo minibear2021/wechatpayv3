@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import WeChatPayType
+from .type import SignType, WeChatPayType
 
 
 class WeChatPay():
@@ -17,17 +17,17 @@ class WeChatPay():
                  partner_mode=False,
                  proxy=None):
         """
-        :param wechatpay_type: 微信支付类型，示例值：WeChatPayType.MINIPROG
-        :param mchid: 直连商户号，示例值：'1230000109'
-        :param private_key: 商户证书私钥，示例值：'MIIEvwIBADANBgkqhkiG9w0BAQE...'
-        :param cert_serial_no: 商户证书序列号，示例值：'444F4864EA9B34415...'
-        :param appid: 应用ID，示例值：'wxd678efh567hg6787'
-        :param apiv3_key: 商户APIv3密钥，示例值：'a12d3924fd499edac8a5efc...'
-        :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
-        :param cert_dir: 平台证书存放目录，示例值：'/server/cert'
+        :param wechatpay_type: 微信支付类型，示例值:WeChatPayType.MINIPROG
+        :param mchid: 直连商户号，示例值:'1230000109'
+        :param private_key: 商户证书私钥，示例值:'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+        :param cert_serial_no: 商户证书序列号，示例值:'444F4864EA9B34415...'
+        :param appid: 应用ID，示例值:'wxd678efh567hg6787'
+        :param apiv3_key: 商户APIv3密钥，示例值:'a12d3924fd499edac8a5efc...'
+        :param notify_url: 通知地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
+        :param cert_dir: 平台证书存放目录，示例值:'/server/cert'
         :param logger: 日志记录器，示例值logging.getLoger('demo')
         :param partner_mode: 接入模式，默认False为直连商户模式，True为服务商模式
-        :param proxy: 代理设置，示例值：{"https": "http://10.10.1.10:1080"}
+        :param proxy: 代理设置，示例值:{"https": "http://10.10.1.10:1080"}
         """
         from .core import Core
 
@@ -44,12 +44,13 @@ class WeChatPay():
                           proxy=proxy)
         self._partner_mode = partner_mode
 
-    def sign(self, data):
-        """计算签名值paySign，供JSAPI、APP、NATIVE调起支付时使用
-        :param data: 需要签名的参数清单，示例值：['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']
+    def sign(self, data, sign_type=SignType.RSA_SHA256):
+        """使用RSAwithSHA256或HMAC_256算法计算签名值供调起支付时使用
+        :param data: 需要签名的参数清单
+        :微信支付订单采用RSAwithSHA256算法时，示例值:['wx888','1414561699','5K8264ILTKCH16CQ2502S....','prepay_id=wx201410272009395522657....']
+        :微信支付分订单采用HMAC_SHA256算法时，示例值:{'mch_id':'1230000109','service_id':'88888888000011','out_order_no':'1234323JKHDFE1243252'}
         """
-        sign_str = '\n'.join(data) + '\n'
-        return self._core.sign(sign_str)
+        return self._core.sign(data, sign_type)
 
     def decrypt_callback(self, headers, body):
         """解密回调接口收到的信息，仅返回resource解密后的参数字符串，此接口为兼容旧版本而保留，建议调用callback()
@@ -67,7 +68,7 @@ class WeChatPay():
 
     def decrypt(self, ciphtext):
         """解密微信支付平台返回的信息中的敏感字段
-        :param ciphtext: 加密后的敏感字段，示例值：'Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='
+        :param ciphtext: 加密后的敏感字段，示例值:'Qe41VhP/sGdNeTHMQGlxCWiUyHu6XNO9GCYln2Luv4HhwJzZBfcL12sB+PgZcS5NhePBog30NgJ1xRaK+gbGDKwpg=='
         """
         return self._core.decrypt(ciphtext)
 

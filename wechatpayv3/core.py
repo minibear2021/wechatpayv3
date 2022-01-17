@@ -6,10 +6,10 @@ from datetime import datetime
 
 import requests
 
-from .type import RequestType
-from .utils import (aes_decrypt, build_authorization, load_certificate,
-                    load_private_key, rsa_decrypt, rsa_encrypt, rsa_sign,
-                    rsa_verify)
+from .type import RequestType, SignType
+from .utils import (aes_decrypt, build_authorization, hmac_sign,
+                    load_certificate, load_private_key, rsa_decrypt,
+                    rsa_encrypt, rsa_sign, rsa_verify)
 
 
 class Core():
@@ -133,8 +133,20 @@ class Core():
                 raise Exception('failed to verify the signature')
         return response.status_code, response.text if 'application/json' in response.headers.get('Content-Type') else response.content
 
-    def sign(self, sign_str):
-        return rsa_sign(self._private_key, sign_str)
+    def sign(self, data, sign_type=SignType.RSA_SHA256):
+        if sign_type == SignType.RSA_SHA256:
+            sign_str = '\n'.join(data) + '\n'
+            return rsa_sign(self._private_key, sign_str)
+        elif sign_type == SignType.HMAC_SHA256:
+            key_list = sorted(data.keys())
+            sign_str = ''
+            for k in key_list:
+                v = data[k]
+                sign_str += str(k) + '=' + str(v) + '&'
+            sign_str += 'key=' + self._apiv3_key
+            return hmac_sign(self._apiv3_key, sign_str)
+        else:
+            raise ValueError('unexpected value of sign_type.')
 
     def decrypt_callback(self, headers, body):
         if isinstance(body, bytes):

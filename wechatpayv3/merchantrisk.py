@@ -5,7 +5,7 @@ from .type import RequestType
 
 def merchantrisk_callback_create(self, notify_url=None):
     """创建商户违规通知回调地址
-    :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
+    :param notify_url: 通知地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
     if notify_url:
@@ -23,7 +23,7 @@ def merchantrisk_callback_query(self):
 
 def merchantrisk_callback_update(self, notify_url=None):
     """修改商户违规通知回调地址
-    :param notify_url: 通知地址，示例值：'https://www.weixin.qq.com/wxpay/pay.php'
+    :param notify_url: 通知地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
     if notify_url:

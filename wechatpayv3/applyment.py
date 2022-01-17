@@ -5,13 +5,13 @@ from .type import RequestType
 
 def applyment_submit(self, business_code, contact_info, subject_info, business_info, settlement_info, bank_account_info, addition_info=None):
     """提交申请单
-    :param business_code: 业务申请编号，示例值：'APPLYMENT_00000000001'
-    :param contact_info: 超级管理员信息，示例值：{'contact_name':'张三','contact_id_number':'320311770706001','mobile_phone':'13900000000','contact_email':'admin@demo.com'}
-    :param subject_info: 主体资料，示例值：{'subject_type':'SUBJECT_TYPE_ENTERPRISE','business_license_info':{'license_copy':'demo-media-id','license_number':'123456789012345678','merchant_name':'腾讯科技有限公司','legal_person':'张三'},'identity_info':{'id_doc_type':'IDENTIFICATION_TYPE_IDCARD','id_card_info'{'id_card_copy':'demo-media-id'}}}
-    :param business_info: 经营资料，示例值：{'merchant_shortname':'张三餐饮店','service_phone':'0758xxxxxx','sales_info':{'sales_scenes_type':['SALES_SCENES_STORE','SALES_SCENES_MP']}}
-    :param settlement_info: 结算规则，示例值：{'settlement_id':'719','qualification_type':'餐饮'}
-    :param bank_account_info: 结算银行账户，示例值：{'bank_account_type':'BANK_ACCOUNT_TYPE_CORPORATE','account_name':'xx公司','account_bank':'工商银行','bank_address_code':'110000','account_number':'1234567890'}
-    :param addition_info: 补充材料，示例值：{'legal_person_commitment':'demo-media-id'}
+    :param business_code: 业务申请编号，示例值:'APPLYMENT_00000000001'
+    :param contact_info: 超级管理员信息，示例值:{'contact_name':'张三','contact_id_number':'320311770706001','mobile_phone':'13900000000','contact_email':'admin@demo.com'}
+    :param subject_info: 主体资料，示例值:{'subject_type':'SUBJECT_TYPE_ENTERPRISE','business_license_info':{'license_copy':'demo-media-id','license_number':'123456789012345678','merchant_name':'腾讯科技有限公司','legal_person':'张三'},'identity_info':{'id_doc_type':'IDENTIFICATION_TYPE_IDCARD','id_card_info'{'id_card_copy':'demo-media-id'}}}
+    :param business_info: 经营资料，示例值:{'merchant_shortname':'张三餐饮店','service_phone':'0758xxxxxx','sales_info':{'sales_scenes_type':['SALES_SCENES_STORE','SALES_SCENES_MP']}}
+    :param settlement_info: 结算规则，示例值:{'settlement_id':'719','qualification_type':'餐饮'}
+    :param bank_account_info: 结算银行账户，示例值:{'bank_account_type':'BANK_ACCOUNT_TYPE_CORPORATE','account_name':'xx公司','account_bank':'工商银行','bank_address_code':'110000','account_number':'1234567890'}
+    :param addition_info: 补充材料，示例值:{'legal_person_commitment':'demo-media-id'}
     """
     params = {}
     if business_code:
@@ -65,8 +65,8 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
 
 def applyment_query(self, business_code=None, applyment_id=None):
     """查询申请单状态
-    :param business_code: 业务申请编号，示例值：'APPLYMENT_00000000001'
-    :param applyment_id: 申请单号，示例值：2000001234567890
+    :param business_code: 业务申请编号，示例值:'APPLYMENT_00000000001'
+    :param applyment_id: 申请单号，示例值:2000001234567890
     """
     if business_code:
         path = '/v3/applyment4sub/applyment/business_code/%s' % business_code
@@ -79,13 +79,13 @@ def applyment_query(self, business_code=None, applyment_id=None):
 
 def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, bank_address_code, account_number, bank_name=None, bank_branch_id=None):
     """修改结算账号
-    :param sub_mchid: 特约商户号，示例值：'1511101111'
-    :param account_type: 账户类型，枚举值：'ACCOUNT_TYPE_BUSINESS'：对公银行账户，'ACCOUNT_TYPE_PRIVATE'：经营者个人银行卡。示例值：'ACCOUNT_TYPE_BUSINESS'
-    :param account_bank: 开户银行，示例值：'工商银行'
-    :param bank_address_code: 开户银行省市编码，示例值：'110000'
-    :param account_number: 银行账号，示例值：'1234567890'
-    :param bank_name: 开户银行全称（含支行），示例值：'施秉县农村信用合作联社城关信用社'
-    :param bank_branch_id: 开户银行联行号，示例值：'402713354941'
+    :param sub_mchid: 特约商户号，示例值:'1511101111'
+    :param account_type: 账户类型，枚举值:'ACCOUNT_TYPE_BUSINESS':对公银行账户，'ACCOUNT_TYPE_PRIVATE':经营者个人银行卡。示例值:'ACCOUNT_TYPE_BUSINESS'
+    :param account_bank: 开户银行，示例值:'工商银行'
+    :param bank_address_code: 开户银行省市编码，示例值:'110000'
+    :param account_number: 银行账号，示例值:'1234567890'
+    :param bank_name: 开户银行全称（含支行），示例值:'施秉县农村信用合作联社城关信用社'
+    :param bank_branch_id: 开户银行联行号，示例值:'402713354941'
     """
     params = {}
     if sub_mchid:
@@ -117,7 +117,7 @@ def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, ban
 
 def applyment_settlement_query(self, sub_mchid):
     """查询结算账户
-    :param sub_mchid: 特约商户号，示例值：'1511101111'
+    :param sub_mchid: 特约商户号，示例值:'1511101111'
     """
     if sub_mchid:
         path = '/v3/apply4sub/sub_merchants/%s/settlement' % sub_mchid

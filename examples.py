@@ -3,12 +3,12 @@ import json
 import logging
 import os
 from random import sample
-from string import digits, ascii_letters
+from string import ascii_letters, digits
 from time import time
 
 from flask import Flask, jsonify, request
 
-from wechatpayv3 import WeChatPay, WeChatPayType
+from wechatpayv3 import SignType, WeChatPay, WeChatPayType
 
 # 微信支付商户号（直连模式）或服务商商户号（服务商模式，即sp_mchid)
 MCHID = '1234567890'
@@ -30,14 +30,14 @@ APPID = 'wxd678efh567hg6787'
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
 # 微信支付平台证书缓存目录，减少证书下载调用次数
-# 初始调试时可不设置，调试通过后再设置，示例值：'./cert'
+# 初始调试时可不设置，调试通过后再设置，示例值:'./cert'
 CERT_DIR = None
 
 # 日志记录器，记录web请求和回调细节
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
 LOGGER = logging.getLogger("demo")
 
-# 接入模式：False=直连商户模式，True=服务商模式
+# 接入模式:False=直连商户模式，True=服务商模式
 PARTNER_MODE = False
 
 # 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见https://docs.python-requests.org/zh_CN/latest/user/advanced.html
@@ -145,7 +145,7 @@ def pay_miniprog():
         timestamp = 'demo-timestamp'
         noncestr = 'demo-nocestr'
         package = 'prepay_id=' + prepay_id
-        paysign = wxpay.sign([APPID, timestamp, noncestr, package])
+        paysign = wxpay.sign(data=[APPID, timestamp, noncestr, package], sign_type=SignType.RSA_SHA256)
         signtype = 'RSA'
         return jsonify({'code': 0, 'result': {
             'appId': APPID,

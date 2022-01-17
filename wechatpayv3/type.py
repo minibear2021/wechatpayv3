@@ -2,6 +2,7 @@
 
 from enum import Enum, unique
 
+
 @unique
 class RequestType(Enum):
     GET = 'GET'
@@ -17,3 +18,9 @@ class WeChatPayType(Enum):
     H5 = 2
     NATIVE = 3
     MINIPROG = 4
+
+
+class SignType(Enum):
+    RSA_SHA256 = 0
+    HMAC_SHA256 = 1
+    MD5 = 2
