@@ -282,7 +282,7 @@ def payscore_complete(self, out_order_no, service_id, post_payments, total_amoun
         params.update({'post_payments': post_payments})
     else:
         raise Exception('post_payments is not assigned.')
-    if total_amount:
+    if type(total_amount) is int and total_amount >= 0:
         params.update({'total_amount': total_amount})
     else:
         raise Exception('total_amount is not assigned.')
