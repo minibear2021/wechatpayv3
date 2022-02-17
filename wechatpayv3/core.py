@@ -205,6 +205,8 @@ class Core():
                     self._certificates.append(certificate)
         if not self._certificates:
             self._update_certificates()
+        if not self._certificates:
+            raise Exception('No wechatpay platform certificate, please double check your init params.')
 
     def decrypt(self, ciphtext):
         return rsa_decrypt(ciphertext=ciphtext, private_key=self._private_key)
