@@ -59,7 +59,13 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
     if params.get('bank_account_info').get('account_number'):
         params['bank_account_info']['account_number'] = self._core.encrypt(params['bank_account_info']['account_number'])
         cipher_data = True
-    path = '/v3/applyment4sub/applyment'
+    if params.get('subject_info').get('identity_info'):
+        id_card_info = params.get('subject_info').get('identity_info').get('id_card_info')
+        if id_card_info:
+            id_card_info['id_card_name'] = self._core.encrypt(id_card_info['id_card_name'])
+            id_card_info['id_card_number'] = self._core.encrypt(id_card_info['id_card_number'])
+            cipher_data = True    
+    path = '/v3/applyment4sub/applyment/'
     return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 

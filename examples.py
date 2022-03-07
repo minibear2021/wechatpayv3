@@ -4,7 +4,6 @@ import logging
 import os
 from random import sample
 from string import ascii_letters, digits
-from time import time
 
 from flask import Flask, jsonify, request
 
