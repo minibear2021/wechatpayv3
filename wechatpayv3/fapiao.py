@@ -45,6 +45,16 @@ def fapiao_title_url(self, fapiao_apply_id, source, total_amount, openid, appid=
                      seller_name=None, show_phone_cell=False, must_input_phone=False,
                      show_email_cell=False, must_input_email=False):
     """获取抬头填写链接
+    :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
+    :param source: 开票来源，WEB：微信H5开票，MINIPROGRAM：微信小程序开票，示例值：'WEB'
+    :param total_amount: 总金额，单位：分，示例值：100
+    :param openid: 需要填写发票抬头的用户在商户AppID下的OpenID，示例值：'plN5twRbHym_j-QcqCzstl0HmwEs'
+    :param appid: 若开票来源是WEB，则为商户的公众号AppID；若开票来源是MINIPROGRAM，则为商户的小程序AppID，示例值：'wxb1170446a4c0a5a2'
+    :param seller_name: 销售方名称，若不传则默认取商户名称，示例值：'深圳市南山区测试商户'
+    :param show_phone_cell: 是否需要展示手机号填写栏
+    :param must_input_phone: 是否必须填写手机号，仅当需要展示手机号填写栏时生效
+    :param show_email_cell: 是否需要展示邮箱地址填写栏
+    :param must_input_email: 是否必须填写邮箱地址，仅当需要展示邮箱地址填写栏时生效
     """
     path = '/v3/new-tax-control-fapiao/user-title/title-url?'
     if fapiao_apply_id:
@@ -82,8 +92,8 @@ def fapiao_title_url(self, fapiao_apply_id, source, total_amount, openid, appid=
 
 def fapiao_title(self, fapiao_apply_id, scene='WITH_WECHATPAY'):
     """获取用户填写的抬头
-    :param fapiao_apply_id:
-    :param scene:
+    :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
+    :param scene: 场景值，目前只支持WITH_WECHATPAY。示例值：'WITH_WECHATPAY'
     """
     path = '/v3/new-tax-control-fapiao/user-title'
     if fapiao_apply_id:
@@ -96,8 +106,8 @@ def fapiao_title(self, fapiao_apply_id, scene='WITH_WECHATPAY'):
 
 def fapiao_tax_codes(self, offset=0, limit=20):
     """获取商品和服务税收分类对照表
-    :param offset:
-    :param limit:
+    :param offset: 查询的起始位置，示例值：0
+    :param limit: 查询的最大数量，最大值20
     """
     path = '/v3/new-tax-control-fapiao/merchant/tax-codes?offset=%s&limit=%s' % (offset, limit)
     return self._core.request(path)
@@ -112,16 +122,24 @@ def fapiao_merchant_base_info(self):
 
 def fapiao_applications(self, fapiao_apply_id, buyer_information, fapiao_information, scene='WITH_WECHATPAY'):
     """开具电子发票
-    :fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
-    :buyer_information: 购买方信息，示例值：{'type':'ORGANIZATION','name':'深圳市南山区测试企业'}
-    :fapiao_information: 需要开具的发票信息，示例值：[{'fapiao_id':'20200701123456','total_amount':382895,'need_list':False,'items':[{'tax_code':'3010101020203000000','quantity':100000000,'total_amount':'429900','discount':False}]}]
+    :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
+    :param buyer_information: 购买方信息，示例值：{'type':'ORGANIZATION','name':'深圳市南山区测试企业'}
+    :param fapiao_information: 需要开具的发票信息，示例值：[{'fapiao_id':'20200701123456','total_amount':382895,'need_list':False,'items':[{'tax_code':'3010101020203000000','quantity':100000000,'total_amount':'429900','discount':False}]}]
+    :param scene: 场景值，目前只支持WITH_WECHATPAY。示例值：'WITH_WECHATPAY'
     """
     params = {}
     if fapiao_apply_id:
         params.update({'fapiao_apply_id': fapiao_apply_id})
     else:
         raise Exception('fapiao_aply_id is not assigned.')
+    cipher_data = False
     if buyer_information:
+        if buyer_information.get('phone'):
+            buyer_information.update({'phone':self._core.encrypt(buyer_information.get('phone'))})
+            cipher_data = True
+        if buyer_information.get('email'):
+            buyer_information.update({'email':self._core.encrypt(buyer_information.get('email'))})
+            cipher_data = True
         params.update({'buyer_information': buyer_information})
     else:
         raise Exception('buyer_information is not assigned.')
@@ -131,7 +149,7 @@ def fapiao_applications(self, fapiao_apply_id, buyer_information, fapiao_informa
         raise Exception('fapiao_information is not assigned.')
     params.update({'scene': scene})
     path = '/v3/new-tax-control-fapiao/fapiao-applications'
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def fapiao_query(self, fapiao_apply_id, fapiao_id=None):
@@ -147,7 +165,9 @@ def fapiao_query(self, fapiao_apply_id, fapiao_id=None):
 
 def fapiao_reverse(self, fapiao_apply_id, reverse_reason, fapiao_information):
     """冲红电子发票
-    :param fapiao_apply_id: 
+    :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
+    :param reverse_reason: 冲红原因，示例值：'退款'
+    :param fapiao_information: 需要冲红的发票信息，示例值：{'fapiao_id':'20200701123456','fapiao_code':'044001911211','fapiao_number':'12897794'}
     """
     if fapiao_apply_id:
         path = '/v3/new-tax-control-fapiao/fapiao-applications/%s/reverse' % fapiao_apply_id
@@ -195,7 +215,9 @@ def fapiao_upload_file(self, filepath):
 def fapiao_insert_cards(self, fapiao_apply_id, buyer_information, fapiao_card_information, scene='WITH_WECHATPAY'):
     """将电子发票插入微信用户卡包
     :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
-    :param buyer_information: 
+    :param buyer_information: 购买方信息，即发票抬头。示例值：{'type':'ORGANIZATION','name':'深圳市南山区测试企业'}
+    :param fapiao_card_information: 电子发票卡券信息列表，最多五条。示例值：[{'fapiao_media_id':'ASNFZ4mrze/+3LqYdlQyEA==','fapiao_number':'123456','fapiao_code':'044001911211','fapiao_time':'2020-07-01T12:00:00+08:00','check_code':'69001808340631374774'......}]
+    :param scene: 场景值，目前只支持WITH_WECHATPAY。示例值：'WITH_WECHATPAY'
     """
     if fapiao_apply_id:
         path = '/v3/new-tax-control-fapiao/fapiao-applications/%s/insert-cards' % fapiao_apply_id
