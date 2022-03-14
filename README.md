@@ -285,6 +285,18 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 商户违规通知回调                         | 删除商户违规通知回调地址 | merchantrisk_callback_delete            | 否           | 是         |
 | 其他能力 | 图片上传                                 | 图片上传                 | image_upload                            | 是           | 是         |
 | 其他能力 | 视频上传                                 | 视频上传                 | video_upload                            | 是           | 是         |
+| 其他 | 电子发票（公共API） | 创建电子发票卡券模板 | fapiao_card_template | 是 | 是 |
+| 其他 | 电子发票（公共API） | 配置开发选项 | fapiao_set_merchant_config | 是 | 是 |
+| 其他 | 电子发票（公共API） | 查询商户配置的开发选项 | fapiao_merchant_config | 是 | 是 |
+| 其他 | 电子发票（公共API） | 获取抬头填写链接 | fapiao_title_url | 是 | 是 |
+| 其他 | 电子发票（公共API） | 获取用户填写的抬头 | fapiao_title | 是 | 是 |
+| 其他 | 电子发票(区块链模式) | 获取商品和服务税收分类对照表 | fapiao_tax_codes | 是 | 是 |
+| 其他 | 电子发票(区块链模式) | 获取商户开票基础信息 | fapiao_merchant_base_info | 是 | 是 |
+| 其他 | 电子发票(区块链模式) | 开具电子发票 | fapiao_applications | 是 | 是 |
+| 其他 | 电子发票(区块链模式) | 查询电子发票 | fapiao_query | 是 | 是 |
+| 其他 | 电子发票(区块链模式) | 冲红电子发票 | fapiao_reverse | 是 | 是 |
+| 其他 | 电子发票(自建平台模式) | 上传电子发票文件 | fapiao_upload_file | 是 | 是 |
+| 其他 | 电子发票(自建平台模式) | 将电子发票插入微信用户卡包 | fapiao_insert_cards | 是 | 是 |
 
 ### 接口函数参数
 

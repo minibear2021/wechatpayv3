@@ -84,6 +84,11 @@ class WeChatPay():
                             complaint_notification_delete,
                             complaint_notification_query,
                             complaint_notification_update, complaint_response)
+    from .fapiao import (fapiao_applications, fapiao_card_template,
+                         fapiao_insert_cards, fapiao_merchant_base_info,
+                         fapiao_merchant_config, fapiao_query, fapiao_reverse,
+                         fapiao_set_merchant_config, fapiao_tax_codes,
+                         fapiao_title, fapiao_title_url, fapiao_upload_file)
     from .goldplan import (goldplan_advertising_close,
                            goldplan_advertising_filter,
                            goldplan_advertising_open,
