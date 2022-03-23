@@ -110,15 +110,17 @@ def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, ban
         params.update({'bank_address_code': bank_address_code})
     else:
         raise Exception('bank_address_code is not assigned.')
+    cipher_data = False
     if account_number:
         params.update({'account_number': self._core.encrypt(account_number)})
+        cipher_data = True
     else:
         raise Exception('account_number is not assigned.')
     if bank_name:
         params.update({'bank_name': bank_name})
     if bank_branch_id:
         params.update({'bank_branch_id': bank_branch_id})
-    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True if account_number else False)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def applyment_settlement_query(self, sub_mchid):

@@ -31,9 +31,11 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
         params.update({'receivers': receivers})
     else:
         raise Exception('receivers is not assigned')
+    cipher_data = False
     for receiver in params.get('receivers'):
         if receiver.get('name'):
             receiver['name'] = self._core.encrypt(receiver.get('name'))
+            cipher_data = True
     params.update({'appid': appid or self._appid})
     if self._partner_mode:
         if sub_appid:
@@ -43,7 +45,7 @@ def profitsharing_order(self, transaction_id, out_order_no, receivers, unfreeze_
         else:
             raise Exception('sub_mchid is not assigned.')
     path = '/v3/profitsharing/orders'
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def profitsharing_order_query(self, transaction_id, out_order_no, sub_mchid=None):
@@ -207,8 +209,10 @@ def profitsharing_add_receiver(self, account_type, account, relation_type, name=
         params.update({'relation_type': relation_type})
     else:
         raise Exception('relation_type is not assigned')
+    cipher_data = False
     if name:
         params.update({'name': self._core.encrypt(name)})
+        cipher_data = True
     if relation_type == 'CUSTOM':
         if custom_relation:
             params.update({'custom_relation': custom_relation})
@@ -223,7 +227,7 @@ def profitsharing_add_receiver(self, account_type, account, relation_type, name=
         else:
             raise Exception('sub_mchid is not assigned.')
     path = '/v3/profitsharing/receivers/add'
-    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True if name else False)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def profitsharing_delete_receiver(self, account_type, account, appid=None, sub_appid=None, sub_mchid=None):
@@ -477,13 +481,15 @@ def brand_profitsharing_add_receiver(self, brand_mchid, account_type, account, r
         params.update({'relation_type': relation_type})
     else:
         raise Exception('relation_type is not assigned')
+    cipher_data = False
     if name:
         params.update({'name': self._core.encrypt(name)})
+        cipher_data = True
     params.update({'appid': appid or self._appid})
     if sub_appid:
         params.update({'sub_appid': sub_appid})
     path = '/v3/brand/profitsharing/receivers/add'
-    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True if name else False)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
 
 
 def brand_profitsharing_delete_receiver(self, brand_mchid, account_type, account, appid=None, sub_appid=None):

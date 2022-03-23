@@ -88,8 +88,10 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
     path = '/v3/smartguide/guides?store_id=%s' % store_id
     if userid:
         path = '%s&userid=%s' % (path,  userid)
+    cipher_data = False
     if mobile:
         path = '%s&mobile=%s' % (path, self._core.encrypt(mobile))
+        cipher_data = True
     if work_id:
         path = '%s&work_id=%s' % (path, work_id)
     if limit:
@@ -98,7 +100,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
         path = '%s&offset=%s' % (path, offset)
     if self._partner_mode and sub_mchid:
         path = '%s&sub_mchid=%s' % (path, sub_mchid)
-    return self._core.request(path, cipher_data=True if mobile else False)
+    return self._core.request(path, cipher_data=cipher_data)
 
 
 def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=None, group_qrcode=None, sub_mchid=None):
