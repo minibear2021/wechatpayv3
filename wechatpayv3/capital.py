@@ -5,8 +5,10 @@ def capital_search_bank_number(self, account_number):
     """获取对私银行卡号开户银行
     :param account_number: 银行卡号，示例值：'1234567890123'
     """
-    account_number = self._core.encrypt(account_number)
-    path = '/v3/capital/capitallhh/banks/search-banks-by-bank-account?account_number=%s' % account_number
+    from urllib.parse import urlencode
+    params = {}
+    params.update({'account_number': self._core.encrypt(account_number)})
+    path = '/v3/capital/capitallhh/banks/search-banks-by-bank-account?%s' % urlencode(params)
     return self._core.request(path, cipher_data=True)
 
 
