@@ -297,6 +297,13 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 其他 | 电子发票(区块链模式) | 冲红电子发票 | fapiao_reverse | 是 | 是 |
 | 其他 | 电子发票(自建平台模式) | 上传电子发票文件 | fapiao_upload_file | 是 | 是 |
 | 其他 | 电子发票(自建平台模式) | 将电子发票插入微信用户卡包 | fapiao_insert_cards | 是 | 是 |
+| 其他 | 银行组件 | 获取对私银行卡号开户银行 | capital_search_bank_number | 是 | 是 |
+| 其他 | 银行组件 | 查询支持个人业务的银行列表 | capital_personal_banks | 是 | 是 |
+| 其他 | 银行组件 | 查询支持对公业务的银行列表 | capital_corporate_banks | 是 | 是 |
+| 其他 | 银行组件 | 查询省份列表 | capital_provinces | 是 | 是 |
+| 其他 | 银行组件 | 查询城市列表 | capital_cities | 是 | 是 |
+| 其他 | 银行组件 | 查询支行列表 | capital_branches | 是 | 是 |
+
 
 ### 接口函数参数
 
