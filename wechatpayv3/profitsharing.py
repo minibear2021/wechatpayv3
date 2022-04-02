@@ -304,10 +304,10 @@ def brand_profitsharing_order(self, brand_mchid, sub_mchid, transaction_id, out_
         params.update({'receivers': receivers})
     else:
         raise Exception('receivers is not assigned')
-    if finish:
+    if isinstance(finish, bool):
         params.update({'finish': finish})
     else:
-        raise Exception('unfreeze_unsplit is not assigned')
+        raise Exception('finish is not assigned')
     params.update({'appid': appid or self._appid})
     if sub_appid:
         params.update({'sub_appid': sub_appid})
