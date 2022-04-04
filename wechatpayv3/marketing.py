@@ -280,7 +280,7 @@ def marketing_favor_stock_create(self,
     else:
         raise Exception('stock_type is not assigned.')
     if out_request_no:
-        params.update({out_request_no: out_request_no})
+        params.update({'out_request_no': out_request_no})
     else:
         raise Exception('out_request_no is not assigned.')
     if no_cash:
