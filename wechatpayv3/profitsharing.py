@@ -78,8 +78,6 @@ def profitsharing_return(self, out_return_no, return_mchid, amount, description,
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
-    if not (order_id and out_order_no):
-        raise Exception('order_id or out_order_no is not assigned')
     if order_id:
         params.update({'order_id': order_id})
     elif out_order_no:
