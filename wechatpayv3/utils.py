@@ -63,14 +63,21 @@ def format_private_key(private_key_str):
 
 def load_certificate(certificate_str):
     try:
-        return load_pem_x509_certificate(data=certificate_str.encode('UTF-8'), backend=default_backend())
+        result = load_pem_x509_certificate(
+            data=certificate_str.encode('UTF-8'),
+            backend=default_backend())
+        return result
     except:
         return None
 
 
 def load_private_key(private_key_str):
     try:
-        return load_pem_private_key(data=format_private_key(private_key_str).encode('UTF-8'), password=None, backend=default_backend())
+        result = load_pem_private_key(
+            data=format_private_key(private_key_str).encode('UTF-8'),
+            password=None,
+            backend=default_backend())
+        return result
     except:
         raise Exception('failed to load private key.')
 
@@ -194,10 +201,10 @@ class SM3:
             self.w1[i] = int.from_bytes(msg[i * 4:(i + 1) * 4], byteorder="big")
 
         for i in range(16, 68):
-            self.w1[i] = self.p(self.w1[i-16] ^ self.w1[i-9] ^ rotation_left(self.w1[i-3], 15), 1) ^ rotation_left(self.w1[i-13], 7) ^ self.w1[i-6]
+            self.w1[i] = self.p(self.w1[i - 16] ^ self.w1[i - 9] ^ rotation_left(self.w1[i - 3], 15), 1) ^ rotation_left(self.w1[i - 13], 7) ^ self.w1[i - 6]
 
         for i in range(64):
-            self.w2[i] = self.w1[i] ^ self.w1[i+4]
+            self.w2[i] = self.w1[i] ^ self.w1[i + 4]
 
     def sm3_compress(self, msg):
         self.sm3_msg_extend(msg)

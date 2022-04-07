@@ -134,7 +134,7 @@ def query(self, transaction_id=None, out_trade_no=None, mchid=None, sub_mchid=No
     """查询订单
     :param transaction_id: 微信支付订单号，示例值:1217752501201407033233368018
     :param out_trade_no: 商户订单号，示例值:1217752501201407033233368018
-    :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值:'987654321'    
+    :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值:'987654321'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     if self._partner_mode:
@@ -212,7 +212,7 @@ def refund(self,
 def query_refund(self, out_refund_no, sub_mchid=None):
     """查询单笔退款
     :param out_refund_no: 商户退款单号，示例值:'1217752501201407033233368018'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'    
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     path = '/v3/refund/domestic/refunds/%s' % out_refund_no
     if self._partner_mode:
@@ -228,7 +228,7 @@ def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP', sub_mchid=None
     :param bill_date: 账单日期，示例值:'2019-06-11'
     :param bill_type: 账单类型, 默认值:'ALL'
     :param tar_type: 压缩类型，默认值:'GZIP'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (bill_date, bill_type, tar_type)
     if self._partner_mode and sub_mchid:

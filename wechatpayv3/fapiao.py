@@ -135,10 +135,10 @@ def fapiao_applications(self, fapiao_apply_id, buyer_information, fapiao_informa
     cipher_data = False
     if buyer_information:
         if buyer_information.get('phone'):
-            buyer_information.update({'phone':self._core.encrypt(buyer_information.get('phone'))})
+            buyer_information.update({'phone': self._core.encrypt(buyer_information.get('phone'))})
             cipher_data = True
         if buyer_information.get('email'):
-            buyer_information.update({'email':self._core.encrypt(buyer_information.get('email'))})
+            buyer_information.update({'email': self._core.encrypt(buyer_information.get('email'))})
             cipher_data = True
         params.update({'buyer_information': buyer_information})
     else:
