@@ -31,8 +31,8 @@
 
 ## 安装
 
-```
-$ pip install wechatpayv3
+```python
+pip install wechatpayv3
 ```
 
 ## 使用方法
@@ -129,7 +129,7 @@ $ python examples.py
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-现在访问 http://127.0.0.1:5000/pay ，如果一切正常，你会看到下面一串 json 字符串：
+现在访问 <http://127.0.0.1:5000/pay> ，如果一切正常，你会看到下面一串 json 字符串：
 
 ```python
 {
@@ -303,7 +303,6 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 其他 | 银行组件 | 查询省份列表 | capital_provinces | 是 | 是 |
 | 其他 | 银行组件 | 查询城市列表 | capital_cities | 是 | 是 |
 | 其他 | 银行组件 | 查询支行列表 | capital_branches | 是 | 是 |
-
 
 ### 接口函数参数
 

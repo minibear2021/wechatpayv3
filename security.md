@@ -21,7 +21,6 @@ def build_authorization(path,
     return authorization
 ```
 
-
 ## 验证签名
 
 对应v3版微信支付api文档的[签名验证](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_1.shtml)部分。
@@ -38,7 +37,6 @@ def rsa_verify(timestamp, nonce, body, signature, certificate):
         return False
     return True
 ```
-
 
 ## 回调信息解密
 
@@ -58,7 +56,6 @@ def aes_decrypt(nonce, ciphertext, associated_data, apiv3_key):
     return result
 ```
 
-
 ## 敏感信息加密
 
 对应v3版微信支付api文档的[敏感信息加解密](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_3.shtml)的加密部分。
@@ -74,7 +71,6 @@ def rsa_encrypt(text, certificate):
     return b64encode(cipherbyte).decode('UTF-8')
 ```
 
-
 ## 敏感信息解密
 
 对应v3版微信支付api文档的[敏感信息加解密](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_3.shtml)的解密部分。
@@ -85,7 +81,6 @@ def rsa_decrypt(ciphertext, private_key):
     result = data.decode('UTF-8')
     return result
 ```
-
 
 ## 注意事项
 
