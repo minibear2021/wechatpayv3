@@ -358,7 +358,7 @@ def payscore_refund(self, transaction_id, out_refund_no, amount, reason=None,
     :param goods_detail: 退款商品，示例值:{'merchant_goods_id':'1217752501201407033233368018', 'wechatpay_goods_id':'1001', 'goods_name':'iPhone6s 16G', 'unit_price':528800, 'refund_amount':528800, 'refund_quantity':1}
     :param notify_url: 通知地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
     """
-    return refund(out_refund_no=out_refund_no, amount=amount, transaction_id=transaction_id, reason=reason,
+    return refund(self,out_refund_no=out_refund_no, amount=amount, transaction_id=transaction_id, reason=reason,
                   funds_account=funds_account, goods_detail=goods_detail, notify_url=notify_url)
 
 
