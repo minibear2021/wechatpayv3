@@ -761,7 +761,7 @@ def marketing_busifavor_callback_query(self, mchid=None):
     """查询商家券事件通知地址
     :param mchid: 商户号，不填默认使用初始化的mchid。示例值:'10000098'
     """
-    path = '/v3/marketing/busifavor/callbacks?mchid=%s' % mchid or self._mchid
+    path = '/v3/marketing/busifavor/callbacks?mchid=%s' % (mchid or self._mchid)
     return self._core.request(path)
 
 
