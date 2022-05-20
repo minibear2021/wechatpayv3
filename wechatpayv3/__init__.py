@@ -175,3 +175,10 @@ class WeChatPay():
                               download_bill, fundflow_bill, pay, query,
                               query_refund, refund, submch_fundflow_bill,
                               trade_bill)
+    from .transfer import (transfer_batch, transfer_bill_receipt,
+                           transfer_detail_receipt, transfer_query_batchid,
+                           transfer_query_bill_receipt,
+                           transfer_query_detail_id,
+                           transfer_query_out_batch_no,
+                           transfer_query_out_detail_no,
+                           transfer_query_receipt)    
