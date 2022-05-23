@@ -86,7 +86,8 @@ class WeChatPay():
                             complaint_notification_create,
                             complaint_notification_delete,
                             complaint_notification_query,
-                            complaint_notification_update, complaint_response)
+                            complaint_notification_update, complaint_response,
+                            complaint_update_refund)
     from .fapiao import (fapiao_applications, fapiao_card_template,
                          fapiao_insert_cards, fapiao_merchant_base_info,
                          fapiao_merchant_config, fapiao_query, fapiao_reverse,
@@ -181,4 +182,4 @@ class WeChatPay():
                            transfer_query_detail_id,
                            transfer_query_out_batch_no,
                            transfer_query_out_detail_no,
-                           transfer_query_receipt)    
+                           transfer_query_receipt)

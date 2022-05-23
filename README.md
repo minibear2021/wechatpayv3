@@ -286,6 +286,7 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 消费者投诉 2.0 | 删除投诉通知回调地址| complaint_notification_delete| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 提交回复 | complaint_response| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 反馈处理完成| complaint_complete| 是| 是|
+| 风险合规 | 消费者投诉 2.0 | 更新退款进度| complaint_update_refund| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 商户上传反馈图片| complaint_image_upload| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 图片下载 | complaint_image_download| 是| 是|
 | 风险合规 | 商户违规通知回调 | 创建商户违规通知回调地址 | merchantrisk_callback_create | 否| 是|

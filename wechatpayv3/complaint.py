@@ -143,3 +143,32 @@ def complaint_image_download(self, media_url):
     """
     path = media_url[len(self._core._gate_way):] if media_url.startswith(self._core._gate_way) else media_url
     return self._core.request(path, skip_verify=True)
+
+
+def complaint_update_refund(self, complaint_id, action, launch_refund_day=None, reject_reason=None, reject_media_list=None, remark=None):
+    """更新退款进度
+    :param compaint_id: 投诉单对应的投诉单号。示例值:'200201820200101080076610000'
+    :param action: 审批动作，同意 或 拒绝，REJECT：拒绝，拒绝退款；APPROVE：同意，同意退款；示例值：'APPROVE'
+    :param launch_refund_day: 预计发起退款时间，预计将在多少个工作日内能发起退款, 0代表当天。示例值：3
+    :param reject_reason: 拒绝退款原因，示例值：'拒绝退款'
+    :param reject_media_list: 拒绝退款的举证图片列表，传入调用“商户上传反馈图片”接口返回的media_id，最多上传4张图片凭证，示例值：'file23578_21798531.jpg'
+    :param remark: 备注，示例值：'已处理完成'
+    """
+    if complaint_id:
+        path = '/v3/merchant-service/complaints-v2/%s/update-refund-progress' % complaint_id
+    else:
+        raise Exception('complaint_id is not assigned')
+    params = {}
+    if action:
+        params.update({'action': action})
+    else:
+        raise Exception('action is not assigned')
+    if isinstance(launch_refund_day, int):
+        params.update({'launch_refund_day': launch_refund_day})
+    if reject_reason:
+        params.update({'reject_reason': reject_reason})
+    if reject_media_list:
+        params.update({'reject_media_list': reject_media_list})
+    if remark:
+        params.update({'remark': remark})
+    return self._core.request(path, method=RequestType.POST, data=params)
