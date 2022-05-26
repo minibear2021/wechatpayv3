@@ -3,14 +3,14 @@
 from .type import RequestType, WeChatPayType
 
 
-def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, total_num, transfer_detail_list, appid=None):
+def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, total_num, transfer_detail_list=[], appid=None):
     """发起商家转账
     :param out_batch_no: 商户系统内部的商家批次单号，要求此参数只能由数字、大小写字母组成，在商户系统内部唯一，示例值：'plfk2020042013'
     :param batch_name: 该笔批量转账的名称，示例值：'2019年1月深圳分部报销单'
     :param batch_remark: 转账说明，UTF8编码，最多允许32个字符，示例值：'2019年1月深圳分部报销单'
     :param total_amount: 转账总金额，单位为分，必须与批次内所有明细转账金额之和保持一致，否则无法发起转账操作，示例值：'4000000'
     :param total_num: 转账总笔数，必须与批次内所有明细之和保持一致，否则无法发起转账操作，示例值：200
-    :param transfer_detail_list: 发起批量转账的明细列表，最多三千笔，示例值：{"out_detail_no": "x23zy545Bd5436", "transfer_amount": 200000, "transfer_remark": "2020年4月报销", "openid": "o-MYE42l80oelYMDE34nYD456Xoy", "user_name": "757b340b45ebef5467rter35gf464344v3542sdf4t6re4tb4f54ty45t4yyry45"}
+    :param transfer_detail_list: 发起批量转账的明细列表，最多三千笔，示例值：[{"out_detail_no": "x23zy545Bd5436", "transfer_amount": 200000, "transfer_remark": "2020年4月报销", "openid": "o-MYE42l80oelYMDE34nYD456Xoy", "user_name": "张三"}]
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     """
     params = {}

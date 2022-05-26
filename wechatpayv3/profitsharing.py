@@ -160,7 +160,7 @@ def profitsharing_amount_query(self, transaction_id):
     """查询剩余待分金额
     :param transaction_id: 微信支付订单号，示例值:'4208450740201411110007820472'
     """
-    if not transaction_id:
+    if transaction_id:
         path = '/v3/profitsharing/transactions/%s/amounts' % transaction_id
     else:
         raise Exception('transaction_id is not assigned')
@@ -430,7 +430,7 @@ def brand_profitsharing_amount_query(self, transaction_id):
     """查询连锁品牌分账剩余待分金额
     :param transaction_id: 微信支付订单号，示例值:'4208450740201411110007820472'
     """
-    if not transaction_id:
+    if transaction_id:
         path = '/v3/brand/profitsharing/orders/%s/amounts' % transaction_id
     else:
         raise Exception('transaction_id is not assigned')

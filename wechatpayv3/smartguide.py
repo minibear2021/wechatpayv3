@@ -76,7 +76,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
     """服务人员查询
     :params store_id: 门店ID, 示例值:1234
     :params userid: 企业微信的员工ID, 示例值:'robert'
-    :params mobile: 手机号码, 需进行加密处理, 示例值:'7mKQeypi9fKjAggRfvNFPf/bNxPvork4mMVgZkA=='
+    :params mobile: 手机号码, 示例值:'13900000000'
     :params work_id: 工号, 示例值:'robert'
     :params limit: 最大资源条数, 示例值:5
     :params offset: 请求资源起始位置, 示例值:0
