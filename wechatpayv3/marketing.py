@@ -697,15 +697,15 @@ def marketing_busifavor_user_coupon(self,
     else:
         raise Exception('openid is not assigned.')
     if stock_id:
-        path = '%s&stock_id%s' % (path, stock_id)
+        path = '%s&stock_id=%s' % (path, stock_id)
     if coupon_state:
-        path = '%s&coupon_state%s' % (path, coupon_state)
+        path = '%s&coupon_state=%s' % (path, coupon_state)
     if creator_merchant:
-        path = '%s&creator_merchant%s' % (path, creator_merchant)
+        path = '%s&creator_merchant=%s' % (path, creator_merchant)
     if belong_merchant:
-        path = '%s&belong_merchant%s' % (path, belong_merchant)
+        path = '%s&belong_merchant=%s' % (path, belong_merchant)
     if sender_merchant:
-        path = '%s&sender_merchant%s' % (path, sender_merchant)
+        path = '%s&sender_merchant=%s' % (path, sender_merchant)
     return self._core.request(path)
 
 
