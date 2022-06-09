@@ -2,7 +2,9 @@
 import os.path
 
 from .type import RequestType
-from .utils import SM3
+from .utils import sm3
+
+# https://pay.weixin.qq.com/wiki/doc/apiv3/Offline/open/chapter4_8_1.shtml
 
 
 def fapiao_card_template(self, card_template_information, card_appid=None):
@@ -135,10 +137,10 @@ def fapiao_applications(self, fapiao_apply_id, buyer_information, fapiao_informa
     cipher_data = False
     if buyer_information:
         if buyer_information.get('phone'):
-            buyer_information.update({'phone':self._core.encrypt(buyer_information.get('phone'))})
+            buyer_information.update({'phone': self._core.encrypt(buyer_information.get('phone'))})
             cipher_data = True
         if buyer_information.get('email'):
-            buyer_information.update({'email':self._core.encrypt(buyer_information.get('email'))})
+            buyer_information.update({'email': self._core.encrypt(buyer_information.get('email'))})
             cipher_data = True
         params.update({'buyer_information': buyer_information})
     else:
@@ -191,12 +193,8 @@ def fapiao_upload_file(self, filepath):
     """
     if not (filepath and os.path.exists(filepath) and os.path.isfile(filepath)):
         raise Exception('filepath is not assigned or not exists')
-    f = open(filepath, mode='rb')
-    content = f.read()
-    f.close()
-    h = SM3()
-    h.update(content)
-    digest = h.sm3_final()
+    with open(filepath, mode='rb') as f:
+        content = f.read()
     filename = os.path.basename(filepath)
     filetype = os.path.splitext(filename)[-1][1:].upper()
     mimes = {
@@ -204,9 +202,9 @@ def fapiao_upload_file(self, filepath):
         'ODF': 'application/odf'
     }
     if filetype not in mimes:
-        raise Exception('sdk does not support this file type.')
+        raise Exception('wechatpayv3 does not support this file type.')
     params = {}
-    params.update({'meta': '{"file_type":"%s","digest_alogrithm":"SM3","digest":"%s"}' % (filetype, digest)})
+    params.update({'meta': '{"file_type":"%s","digest_alogrithm":"SM3","digest":"%s"}' % (filetype, sm3(content))})
     files = [('file', (filename, content, mimes[filetype]))]
     path = '/v3/new-tax-control-fapiao/fapiao-applications/upload-fapiao-file'
     return self._core.request(path, method=RequestType.POST, data=params, sign_data=params.get('meta'), files=files)

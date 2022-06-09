@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-from hashlib import sha256
 
 from .type import RequestType
+from .utils import sha256
 
 
 def _media_upload(self, filepath, filename, path):
     if not (filepath and os.path.exists(filepath) and os.path.isfile(filepath) and path):
         raise Exception('filepath is not assigned or not exists')
-    h = sha256()
-    f = open(filepath, mode='rb')
-    content = f.read()
-    f.close()
-    h.update(content)
-    digest = h.hexdigest()
+    with open(filepath, mode='rb') as f:
+        content = f.read()
     if not filename:
         filename = os.path.basename(filepath)
     params = {}
-    params.update({'meta': '{"filename":"%s","sha256":"%s"}' % (filename, digest)})
+    params.update({'meta': '{"filename":"%s","sha256":"%s"}' % (filename, sha256(content))})
     mimes = {
         '.bmp': 'image/bmp',
         '.jpg': 'image/jpeg',
@@ -37,7 +33,7 @@ def _media_upload(self, filepath, filename, path):
     }
     media_type = os.path.splitext(filename)[-1]
     if media_type not in mimes:
-        raise Exception('sdk does not support this media type.')
+        raise Exception('wechatpayv3 does not support this media type.')
     files = [('file', (filename, content, mimes[media_type]))]
     return self._core.request(path, method=RequestType.POST, data=params, sign_data=params.get('meta'), files=files)
 

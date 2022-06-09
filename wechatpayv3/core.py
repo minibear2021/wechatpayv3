@@ -62,9 +62,8 @@ class Core():
             if not os.path.exists(self._cert_dir):
                 os.makedirs(self._cert_dir)
             if not os.path.exists(self._cert_dir + serial_no + '.pem'):
-                f = open(self._cert_dir + serial_no + '.pem', 'w')
-                f.write(cert_str)
-                f.close()
+                with open(self._cert_dir + serial_no + '.pem', 'w') as f:
+                    f.write(cert_str)
 
     def _verify_signature(self, headers, body):
         signature = headers.get('Wechatpay-Signature')
@@ -123,7 +122,7 @@ class Core():
         elif method == RequestType.DELETE:
             response = requests.delete(url=self._gate_way+path, headers=headers, proxies=self._proxy)
         else:
-            raise Exception('sdk does no support this request type.')
+            raise Exception('wechatpayv3 does no support this request type.')
         if self._logger:
             self._logger.debug('Response status code: %s' % response.status_code)
             self._logger.debug('Response headers: %s' % response.headers)
@@ -165,7 +164,7 @@ class Core():
             return None
         algorithm = resource.get('algorithm')
         if algorithm != 'AEAD_AES_256_GCM':
-            raise Exception('sdk does not support this algorithm')
+            raise Exception('wechatpayv3 does not support this algorithm')
         nonce = resource.get('nonce')
         ciphertext = resource.get('ciphertext')
         associated_data = resource.get('associated_data')
