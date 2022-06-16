@@ -40,33 +40,43 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
         raise Exception('bank_account_info is not assigned.')
     if addition_info:
         params.update({'addition_info': addition_info})
-    cipher_data = False
     if params.get('contact_info').get('contact_name'):
         params['contact_info']['contact_name'] = self._core.encrypt(params['contact_info']['contact_name'])
-        cipher_data = True
     if params.get('contact_info').get('contact_id_number'):
         params['contact_info']['contact_id_number'] = self._core.encrypt(params['contact_info']['contact_id_number'])
-        cipher_data = True
+    if params.get('contact_info').get('openid'):
+        params['contact_info']['openid'] = self._core.encrypt(params['contact_info']['openid'])
     if params.get('contact_info').get('mobile_phone'):
         params['contact_info']['mobile_phone'] = self._core.encrypt(params['contact_info']['mobile_phone'])
-        cipher_data = True
     if params.get('contact_info').get('contact_email'):
         params['contact_info']['contact_email'] = self._core.encrypt(params['contact_info']['contact_email'])
-        cipher_data = True
-    if params.get('bank_account_info').get('account_name'):
-        params['bank_account_info']['account_name'] = self._core.encrypt(params['bank_account_info']['account_name'])
-        cipher_data = True
-    if params.get('bank_account_info').get('account_number'):
-        params['bank_account_info']['account_number'] = self._core.encrypt(params['bank_account_info']['account_number'])
-        cipher_data = True
-    if params.get('subject_info').get('identity_info'):
-        id_card_info = params.get('subject_info').get('identity_info').get('id_card_info')
-        if id_card_info:
-            id_card_info['id_card_name'] = self._core.encrypt(id_card_info['id_card_name'])
-            id_card_info['id_card_number'] = self._core.encrypt(id_card_info['id_card_number'])
-            cipher_data = True    
+    id_card_name = params.get('subject_info').get('identity_info').get('id_card_info', {}).get('id_card_name')
+    if id_card_name:
+        params['subject_info']['identity_info']['id_card_info']['id_card_name'] = self._core.encrypt(id_card_name)
+    id_card_number = params.get('subject_info').get('identity_info').get('id_card_info', {}).get('id_card_number')
+    if id_card_number:
+        params['subject_info']['identity_info']['id_card_info']['id_card_number'] = self._core.encrypt(id_card_number)
+    id_card_address = params.get('subject_info').get('identity_info').get('id_card_info', {}).get('id_card_address')
+    if id_card_address:
+        params['subject_info']['identity_info']['id_card_info']['id_card_address'] = self._core.encrypt(id_card_address)
+    id_doc_name = params.get('subject_info').get('identity_info').get('id_doc_info', {}).get('id_doc_name')
+    if id_doc_name:
+        params['subject_info']['identity_info']['id_doc_info']['id_doc_name'] = self._core.encrypt(id_doc_name)
+    id_doc_number = params.get('subject_info').get('identity_info').get('id_doc_info', {}).get('id_doc_number')
+    if id_doc_number:
+        params['subject_info']['identity_info']['id_doc_info']['id_doc_number'] = self._core.encrypt(id_doc_number)
+    id_doc_address = params.get('subject_info').get('identity_info').get('id_doc_info', {}).get('id_doc_address')
+    if id_doc_address:
+        params['subject_info']['identity_info']['id_doc_info']['id_doc_address'] = self._core.encrypt(id_doc_address)
+    if params.get('subject_info').get('ubo_info_list'):
+        for ubo_info in params['subject_info']['ubo_info_list']:
+            ubo_info['ubo_id_doc_name'] = self._core.encrypt(ubo_info['ubo_id_doc_name'])
+            ubo_info['ubo_id_doc_number'] = self._core.encrypt(ubo_info['ubo_id_doc_number'])
+            ubo_info['ubo_id_doc_address'] = self._core.encrypt(ubo_info['ubo_id_doc_address'])
+    params['bank_account_info']['account_name'] = self._core.encrypt(params['bank_account_info']['account_name'])
+    params['bank_account_info']['account_number'] = self._core.encrypt(params['bank_account_info']['account_number'])
     path = '/v3/applyment4sub/applyment/'
-    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True)
 
 
 def applyment_query(self, business_code=None, applyment_id=None):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, total_num, transfer_detail_list=[], appid=None):

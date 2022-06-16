@@ -118,9 +118,9 @@ class Core():
         elif method == RequestType.PATCH:
             response = requests.patch(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy)
         elif method == RequestType.PUT:
-            response = requests.put(url=self._gate_way + path,  json=data, headers=headers, proxies=self._proxy)
+            response = requests.put(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy)
         elif method == RequestType.DELETE:
-            response = requests.delete(url=self._gate_way+path, headers=headers, proxies=self._proxy)
+            response = requests.delete(url=self._gate_way + path, headers=headers, proxies=self._proxy)
         else:
             raise Exception('wechatpayv3 does no support this request type.')
         if self._logger:

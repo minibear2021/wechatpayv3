@@ -3,7 +3,7 @@
 from .type import RequestType
 
 
-def apply4subject_submit(self, business_code, contact_info, subject_info, identification_info, channel_id=None, addition_info=None):
+def apply4subject_submit(self, business_code, contact_info, subject_info, identification_info, channel_id=None, addition_info=None, ubo_info_list=[]):
     """（商户开户意愿）提交申请单
     :param business_code: 业务申请编号，示例值:'APPLYMENT_00000000001'
     :param contact_info: 联系人信息，示例值:{'name':'张三','id_card_number':'320311770706001','mobile':'13900000000'}
@@ -12,6 +12,7 @@ def apply4subject_submit(self, business_code, contact_info, subject_info, identi
     :param identification_info: 法人身份信息，示例值:{'identification_type':'IDENTIFICATION_TYPE_IDCARD','identification_name':'张三','identification_number':'110220330044005500','identification_valid_date':'["1970-01-01","forever"]','identification_front_copy':'0P3ng6KTIW4-Q_l2FjKLZ...','identification_back_copy':'0P3ng6KTIW4-Q_l2FjKLZ...'}
     :param channel_id: 渠道商户号，示例值:'20001111'
     :param addition_info: 补充材料，示例值:{'confirm_mchid_list':['20001113']}
+    :param ubo_info_list: 最终受益人信息列表，示例值:[{'ubo_id_doc_type':'IDENTIFICATION_TYPE_IDCARD','ubo_id_doc_name':'张三','ubo_id_doc_number':'110220330044005500'}]
     """
     params = {}
     if business_code:
@@ -34,24 +35,33 @@ def apply4subject_submit(self, business_code, contact_info, subject_info, identi
         params.update({'channel_id': channel_id})
     if addition_info:
         params.update({'addition_info': addition_info})
-    cipher_data = False
-    if params.get('contact_info').get('name'):
-        params['contact_info']['name'] = self._core.encrypt(params['contact_info']['name'])
-        cipher_data = True
-    if params.get('contact_info').get('mobile'):
-        params['contact_info']['mobile'] = self._core.encrypt(params['contact_info']['mobile'])
-        cipher_data = True
-    if params.get('contact_info').get('id_card_number'):
-        params['contact_info']['id_card_number'] = self._core.encrypt(params['contact_info']['id_card_number'])
-        cipher_data = True
-    if params.get('identification_info').get('identification_name'):
-        params['identification_info']['identification_name'] = self._core.encrypt(params['identification_info']['identification_name'])
-        cipher_data = True
-    if params.get('identification_info').get('identification_number'):
-        params['identification_info']['identification_number'] = self._core.encrypt(params['identification_info']['identification_number'])
-        cipher_data = True
+    if ubo_info_list:
+        params.update({'ubo_info_list': ubo_info_list})
+    contact_name = params.get('contact_info').get('name')
+    if contact_name:
+        params['contact_info']['name'] = self._core.encrypt(contact_name)
+    contact_mobile = params.get('contact_info').get('mobile')
+    if contact_mobile:
+        params['contact_info']['mobile'] = self._core.encrypt(contact_mobile)
+    contact_number =params.get('contact_info').get('id_card_number')
+    if contact_number:
+        params['contact_info']['id_card_number'] = self._core.encrypt(contact_number)
+    identification_name = params.get('identification_info').get('identification_name')
+    if identification_name:
+        params['identification_info']['identification_name'] = self._core.encrypt(identification_name)
+    identification_number = params.get('identification_info').get('identification_number')
+    if identification_number:
+        params['identification_info']['identification_number'] = self._core.encrypt(identification_number)
+    identification_address = params.get('identification_info').get('identification_address')
+    if identification_address:
+        params['identification_info']['identification_address'] = self._core.encrypt(identification_address)
+    if params.get('ubo_info_list'):
+        for ubo_info in params['ubo_info_list']:
+            ubo_info['ubo_id_doc_name'] = self._core.encrypt(ubo_info['ubo_id_doc_name'])
+            ubo_info['ubo_id_doc_number'] = self._core.encrypt(ubo_info['ubo_id_doc_number'])
+            ubo_info['ubo_id_doc_address'] = self._core.encrypt(ubo_info['ubo_id_doc_address'])
     path = '/v3/apply4subject/applyment'
-    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
+    return self._core.request(path, method=RequestType.POST, data=params, cipher_data=True)
 
 
 def apply4subject_cancel(self, business_code=None, applyment_id=None):

@@ -87,7 +87,7 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
         raise Exception('store_id is not assigned.')
     path = '/v3/smartguide/guides?store_id=%s' % store_id
     if userid:
-        path = '%s&userid=%s' % (path,  userid)
+        path = '%s&userid=%s' % (path, userid)
     cipher_data = False
     if mobile:
         path = '%s&mobile=%s' % (path, self._core.encrypt(mobile))
