@@ -8,7 +8,7 @@ def parking_service_find(self, plate_number, plate_color, openid, sub_mchid=None
     :param plate_number: 车牌号，示例值:'粤B888888'
     :param plate_color: 车牌颜色，车牌颜色，枚举值:BLUE:蓝色，GREEN:绿色，YELLOW:黄色，BLACK:黑色，WHITE:白色，LIMEGREEN:黄绿色
     :param openid: 用户标识，示例值:'oUpF8uMuAJOM2pxb1Q'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'  
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     path = '/v3/vehicle/parking/services/find?appid=%s' % self._appid
     if plate_number:
@@ -40,7 +40,7 @@ def parking_enter(self, out_parking_no, plate_number, plate_color, start_time, p
     :param start_time: 入场时间，示例值:'2017-08-26T10:43:39+08:00'
     :param parking_name: 停车场名称，示例值:'欢乐海岸停车场'
     :param free_duration: 免费时长，单位为秒，示例值:3600
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'      
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
     if out_parking_no:
@@ -102,7 +102,7 @@ def parking_order(self, description, out_trade_no, total, parking_id, plate_numb
     :param goods_tag: 订单优惠标记，代金券或立减优惠功能的参数，示例值:WXG
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     :param sub_appid: (服务商模式)子商户应用ID，示例值:'wxd678efh567hg6999'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'     
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
     amount = {}

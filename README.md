@@ -165,7 +165,7 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 基础支付 | 合单支付 | 查询订单 | combine_query| 是| 是|
 | 基础支付 | 合单支付 | 关闭订单 | combine_close| 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund| 是| 是|
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款| refund_query | 是| 是|
+| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款| query_refund | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单| trade_bill | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单| fundflow_bill| 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请单个子商户资金账单 | submch_fundflow_bill| 否| 是|

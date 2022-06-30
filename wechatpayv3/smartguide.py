@@ -13,7 +13,7 @@ def guides_register(self, corpid, store_id, userid, name, mobile, qr_code, avata
     :param qr_code: 员工个人二维码, 示例值:'https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx'
     :param avatar: 头像URL, 示例值:'http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0'
     :param group_qrcode: 群二维码URL, 示例值:'http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
     if corpid:
@@ -56,7 +56,7 @@ def guides_assign(self, guide_id, out_trade_no, sub_mchid=None):
     """服务人员分配
     :param guide_id: 服务人员ID，示例值:'LLA3WJ6DSZUfiaZDS79FH5Wm5m4X69TBic'
     :param out_trade_no: 商户订单号, 示例值:'20150806125346'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
     if out_trade_no:
@@ -80,9 +80,8 @@ def guides_query(self, store_id, userid=None, mobile=None, work_id=None, limit=N
     :params work_id: 工号, 示例值:'robert'
     :params limit: 最大资源条数, 示例值:5
     :params offset: 请求资源起始位置, 示例值:0
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
-    params = {}
     if not store_id:
         raise Exception('store_id is not assigned.')
     path = '/v3/smartguide/guides?store_id=%s' % store_id

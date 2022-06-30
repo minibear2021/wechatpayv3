@@ -13,7 +13,7 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
     :param no_points_remarks: 未获得积分的备注信息，示例值:'商品不参与积分活动'
     :param total_points: 顾客积分总额，示例值:888888
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     if self._type != WeChatPayType.MINIPROG:
         raise Exception('points notify only supports wechat mini prog')
@@ -53,7 +53,7 @@ def user_authorization(self, openid, appid=None, sub_mcid=None):
     """智慧商圈积分授权查询
     :param openid: 用户标识，示例值:'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
     :param appid: 小程序appid，顾客授权积分时使用的小程序的appid，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'     
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     if self._type != WeChatPayType.MINIPROG:
         raise Exception('API only available in mini program.')

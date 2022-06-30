@@ -134,7 +134,7 @@ def query(self, transaction_id=None, out_trade_no=None, mchid=None, sub_mchid=No
     """查询订单
     :param transaction_id: 微信支付订单号，示例值:1217752501201407033233368018
     :param out_trade_no: 商户订单号，示例值:1217752501201407033233368018
-    :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值:'987654321'    
+    :param mchid: 微信支付商户号，可不传，默认传入初始化的mchid。示例值:'987654321'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     if self._partner_mode:
@@ -212,7 +212,7 @@ def refund(self,
 def query_refund(self, out_refund_no, sub_mchid=None):
     """查询单笔退款
     :param out_refund_no: 商户退款单号，示例值:'1217752501201407033233368018'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'    
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     path = '/v3/refund/domestic/refunds/%s' % out_refund_no
     if self._partner_mode:
@@ -228,7 +228,7 @@ def trade_bill(self, bill_date, bill_type='ALL', tar_type='GZIP', sub_mchid=None
     :param bill_date: 账单日期，示例值:'2019-06-11'
     :param bill_type: 账单类型, 默认值:'ALL'
     :param tar_type: 压缩类型，默认值:'GZIP'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     path = '/v3/bill/tradebill?bill_date=%s&bill_type=%s&tar_type=%s' % (bill_date, bill_type, tar_type)
     if self._partner_mode and sub_mchid:
@@ -242,6 +242,8 @@ def fundflow_bill(self, bill_date, account_type='BASIC', tar_type='GZIP'):
     :param account_type: 资金账户类型, 默认值:'BASIC'，基本账户, 可选:'OPERATION'，运营账户；'FEES'，手续费账户
     :param tar_type: 压缩类型，默认值:'GZIP'
     """
+    if not bill_date:
+        raise Exception('bill_date is not assigned.')
     path = '/v3/bill/fundflowbill?bill_date=%s&account_type=%s&tar_type=%s' % (bill_date, account_type, tar_type)
     return self._core.request(path)
 
@@ -254,26 +256,25 @@ def submch_fundflow_bill(self, sub_mchid, bill_date, account_type, algorithm='AE
     :param algorithm: 加密算法，枚举值:'AEAD_AES_256_GCM':AEAD_AES_256_GCM加密算法
     :param tar_type: 压缩格式，枚举值:'GZIP':返回格式为.gzip的压缩包账单
     """
-    params = {}
+    path = '/v3/bill/sub-merchant-fundflowbill'
     if sub_mchid:
-        params.update({'sub_mchid': sub_mchid})
+        path += '?sub_mchid=%s' % sub_mchid
     else:
         raise Exception('sub_mchid is not assigned.')
     if bill_date:
-        params.update({'bill_date': bill_date})
+        path += '&bill_date=%s' % bill_date
     else:
         raise Exception('bill_date is not assigned.')
     if account_type:
-        params.update({'account_type': account_type})
+        path += '&account_type=%s' % account_type
     else:
         raise Exception('account_type is not assigned.')
     if algorithm:
-        params.update({'algorithm': algorithm})
+        path += '&algorithm=%s' % algorithm
     else:
         raise Exception('algorithm is not assigned.')
     if tar_type:
-        params.update({'tar_type': tar_type})
-    path = '/v3/bill/sub-merchant-fundflowbill'
+        path += '&tar_type=%s' % tar_type
     return self._core.request(path)
 
 
