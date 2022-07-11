@@ -902,7 +902,7 @@ def marketing_busifavor_stock_modify(self,
         params.update({'stock_send_rule': stock_send_rule})
     if notify_config:
         params.update({'notify_config': notify_config})
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.PATCH, data=params)
 
 
 def marketing_busifavor_coupon_return(self, coupon_code, stock_id, return_request_no):
