@@ -1019,3 +1019,21 @@ def marketing_busifavor_subsidy_query(self, subsidy_receipt_id):
     else:
         raise Exception('subsidy_receipt_id is not assigned.')
     return self._core.request(path)
+
+
+def industry_coupon_token(self, open_id, coupon_list=[]):
+    """出行券切卡组件预下单
+    :param open_id: 用户在商户AppID下的唯一标识，该用户为后续拉起切卡组件的用户。示例值：'obLatjrR8kUDlj4-nofQsPAJAAFI'
+    :param coupon_list: 用户最近领取的出行券列表。示例值：[{"coupon_id": "11004999626", "stock_id": 16474341}]
+    """
+    params = {}
+    if open_id:
+        params.update({'open_id': open_id})
+    else:
+        raise Exception('open_id is not assigned.')
+    if coupon_list:
+        params.update({'coupon_list': coupon_list})
+    else:
+        raise Exception('coupon_list is not assigned.')
+    path = '/v3/industry-coupon/tokens'
+    return self._core.request(path, method=RequestType.POST, data=params)

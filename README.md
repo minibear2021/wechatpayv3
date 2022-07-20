@@ -241,6 +241,7 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 营销工具 | 支付有礼 | 新增活动发券商户号| marketing_paygift_merchant_add | 是| 是|
 | 营销工具 | 支付有礼 | 获取支付有礼活动列表| marketing_paygift_activity_list| 是| 是|
 | 营销工具 | 支付有礼 | 删除活动发券商户号| marketing_paygift_merchant_delete| 是| 是|
+| 营销工具 | 代扣服务切卡组件 | 出行券切卡组件预下单| industry_coupon_token| 是| 是|
 | 营销工具 | 图片上传 | 图片上传(营销专用)| marketing_image_upload| 是| 是|
 | 资金应用 | 商家转账到零钱 | 发起商家转账 | transfer_batch | 是| 否|
 | 资金应用 | 商家转账到零钱 | 微信批次单号查询批次单| transfer_query_batchid | 是| 否|
@@ -286,7 +287,7 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 消费者投诉 2.0 | 删除投诉通知回调地址| complaint_notification_delete| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 提交回复 | complaint_response| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 反馈处理完成| complaint_complete| 是| 是|
-| 风险合规 | 消费者投诉 2.0 | 更新退款进度| complaint_update_refund| 是| 是|
+| 风险合规 | 消费者投诉 2.0 | 更新退款审批结果| complaint_update_refund| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 商户上传反馈图片| complaint_image_upload| 是| 是|
 | 风险合规 | 消费者投诉 2.0 | 图片下载 | complaint_image_download| 是| 是|
 | 风险合规 | 商户违规通知回调 | 创建商户违规通知回调地址 | merchantrisk_callback_create | 否| 是|
