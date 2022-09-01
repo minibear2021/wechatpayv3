@@ -154,10 +154,10 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 公用| 公用 | 回调通知| callback | 是 | 是 |
 | 公用| 公用 | 敏感信息参数解密 | decrypt | 是 | 是 |
 | 公用| 公用 | 下载账单| download_bill| 是 | 是 |
-| 商户进件 | 特约商户进件| 提交申请单 | applyment_submit | 否| 是|
-| 商户进件 | 特约商户进件| 查询申请单状态| applyment_query| 否| 是|
-| 商户进件 | 特约商户进件| 修改结算账号| applyment_settlement_modify| 否| 是|
-| 商户进件 | 特约商户进件| 查询结算账号| applyment_settlement_query| 否| 是|
+| 商户进件 | 特约商户进件、小微商户进件| 提交申请单 | applyment_submit | 否| 是|
+| 商户进件 | 特约商户进件、小微商户进件| 查询申请单状态| applyment_query| 否| 是|
+| 商户进件 | 特约商户进件、小微商户进件| 修改结算账号| applyment_settlement_modify| 否| 是|
+| 商户进件 | 特约商户进件、小微商户进件| 查询结算账号| applyment_settlement_query| 否| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付| 统一下单 | pay | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付| 查询订单 | query | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付| 关闭订单 | close | 是| 是|
@@ -196,6 +196,8 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 行业方案 | 电商收付通| 尚未适配 | 尚未适配| 否| 是|
 | 行业方案 | 智慧商圈 | 商圈积分同步| points_notify| 是| 是|
 | 行业方案 | 智慧商圈 | 商圈积分授权查询| user_authorization| 是| 是|
+| 行业方案 | 智慧商圈 | 商圈会员待积分状态查询| business_point_status| 是| 是|
+| 行业方案 | 智慧商圈 | 商圈会员停车状态同步| business_parking_sync| 是| 是|
 | 行业方案 | 微信支付分停车服务| 查询车牌服务开通信息| parking_service_find| 是| 是|
 | 行业方案 | 微信支付分停车服务| 创建停车入场| parking_enter| 是| 是|
 | 行业方案 | 微信支付分停车服务| 扣费受理 | parking_order| 是| 是|

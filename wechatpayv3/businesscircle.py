@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .type import RequestType, WeChatPayType
+from .type import RequestType
 
 
 def points_notify(self, transaction_id, openid, earn_points, increased_points, points_update_time, no_points_remarks=None, total_points=None, appid=None, sub_mchid=None):
@@ -15,8 +15,6 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
-    if self._type != WeChatPayType.MINIPROG:
-        raise Exception('points notify only supports wechat mini prog')
     params = {}
     params.update({'appid': appid or self._appid})
     if transaction_id:
@@ -49,21 +47,76 @@ def points_notify(self, transaction_id, openid, earn_points, increased_points, p
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
-def user_authorization(self, openid, appid=None, sub_mcid=None):
+def user_authorization(self, openid, appid=None, sub_mchid=None):
     """智慧商圈积分授权查询
     :param openid: 用户标识，示例值:'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
     :param appid: 小程序appid，顾客授权积分时使用的小程序的appid，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
-    if self._type != WeChatPayType.MINIPROG:
-        raise Exception('API only available in mini program.')
     if openid:
         if self._partner_mode:
             path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, appid or self._appid)
-            if sub_mcid:
-                path = '%s&sub_mchid=%s' % (path, sub_mcid)
+            if sub_mchid:
+                path = '%s&sub_mchid=%s' % (path, sub_mchid)
         else:
             path = '/v3/businesscircle/user-authorizations/%s?appid=%s' % (openid, self._appid)
     else:
         raise Exception('openid is not assigned.')
+    return self._core.request(path)
+
+
+def business_parking_sync(self, openid, brandid, plate_number, state, time, appid=None, sub_mchid=None):
+    """商圈会员停车状态同步
+    :param openid: 用户标识，示例值:'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
+    :param brandid: 品牌ID，示例值:1000
+    :param plate_number: 车牌号，示例值: '粤B888888'
+    :param state: 停车状态，IN=入场，用户开车进入商圈，OUT=离场，用户开车离开商圈。示例值:IN
+    :param time: 时间，示例值：2022-06-01T10:43:39+08:00
+    :param appid: 小程序appid，顾客授权积分时使用的小程序的appid，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
+    """
+    params = {}
+    params.update({'appid': appid or self._appid})
+    if not openid:
+        raise Exception('openid is not assigned.')
+    else:
+        params.update({'openid': openid})
+    if not brandid:
+        raise Exception('brandid is not assigned.')
+    else:
+        params.update({'brandid': brandid})
+    if not plate_number:
+        raise Exception('plate_number is not assigned.')
+    else:
+        params.update({'plate_number': plate_number})
+    if not state:
+        raise Exception('state is not assigned.')
+    else:
+        params.update({'state': state})
+    if not time:
+        raise Exception('time is not assigned.')
+    else:
+        params.update({'time': time})
+    if self._partner_mode:
+        if not sub_mchid:
+            raise Exception('sub_mchid is not assigned.')
+        else:
+            params.update({'sub_mchid': sub_mchid})
+    path = 'https://api.mch.weixin.qq.com/v3/businesscircle/parkings'
+    return self._core.request(path, method=RequestType.POST, date=params)
+
+
+def business_point_status(self, openid, brandid, appid=None, sub_mchid=None):
+    """商圈会员待积分状态查询
+    :param openid: 用户标识，示例值:'oWmnN4xxxxxxxxxxe92NHIGf1xd8'
+    :param brandid: 品牌ID，示例值:1000
+    :param appid: 小程序appid，顾客授权积分时使用的小程序的appid，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
+    """
+    if not (openid and brandid):
+        raise Exception('openid and/or brandid is not assigned.')
+    else:
+        path = 'https://api.mch.weixin.qq.com/v3/businesscircle/users/%s/points/commit_status?brandid=%s&appid=%s' % (openid, brandid, appid or self._appid)
+    if sub_mchid:
+        path += '%s&sub_mchid=%s' % (path, sub_mchid)
     return self._core.request(path)

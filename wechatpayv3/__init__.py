@@ -76,7 +76,8 @@ class WeChatPay():
                                 apply4subject_state, apply4subject_submit)
     from .applyment import (applyment_query, applyment_settlement_modify,
                             applyment_settlement_query, applyment_submit)
-    from .businesscircle import points_notify, user_authorization
+    from .businesscircle import (business_parking_sync, business_point_status,
+                                 points_notify, user_authorization)
     from .capital import (capital_branches, capital_cities,
                           capital_corporate_banks, capital_personal_banks,
                           capital_provinces, capital_search_bank_number)
