@@ -43,7 +43,7 @@ def apply4subject_submit(self, business_code, contact_info, subject_info, identi
     contact_mobile = params.get('contact_info').get('mobile')
     if contact_mobile:
         params['contact_info']['mobile'] = self._core.encrypt(contact_mobile)
-    contact_number =params.get('contact_info').get('id_card_number')
+    contact_number = params.get('contact_info').get('id_card_number')
     if contact_number:
         params['contact_info']['id_card_number'] = self._core.encrypt(contact_number)
     identification_name = params.get('identification_info').get('identification_name')

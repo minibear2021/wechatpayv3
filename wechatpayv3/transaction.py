@@ -18,7 +18,8 @@ def pay(self,
         appid=None,
         mchid=None,
         sub_appid=None,
-        sub_mchid=None):
+        sub_mchid=None,
+        support_fapiao=False):
     """统一下单
     :return code, message:
     :param description: 商品描述，示例值:'Image形象店-深圳腾大-QQ公仔'
@@ -36,6 +37,7 @@ def pay(self,
     :param mchid: 微信支付商户号，可不填，默认传入初始化的mchid，示例值:'987654321'
     :param sub_appid: (服务商模式)子商户应用ID，示例值:'wxd678efh567hg6999'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
+    :param support_fapiao: 电子发票入口开放标识，传入true时，支付成功消息和支付详情页将出现开票入口。
     """
     params = {}
     if not (notify_url or self._notify_url):
@@ -103,6 +105,8 @@ def pay(self,
             path = '/v3/pay/transactions/h5'
         elif self._type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
+    if support_fapiao:
+        params.update({'support_fapiao':support_fapiao})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 

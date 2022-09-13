@@ -110,7 +110,7 @@ def guides_update(self, guide_id, name=None, mobile=None, qr_code=None, avatar=N
     :params qr_code: 服务人员二维码URL, 示例值:'https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx'
     :params avatar: 服务人员头像URL, 示例值:'http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0'
     :params group_qrcode: 群二维码URL, 示例值:'http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp/0'
-    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109' 
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     """
     params = {}
     if not guide_id:
