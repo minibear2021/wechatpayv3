@@ -306,7 +306,7 @@ def combine_pay(self,
                 time_expire=None,
                 combine_appid=None,
                 combine_mchid=None,
-                notify_url=None
+                notify_url=None,
                 pay_type=None):
     """合单支付下单
     :param combine_out_trade_no: 合单商户订单号, 示例值:'P20150806125346'
