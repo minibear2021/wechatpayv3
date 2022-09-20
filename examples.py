@@ -28,7 +28,7 @@ APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
-# 微信支付平台证书缓存目录，减少证书下载调用次数
+# 微信支付平台证书缓存目录，减少证书下载调用次数，首次使用确保此目录为空目录.
 # 初始调试时可不设置，调试通过后再设置，示例值:'./cert'
 CERT_DIR = None
 
@@ -68,15 +68,15 @@ def pay():
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
-        amount={'total': amount}
+        amount={'total': amount},
+        pay_type=WeChatPayType.NATIVE
     )
     return jsonify({'code': code, 'message': message})
 
 
 @app.route('/pay_jsapi')
 def pay_jsapi():
-    # jsapi下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.JSAPI。
-    # 下单成功后，将prepay_id和其他必须的参数组合传递给JSSDK的wx.chooseWXPay接口唤起支付
+    # 以jsapi下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给JSSDK的wx.chooseWXPay接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
     amount = 1
@@ -85,6 +85,7 @@ def pay_jsapi():
         description=description,
         out_trade_no=out_trade_no,
         amount={'total': amount},
+        pay_type=WeChatPayType.JSAPI,
         payer=payer
     )
     result = json.loads(message)
@@ -109,8 +110,7 @@ def pay_jsapi():
 
 @app.route('/pay_h5')
 def pay_h5():
-    # h5支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.H5。
-    # 下单成功后，将获取的的h5_url传递给前端跳转唤起支付。
+    # 以h5下单为例，下单成功后，将获取的的h5_url传递给前端跳转唤起支付。
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
     amount = 1
@@ -119,6 +119,7 @@ def pay_h5():
         description=description,
         out_trade_no=out_trade_no,
         amount={'total': amount},
+        pay_type=WeChatPayType.H5,
         scene_info=scene_info
     )
     return jsonify({'code': code, 'message': message})
@@ -126,8 +127,7 @@ def pay_h5():
 
 @app.route('/pay_miniprog')
 def pay_miniprog():
-    # 小程序支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.MINIPROG。
-    # 下单成功后，将prepay_id和其他必须的参数组合传递给小程序的wx.requestPayment接口唤起支付
+    # 以小程序下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给小程序的wx.requestPayment接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
     amount = 1
@@ -136,6 +136,7 @@ def pay_miniprog():
         description=description,
         out_trade_no=out_trade_no,
         amount={'total': amount},
+        pay_type=WeChatPayType.MINIPROG,
         payer=payer
     )
     result = json.loads(message)
@@ -160,15 +161,15 @@ def pay_miniprog():
 
 @app.route('/pay_app')
 def pay_app():
-    # app支付下单，wxpay初始化的时候，wechatpay_type设置为WeChatPayType.APP。
-    # 下单成功后，将prepay_id和其他必须的参数组合传递给IOS或ANDROID SDK接口唤起支付
+    # 以app下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给IOS或ANDROID SDK接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
     amount = 1
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
-        amount={'total': amount}
+        amount={'total': amount},
+        pay_type=WeChatPayType.APP
     )
     result = json.loads(message)
     if code in range(200, 300):

@@ -13,7 +13,7 @@
 
 ## 适用对象
 
-**wechatpayv3**同时支持微信支付[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)及[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml)，接口说明详见官网 。
+**wechatpayv3**同时支持微信支付[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)及[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml)，接口说明详见官网。
 
 ## 特性
 
@@ -43,7 +43,7 @@ $ pip install wechatpayv3
 
 - **商户 API 证书私钥：PRIVATE_KEY**。商户申请商户 API 证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
   > :warning: 不要把私钥文件暴露在公共场合，如上传到 Github，写在客户端代码等。
-- **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao) 。
+- **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao)。
 - **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
 
 ### 一个最小的后端
@@ -55,7 +55,7 @@ $ pip install wechatpayv3
 # 微信支付商户号，服务商模式下为服务商户号，即官方文档中的sp_mchid。
 MCHID = '1230000109'
 
-# 商户证书私钥
+# 商户证书私钥，此文件不要放置在下面设置的CERT_DIR目录里。
 with open('path_to_key/apiclient_key.pem') as f:
     PRIVATE_KEY = f.read()
 
@@ -65,20 +65,20 @@ CERT_SERIAL_NO = '444F4864EA9B34415...'
 # API v3密钥， https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_2.shtml
 APIV3_KEY = 'MIIEvwIBADANBgkqhkiG9w0BAQE...'
 
-# APPID，应用ID，服务商模式下为服务商应用ID，即官方文档中的sp_appid
+# APPID，应用ID，服务商模式下为服务商应用ID，即官方文档中的sp_appid，也可以在调用接口的时候覆盖。
 APPID = 'wxd678efh567hg6787'
 
-# 回调地址，也可以在调用接口的时候覆盖
+# 回调地址，也可以在调用接口的时候覆盖。
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
-# 微信支付平台证书缓存目录，初始调试的时候可以设为None
+# 微信支付平台证书缓存目录，初始调试的时候可以设为None，首次使用确保此目录为空目录。
 CERT_DIR = './cert'
 
-# 日志记录器，记录web请求和回调细节，便于调试排错
+# 日志记录器，记录web请求和回调细节，便于调试排错。
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
 LOGGER = logging.getLogger("demo")
 
-# 接入模式：False=直连商户模式，True=服务商模式
+# 接入模式：False=直连商户模式，True=服务商模式。
 PARTNER_MODE = False
 
 # 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见https://docs.python-requests.org/zh_CN/latest/user/advanced.html
@@ -112,7 +112,8 @@ def pay():
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
-        amount={'total': amount}
+        amount={'total': amount},
+        pay_type=WeChatPayType.NATIVE
     )
     return jsonify({'code': code, 'message': message})
 ```

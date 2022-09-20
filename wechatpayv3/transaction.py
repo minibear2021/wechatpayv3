@@ -19,7 +19,8 @@ def pay(self,
         mchid=None,
         sub_appid=None,
         sub_mchid=None,
-        support_fapiao=False):
+        support_fapiao=False,
+        pay_type=None):
     """统一下单
     :return code, message:
     :param description: 商品描述，示例值:'Image形象店-深圳腾大-QQ公仔'
@@ -38,6 +39,7 @@ def pay(self,
     :param sub_appid: (服务商模式)子商户应用ID，示例值:'wxd678efh567hg6999'
     :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
     :param support_fapiao: 电子发票入口开放标识，传入true时，支付成功消息和支付详情页将出现开票入口。
+    :param pay_type: 微信支付类型，示例值:WeChatPayType.JSAPI
     """
     params = {}
     if not (notify_url or self._notify_url):
@@ -78,35 +80,40 @@ def pay(self,
             raise Exception('sub_mchid is not assigned.')
         if sub_appid:
             params.update({'sub_appid': sub_appid})
-        if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
+        pay_type = pay_type or self._type
+        if pay_type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not payer:
                 raise Exception('payer is not assigned')
             path = '/v3/pay/partner/transactions/jsapi'
-        elif self._type == WeChatPayType.APP:
+        elif pay_type == WeChatPayType.APP:
             path = '/v3/pay/partner/transactions/app'
-        elif self._type == WeChatPayType.H5:
+        elif pay_type == WeChatPayType.H5:
             if not scene_info:
                 raise Exception('scene_info is not assigned.')
             path = '/v3/pay/partner/transactions/h5'
-        elif self._type == WeChatPayType.NATIVE:
+        elif pay_type == WeChatPayType.NATIVE:
             path = '/v3/pay/partner/transactions/native'
+        else:
+            raise Exception('pay_type is not assigned.')
     else:
         params.update({'appid': appid or self._appid})
         params.update({'mchid': mchid or self._mchid})
-        if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
+        if pay_type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not payer:
                 raise Exception('payer is not assigned')
             path = '/v3/pay/transactions/jsapi'
-        elif self._type == WeChatPayType.APP:
+        elif pay_type == WeChatPayType.APP:
             path = '/v3/pay/transactions/app'
-        elif self._type == WeChatPayType.H5:
+        elif pay_type == WeChatPayType.H5:
             if not scene_info:
                 raise Exception('scene_info is not assigned.')
             path = '/v3/pay/transactions/h5'
-        elif self._type == WeChatPayType.NATIVE:
+        elif pay_type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
+        else:
+            raise Exception('unknown value of pay_type.')
     if support_fapiao:
-        params.update({'support_fapiao':support_fapiao})
+        params.update({'support_fapiao': support_fapiao})
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
@@ -172,7 +179,7 @@ def refund(self,
            sub_mchid=None):
     """申请退款
     :param out_refund_no: 商户退款单号，示例值:'1217752501201407033233368018'
-    :param amount: 金额信息，示例值:{'refund':888, 'total':888, 'currency':'CNY'}
+    :param amount: 金额信息，示例值:{'refund':888, 'total':888, 'currency':'CNY', 'refund_fee':100}
     :param transaction_id: 微信支付订单号，示例值:'1217752501201407033233368018'
     :param out_trade_no: 商户订单号，示例值:'1217752501201407033233368018'
     :param reason: 退款原因，示例值:'商品已售完'
@@ -299,7 +306,8 @@ def combine_pay(self,
                 time_expire=None,
                 combine_appid=None,
                 combine_mchid=None,
-                notify_url=None):
+                notify_url=None
+                pay_type=None):
     """合单支付下单
     :param combine_out_trade_no: 合单商户订单号, 示例值:'P20150806125346'
     :param sub_orders: 子单信息，示例值:[{'mchid':'1900000109', 'attach':'深圳分店', 'amount':{'total_amount':100,'currency':'CNY'}, 'out_trade_no':'20150806125346', 'description':'腾讯充值中心-QQ会员充值', 'settle_info':{'profit_sharing':False, 'subsidy_amount':10}}]
@@ -310,6 +318,7 @@ def combine_pay(self,
     :param combine_appid: 合单商户appid, 示例值:'wxd678efh567hg6787'
     :param combine_mchid: 合单发起方商户号，示例值:'1900000109'
     :param notify_url: 通知地址, 示例值:'https://yourapp.com/notify'
+    :param pay_type: 微信支付类型，示例值:WeChatPayType.JSAPI
     """
     params = {}
     params.update({'combine_appid': combine_appid or self._appid})
@@ -333,18 +342,21 @@ def combine_pay(self,
         params.update({'time_start': time_start})
     if time_expire:
         params.update({'time_expire': time_expire})
-    if self._type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
+    pay_type = pay_type or self._type
+    if pay_type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
         if not combine_payer_info:
             raise Exception('combine_payer_info is not assigned')
         path = '/v3/combine-transactions/jsapi'
-    elif self._type == WeChatPayType.APP:
+    elif pay_type == WeChatPayType.APP:
         path = '/v3/combine-transactions/app'
-    elif self._type == WeChatPayType.H5:
+    elif pay_type == WeChatPayType.H5:
         if not scene_info:
             raise Exception('scene_info is not assigned.')
         path = '/v3/combine-transactions/h5'
-    elif self._type == WeChatPayType.NATIVE:
+    elif pay_type == WeChatPayType.NATIVE:
         path = '/v3/combine-transactions/native'
+    else:
+        raise Exception('pay_type is not assigned.')
     return self._core.request(path, method=RequestType.POST, data=params)
 
 
