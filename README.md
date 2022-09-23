@@ -344,11 +344,35 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 ### 回调验证失败处理
 
 开发者遇到的难点之一就是回调验证失败的问题，由于众多的 python web 框架对回调消息的处理不完全一致，如果出现回调验证失败，请务必确认传入的 headers 和 body 的值和类型。
-通常框架传过来的 headers 类型是 dict，而 body 类型是 bytes。使用以下方法可直接获取到解密后的实际内容。
+通常框架传过来的 headers 类型是 dict，而 body 类型是 bytes。flask 框架参考以下方法可直接获取到解密后的实际内容。
+
+```python
+@app.route('/notify', methods=['POST'])
+def notify():
+    result = wxpay.callback(request.headers, request.data)
+    if result and result.get('event_type') == 'TRANSACTION.SUCCESS':
+        resource = result.get('resource')
+        appid = resource.get('appid')
+        mchid = resource.get('mchid')
+        out_trade_no = resource.get('out_trade_no')
+        transaction_id = resource.get('transaction_id')
+        trade_type = resource.get('trade_type')
+        trade_state = resource.get('trade_state')
+        trade_state_desc = resource.get('trade_state_desc')
+        bank_type = resource.get('bank_type')
+        attach = resource.get('attach')
+        success_time = resource.get('success_time')
+        payer = resource.get('payer')
+        amount = resource.get('amount').get('total')
+        # TODO: 根据返回参数进行必要的业务处理，处理完后返回200或204
+        return jsonify({'code': 'SUCCESS', 'message': '成功'})
+    else:
+        return jsonify({'code': 'FAILED', 'message': '失败'}), 500
+```
 
 #### flask 框架
 
-直接传入 request.headers 和 request.data 即可。
+如上面示例，直接传入 request.headers 和 request.data 即可。
 
 ```python
 result = wxpay.callback(headers=request.headers, body=request.data)
@@ -379,9 +403,13 @@ result = wxpay.callback(headers=request.headers, body=request.body)
 
 参考以上处理方法，大原则就是保证传给 callback 的参数值和收到的值一致，不要转换为 dict，也不要转换为 string。
 
+### 反复收到同一个回调消息怎么处理
+
+实际开发中处理微信支付通知消息时有两个问题需要注意。一是可能会重复收到同一个通知消息，需要在代码中进行判断处理。另一个是处理消息的时间如果过长，建议考虑异步处理，先缓存消息，避免微信支付服务器端认为超时，如果持续超时，微信支付服务器端可能会认为回调消息接口不可用。
+
 ### 接口清单里怎么没有回调接口
 
-所有的回调接口都通过公用接口 callback 处理，因此清单里没有一一罗列。
+所有的回调接口都通过公用接口 callback 处理，因此清单里没有一一罗列。对于收到的回调消息，可以通过 event_type 参数判断消息类型进行下一步处理，具体参数清单参考微信支付官方文档。
 
 ### 服务商模式如何接入
 
