@@ -71,6 +71,7 @@ def pay(self,
         params.update({'detail': detail})
     if settle_info:
         params.update({'settle_info': settle_info})
+    pay_type = pay_type or self._type
     if self._partner_mode:
         params.update({'sp_appid': appid or self._appid})
         params.update({'sp_mchid': mchid or self._mchid})
@@ -80,7 +81,6 @@ def pay(self,
             raise Exception('sub_mchid is not assigned.')
         if sub_appid:
             params.update({'sub_appid': sub_appid})
-        pay_type = pay_type or self._type
         if pay_type in [WeChatPayType.JSAPI, WeChatPayType.MINIPROG]:
             if not payer:
                 raise Exception('payer is not assigned')
@@ -111,7 +111,7 @@ def pay(self,
         elif pay_type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
         else:
-            raise Exception('unknown value of pay_type.')
+            raise Exception('pay_type is not assigned.')
     if support_fapiao:
         params.update({'support_fapiao': support_fapiao})
     return self._core.request(path, method=RequestType.POST, data=params)
