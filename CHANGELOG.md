@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.35] - 2022-12-29
+
+## Updated
+
+- 发起批量转账接口增加transfer_scene_id参数
+
 ## [1.2.34] - 2022-09-23
 
 ## Fixed
