@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from .media import _media_upload
 from .type import RequestType
+from .utils import sha256
 
 
 def marketing_image_upload(self, filepath, filename=None):
@@ -1023,6 +1026,7 @@ def marketing_busifavor_subsidy_query(self, subsidy_receipt_id):
 
 def industry_coupon_token(self, open_id, coupon_list=[]):
     """出行券切卡组件预下单
+    https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter9_9_1.shtml
     :param open_id: 用户在商户AppID下的唯一标识，该用户为后续拉起切卡组件的用户。示例值：'obLatjrR8kUDlj4-nofQsPAJAAFI'
     :param coupon_list: 用户最近领取的出行券列表。示例值：[{"coupon_id": "11004999626", "stock_id": 16474341}]
     """
@@ -1037,3 +1041,30 @@ def industry_coupon_token(self, open_id, coupon_list=[]):
         raise Exception('coupon_list is not assigned.')
     path = '/v3/industry-coupon/tokens'
     return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def bank_package_file(self, package_id, bank_type, filepath):
+    """导入定向用户协议号
+    https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter9_8_1.shtml
+    :package_id: 号码包唯一标识符。可在微信支付商户平台创建号码包后获得。示例值：'8473295'
+    :filepath: 电子发票文件路径，只支持txt和csv两种格式，示例值：'./active_user.csv'
+    """
+    if not (filepath and os.path.exists(filepath) and os.path.isfile(filepath)):
+        raise Exception('filepath is not assigned or not exists')
+    with open(filepath, mode='rb') as f:
+        content = f.read()
+    filename = os.path.basename(filepath)
+    filetype = os.path.splitext(filename)[-1][1:].upper()
+    mimes = {
+        'TXT': ' text/plain',
+        'CSV': 'text/csv'
+    }
+    if filetype not in mimes:
+        raise Exception('wechatpayv3 does not support this file type.')
+    if not package_id or bank_type:
+        raise Exception('package_id or bank_type is not assigned.')
+    params = {}
+    params.update({'meta': '{"bank_type":"%s", "filename":"%s", "sha256":"%s"}' % (bank_type, filename, sha256(content))})
+    files = [('file', (filename, content, mimes[filetype]))]
+    path = '/v3/marketing/bank/packages/%s/tasks' % package_id
+    return self._core.request(path, method=RequestType.POST, data=params, sign_data=params.get('meta'), files=files)
