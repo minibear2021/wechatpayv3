@@ -5,6 +5,7 @@ from .type import RequestType
 
 def applyment_submit(self, business_code, contact_info, subject_info, business_info, settlement_info, bank_account_info, addition_info=None):
     """提交申请单
+    https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter10_1_1.shtml
     :param business_code: 业务申请编号，示例值:'APPLYMENT_00000000001'
     :param contact_info: 超级管理员信息，示例值:{'contact_name':'张三','contact_id_number':'320311770706001','mobile_phone':'13900000000','contact_email':'admin@demo.com'}
     :param subject_info: 主体资料，示例值:{'subject_type':'SUBJECT_TYPE_ENTERPRISE','business_license_info':{'license_copy':'demo-media-id','license_number':'123456789012345678','merchant_name':'腾讯科技有限公司','legal_person':'张三'},'identity_info':{'id_doc_type':'IDENTIFICATION_TYPE_IDCARD','id_card_info'{'id_card_copy':'demo-media-id'}}}
@@ -81,6 +82,7 @@ def applyment_submit(self, business_code, contact_info, subject_info, business_i
 
 def applyment_query(self, business_code=None, applyment_id=None):
     """查询申请单状态
+    https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter11_1_2.shtml
     :param business_code: 业务申请编号，示例值:'APPLYMENT_00000000001'
     :param applyment_id: 申请单号，示例值:2000001234567890
     """
@@ -95,6 +97,7 @@ def applyment_query(self, business_code=None, applyment_id=None):
 
 def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, bank_address_code, account_number, bank_name=None, bank_branch_id=None):
     """修改结算账号
+    https://pay.weixin.qq.com/docs/partner/apis/modify-settlement/sub-merchants/modify-settlement.html
     :param sub_mchid: 特约商户号，示例值:'1511101111'
     :param account_type: 账户类型，枚举值:'ACCOUNT_TYPE_BUSINESS':对公银行账户，'ACCOUNT_TYPE_PRIVATE':经营者个人银行卡。示例值:'ACCOUNT_TYPE_BUSINESS'
     :param account_bank: 开户银行，示例值:'工商银行'
@@ -135,10 +138,23 @@ def applyment_settlement_modify(self, sub_mchid, account_type, account_bank, ban
 
 def applyment_settlement_query(self, sub_mchid):
     """查询结算账户
+    https://pay.weixin.qq.com/docs/partner/apis/modify-settlement/sub-merchants/get-settlement.html
     :param sub_mchid: 特约商户号，示例值:'1511101111'
     """
     if sub_mchid:
         path = '/v3/apply4sub/sub_merchants/%s/settlement' % sub_mchid
     else:
         raise Exception('sub_mchid is not assigned.')
+    return self._core.request(path)
+
+
+def applyment_settlement_modify_state(self, sub_mchid, application_no):
+    """查询结算账户修改申请状态
+    https://pay.weixin.qq.com/docs/partner/apis/modify-settlement/sub-merchants/get-application.html
+    :param sub_mchid: 【特约商户/二级商户号】 请填写本服务商负责进件的特约商户/二级商户号。
+    :param application_no: 【修改结算账户申请单号】 提交二级商户修改结算账户申请后，由微信支付返回的单号，作为查询申请状态的唯一标识。
+    """
+    if not (sub_mchid and application_no):
+        raise Exception('sub_mchid and/or application_no is not assigned.')
+    path = '/v3/apply4sub/sub_merchants/%s/application/%s' % (sub_mchid, application_no)
     return self._core.request(path)

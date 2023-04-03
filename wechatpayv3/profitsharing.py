@@ -324,7 +324,7 @@ def brand_profitsharing_order_query(self, transaction_id, out_order_no, sub_mchi
     else:
         raise Exception('sub_mchid is not assigned.')
     if transaction_id and out_order_no:
-        path = '%s&transaction_id=%s&out_order_no=%s' % (transaction_id, out_order_no)
+        path = '%s&transaction_id=%s&out_order_no=%s' % (path, transaction_id, out_order_no)
     else:
         raise Exception('transaction_id or out_order_no is not assigned.')
     return self._core.request(path)
