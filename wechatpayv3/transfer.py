@@ -65,11 +65,11 @@ def transfer_query_batchid(self, batch_id, need_query_detail=False, offset=0, li
         raise Exception('batch_id is not assigned')
     if need_query_detail:
         path += '?need_query_detail=true'
+        path += '&detail_status=%s' % detail_status
     else:
         path += '?need_query_detail=false'
     path += '&offset=%s' % offset
     path += '&limit=%s' % limit
-    path += '&detail_status=%s' % detail_status
     return self._core.request(path)
 
 
@@ -99,11 +99,11 @@ def transfer_query_out_batch_no(self, out_batch_no, need_query_detail=False, off
         raise Exception('batch_id is not assigned')
     if need_query_detail:
         path += '?need_query_detail=true'
+        path += '&detail_status=%s' % detail_status
     else:
         path += '?need_query_detail=false'
     path += '&offset=%s' % offset
     path += '&limit=%s' % limit
-    path += '&detail_status=%s' % detail_status
     return self._core.request(path)
 
 
