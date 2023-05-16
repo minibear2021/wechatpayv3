@@ -31,12 +31,12 @@ jobs:
     - name: Build package
       run: python -m build
     - name: Publish package to Test PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.8.6
       with:
         user: __token__
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.8.6
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
