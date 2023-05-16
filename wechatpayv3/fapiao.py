@@ -97,7 +97,7 @@ def fapiao_title(self, fapiao_apply_id, scene='WITH_WECHATPAY'):
     :param fapiao_apply_id: 发票申请单号，示例值：'4200000444201910177461284488'
     :param scene: 场景值，目前只支持WITH_WECHATPAY。示例值：'WITH_WECHATPAY'
     """
-    path = '/v3/new-tax-control-fapiao/user-title'
+    path = '/v3/new-tax-control-fapiao/user-title?'
     if fapiao_apply_id:
         path += 'fapiao_apply_id=%s' % fapiao_apply_id
     else:
