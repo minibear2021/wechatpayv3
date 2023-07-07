@@ -81,7 +81,7 @@ LOGGER = logging.getLogger("demo")
 # 接入模式：False=直连商户模式，True=服务商模式。
 PARTNER_MODE = False
 
-# 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见https://docs.python-requests.org/zh_CN/latest/user/advanced.html
+# 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见[https://requests.readthedocs.io/en/latest/user/advanced/#proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies)
 PROXY = None
 ```
 
