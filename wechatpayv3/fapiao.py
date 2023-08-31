@@ -232,3 +232,48 @@ def fapiao_insert_cards(self, fapiao_apply_id, buyer_information, fapiao_card_in
         raise Exception('fapiao_card_information is not assigned.')
     params.update({'scene': scene})
     return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def fapiao_check_submch(self, sub_mchid):
+    """检查子商户开票功能状态
+    :param sub_mch: 子商户号，微信支付分配的子商户号。示例值：'1900000001'
+    """
+    if sub_mchid:
+        path = '/v3/new-tax-control-fapiao/merchant/%s/check' % sub_mchid
+    else:
+        raise Exception('sub_mchid is not assigned.')
+    return self._core.request(path)
+
+
+def fapiao_query_files(self, fapiao_apply_id, sub_mchid=None, fapiao_id=None):
+    """获取发票下载信息
+    :param fapiao_apply_id: 发票申请单号，开票时指定的发票申请单号。
+    :param sub_mchid: 子商户号，微信支付分配的子商户号。示例值：'1900000001'
+    :param fapiao_id: 商户发票单号，开票时指定的商户发票单号，唯一标识一张电子发票。
+    """
+    if fapiao_apply_id:
+        path = '/v3/new-tax-control-fapiao/fapiao-applications/%s/fapiao-files' % fapiao_apply_id
+    else:
+        raise Exception('fapiao_apply_id is not assigned.')
+    params = {}
+    if sub_mchid:
+        params.update({'sub_mchid': sub_mchid})
+    if fapiao_id:
+        params.update({'fapiao_id': fapiao_id})
+    return self._core.request(path, method=RequestType.POST, data=params)
+
+
+def fapiao_download_file(self, url, openid, invoice_code, invoice_no, fapiao_id, sub_mchid=None):
+    """下载发票文件
+    :param url: 获取发票下载信息接口返回的download_url，保留其中的token字段不要删除。
+    """
+    if not (url and openid and invoice_code and invoice_no and fapiao_id):
+        raise Exception('url, openid, invoice_code, invocide_no or fapiao_id is not assigned.')
+    else:
+        path = '%s&mchid=%s&openid=%s&invoice_code=%s&invoice_no=%s&fapiao_id=%s' % (url, self._mchid, openid, invoice_code, invoice_no, fapiao_id)
+    if self._partner_mode:
+        if sub_mchid:
+            path = '%s&sub_mchid=%s' % (path, sub_mchid)
+        else:
+            raise Exception('sub_mchid is not assigned.')
+    return self._core.request(path)

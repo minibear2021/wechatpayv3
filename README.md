@@ -154,7 +154,7 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 公用| 公用 | 调起支付签名| sign | 是 | 是 |
 | 公用| 公用 | 回调通知| callback | 是 | 是 |
 | 公用| 公用 | 敏感信息参数解密 | decrypt | 是 | 是 |
-| 公用| 公用 | 下载账单| download_bill| 是 | 是 |
+| 公用| 公用 | 下载(交易、资金)账单| download_bill| 是 | 是 |
 | 商户进件 | 特约商户进件、小微商户进件| 提交申请单 | applyment_submit | 否| 是|
 | 商户进件 | 特约商户进件、小微商户进件| 查询申请单状态| applyment_query| 否| 是|
 | 商户进件 | 特约商户进件、小微商户进件| 修改结算账号| applyment_settlement_modify| 否| 是|
@@ -165,8 +165,9 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 基础支付 | 合单支付 | 统一下单 | combine_pay| 是| 是|
 | 基础支付 | 合单支付 | 查询订单 | combine_query| 是| 是|
 | 基础支付 | 合单支付 | 关闭订单 | combine_close| 是| 是|
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请退款 | refund| 是| 是|
-| 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 查询单笔退款| query_refund | 是| 是|
+| 基础支付 | 退款 | 申请退款 | refund| 是| 是|
+| 基础支付 | 退款 | 查询单笔退款| query_refund | 是| 是|
+| 基础支付 | 退款 | 发起异常退款| abnormal_refund | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请交易账单| trade_bill | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请资金账单| fundflow_bill| 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序、合单支付 | 申请单个子商户资金账单 | submch_fundflow_bill| 否| 是|
@@ -300,18 +301,21 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 | 风险合规 | 商户违规通知回调 | 删除商户违规通知回调地址 | merchantrisk_callback_delete | 否| 是|
 | 其他能力 | 图片上传 | 图片上传 | image_upload | 是| 是|
 | 其他能力 | 视频上传 | 视频上传 | video_upload | 是| 是|
-| 其他 | 电子发票（公共API） | 创建电子发票卡券模板 | fapiao_card_template | 是 | 是 |
-| 其他 | 电子发票（公共API） | 配置开发选项 | fapiao_set_merchant_config | 是 | 是 |
-| 其他 | 电子发票（公共API） | 查询商户配置的开发选项 | fapiao_merchant_config | 是 | 是 |
-| 其他 | 电子发票（公共API） | 获取抬头填写链接 | fapiao_title_url | 是 | 是 |
-| 其他 | 电子发票（公共API） | 获取用户填写的抬头 | fapiao_title | 是 | 是 |
-| 其他 | 电子发票(区块链模式) | 获取商品和服务税收分类对照表 | fapiao_tax_codes | 是 | 是 |
-| 其他 | 电子发票(区块链模式) | 获取商户开票基础信息 | fapiao_merchant_base_info | 是 | 是 |
-| 其他 | 电子发票(区块链模式) | 开具电子发票 | fapiao_applications | 是 | 是 |
-| 其他 | 电子发票(区块链模式) | 查询电子发票 | fapiao_query | 是 | 是 |
-| 其他 | 电子发票(区块链模式) | 冲红电子发票 | fapiao_reverse | 是 | 是 |
-| 其他 | 电子发票(自建平台模式) | 上传电子发票文件 | fapiao_upload_file | 是 | 是 |
-| 其他 | 电子发票(自建平台模式) | 将电子发票插入微信用户卡包 | fapiao_insert_cards | 是 | 是 |
+| 其他 | 电子发票 | 创建电子发票卡券模板 | fapiao_card_template | 是 | 是 |
+| 其他 | 电子发票 | 配置开发选项 | fapiao_set_merchant_config | 是 | 是 |
+| 其他 | 电子发票 | 查询商户配置的开发选项 | fapiao_merchant_config | 是 | 是 |
+| 其他 | 电子发票 | 获取抬头填写链接 | fapiao_title_url | 是 | 是 |
+| 其他 | 电子发票 | 获取用户填写的抬头 | fapiao_title | 是 | 是 |
+| 其他 | 电子发票 | 获取商品和服务税收分类对照表 | fapiao_tax_codes | 是 | 是 |
+| 其他 | 电子发票 | 获取商户开票基础信息 | fapiao_merchant_base_info | 是 | 是 |
+| 其他 | 电子发票 | 开具电子发票 | fapiao_applications | 是 | 是 |
+| 其他 | 电子发票 | 查询电子发票 | fapiao_query | 是 | 是 |
+| 其他 | 电子发票 | 冲红电子发票 | fapiao_reverse | 是 | 是 |
+| 其他 | 电子发票 | 上传电子发票文件 | fapiao_upload_file | 是 | 是 |
+| 其他 | 电子发票 | 将电子发票插入微信用户卡包 | fapiao_insert_cards | 是 | 是 |
+| 其他 | 电子发票 | 检查子商户开票功能状态 | fapiao_check_submch | 否 | 是 |
+| 其他 | 电子发票 | 获取发票下载信息 | fapiao_query_files | 是 | 是 |
+| 其他 | 电子发票 | 下载发票文件 | fapiao_download_file | 是 | 是 |
 | 其他 | 银行组件 | 获取对私银行卡号开户银行 | capital_search_bank_number | 是 | 是 |
 | 其他 | 银行组件 | 查询支持个人业务的银行列表 | capital_personal_banks | 是 | 是 |
 | 其他 | 银行组件 | 查询支持对公业务的银行列表 | capital_corporate_banks | 是 | 是 |

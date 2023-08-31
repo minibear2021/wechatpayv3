@@ -90,8 +90,10 @@ class WeChatPay():
                             complaint_notification_update, complaint_response,
                             complaint_update_refund)
     from .fapiao import (fapiao_applications, fapiao_card_template,
+                         fapiao_check_submch, fapiao_download_file,
                          fapiao_insert_cards, fapiao_merchant_base_info,
-                         fapiao_merchant_config, fapiao_query, fapiao_reverse,
+                         fapiao_merchant_config, fapiao_query,
+                         fapiao_query_files, fapiao_reverse,
                          fapiao_set_merchant_config, fapiao_tax_codes,
                          fapiao_title, fapiao_title_url, fapiao_upload_file)
     from .goldplan import (goldplan_advertising_close,
@@ -173,10 +175,10 @@ class WeChatPay():
                                 profitsharing_unfreeze)
     from .smartguide import (guides_assign, guides_query, guides_register,
                              guides_update)
-    from .transaction import (close, combine_close, combine_pay, combine_query,
-                              download_bill, fundflow_bill, pay, query,
-                              query_refund, refund, submch_fundflow_bill,
-                              trade_bill)
+    from .transaction import (abnormal_refund, close, combine_close,
+                              combine_pay, combine_query, download_bill,
+                              fundflow_bill, pay, query, query_refund, refund,
+                              submch_fundflow_bill, trade_bill)
     from .transfer import (transfer_batch, transfer_bill_receipt,
                            transfer_detail_receipt, transfer_query_batchid,
                            transfer_query_bill_receipt,
