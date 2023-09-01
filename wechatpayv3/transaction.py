@@ -395,7 +395,7 @@ def abnormal_refund(self, refund_id, out_refund_no, type, bank_type=None, bank_a
     """发起异常退款
     :param refund_id: 微信退款单号，退款单的主键，唯一定义此资源的标识。
     :param out_refund_no: 商户退款单号，商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
-    :param type: 异常退款处理方式，可选值：'COUPON', 'DISCOUNT'。
+    :param type: 异常退款处理方式，可选值：'USER_BANK_CARD'，退款到用户银行卡; 'MERCHANT_BANK_CARD'，退款至交易商户银行账户。
     :param bank_type: 开户银行类型，采用字符串类型的银行标识，值列表详见官网银行类型。
     :param bank_account: 收款银行卡号，用户的银行卡账号。
     :param real_name: 收款用户姓名。
