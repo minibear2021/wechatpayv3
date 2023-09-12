@@ -151,8 +151,8 @@ class Core():
         if isinstance(body, bytes):
             body = body.decode('UTF-8')
         if self._logger:
-            self._logger.debug('Callback Header: %s' % headers)
-            self._logger.debug('Callback Body: %s' % body)
+            self._logger.debug('Callback headers: %s' % headers)
+            self._logger.debug('Callback body: %s' % body)
         if not self._verify_signature(headers, body):
             return None
         data = json.loads(body)
@@ -178,7 +178,7 @@ class Core():
             associated_data=associated_data,
             apiv3_key=self._apiv3_key)
         if self._logger:
-            self._logger.debug('Callback resource: %s' % result)
+            self._logger.debug('Callback result: %s' % result)
         return result
 
     def callback(self, headers, body):
