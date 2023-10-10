@@ -50,6 +50,23 @@ headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
 result = wxpay.callback(headers=headers, body=request.body)
 ```
 
+### FastAPI 框架
+
+由于 FastAPI 框架特殊性，会将 headers 做一定的预处理，可以参考以下方式调用。
+
+```python
+headers = dict(request.headers)
+headers.update(
+    {
+        'Wechatpay-Signature': request.headers['wechatpay-signature'],
+        'Wechatpay-Timestamp': request.headers['wechatpay-timestamp'],
+        'Wechatpay-Nonce': request.headers['wechatpay-nonce'],
+        'Wechatpay-Serial': request.headers['wechatpay-serial']
+    }
+)
+result = wxpay.callback(headers, await request.body())
+```
+
 ### tornado 框架
 
 直接传入 request.headers 和 request.body 即可。
