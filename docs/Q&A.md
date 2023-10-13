@@ -42,11 +42,12 @@ result = wxpay.callback(headers=request.headers, body=request.data)
 由于 django 框架特殊性，会将 headers 做一定的预处理，可以参考以下方式调用。
 
 ```python
-headers = {}
-headers.update({'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE')})
-headers.update({'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP')})
-headers.update({'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE')})
-headers.update({'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')})
+headers = {
+    'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE'),
+    'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP'),
+    'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE'),
+    'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')
+}
 result = wxpay.callback(headers=headers, body=request.body)
 ```
 
@@ -55,16 +56,13 @@ result = wxpay.callback(headers=headers, body=request.body)
 由于 FastAPI 框架特殊性，会将 headers 做一定的预处理，可以参考以下方式调用。
 
 ```python
-headers = dict(request.headers)
-headers.update(
-    {
-        'Wechatpay-Signature': request.headers['wechatpay-signature'],
-        'Wechatpay-Timestamp': request.headers['wechatpay-timestamp'],
-        'Wechatpay-Nonce': request.headers['wechatpay-nonce'],
-        'Wechatpay-Serial': request.headers['wechatpay-serial']
-    }
-)
-result = wxpay.callback(headers, await request.body())
+headers = {
+    'Wechatpay-Signature': request.headers.get('wechatpay-signature'),
+    'Wechatpay-Timestamp': request.headers.get('wechatpay-timestamp'),
+    'Wechatpay-Nonce': request.headers.get('wechatpay-nonce'),
+    'Wechatpay-Serial': request.headers.get('wechatpay-serial')
+}
+result = wxpay.callback(headers=headers, body=await request.body())
 ```
 
 ### tornado 框架

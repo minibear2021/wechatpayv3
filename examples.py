@@ -4,10 +4,12 @@ import logging
 import os
 from random import sample
 from string import ascii_letters, digits
+import time
+import uuid
 
 from flask import Flask, jsonify, request
 
-from wechatpayv3 import SignType, WeChatPay, WeChatPayType
+from wechatpayv3 import WeChatPay, WeChatPayType
 
 # 微信支付商户号（直连模式）或服务商商户号（服务商模式，即sp_mchid)
 MCHID = '1234567890'
@@ -91,10 +93,10 @@ def pay_jsapi():
     result = json.loads(message)
     if code in range(200, 300):
         prepay_id = result.get('prepay_id')
-        timestamp = 'demo-timestamp'
-        noncestr = 'demo-nocestr'
+        timestamp = str(int(time.time()))
+        noncestr = str(uuid.uuid4()).replace('-', '')
         package = 'prepay_id=' + prepay_id
-        paysign = wxpay.sign([APPID, timestamp, noncestr, package])
+        sign = wxpay.sign([APPID, timestamp, noncestr, package])
         signtype = 'RSA'
         return jsonify({'code': 0, 'result': {
             'appId': APPID,
@@ -102,7 +104,7 @@ def pay_jsapi():
             'nonceStr': noncestr,
             'package': 'prepay_id=%s' % prepay_id,
             'signType': signtype,
-            'paySign': paysign
+            'paySign': sign
         }})
     else:
         return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
@@ -142,10 +144,10 @@ def pay_miniprog():
     result = json.loads(message)
     if code in range(200, 300):
         prepay_id = result.get('prepay_id')
-        timestamp = 'demo-timestamp'
-        noncestr = 'demo-nocestr'
+        timestamp = str(int(time.time()))
+        noncestr = str(uuid.uuid4()).replace('-', '')
         package = 'prepay_id=' + prepay_id
-        paysign = wxpay.sign(data=[APPID, timestamp, noncestr, package], sign_type=SignType.RSA_SHA256)
+        sign = wxpay.sign(data=[APPID, timestamp, noncestr, package])
         signtype = 'RSA'
         return jsonify({'code': 0, 'result': {
             'appId': APPID,
@@ -153,7 +155,7 @@ def pay_miniprog():
             'nonceStr': noncestr,
             'package': 'prepay_id=%s' % prepay_id,
             'signType': signtype,
-            'paySign': paysign
+            'paySign': sign
         }})
     else:
         return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
@@ -174,10 +176,10 @@ def pay_app():
     result = json.loads(message)
     if code in range(200, 300):
         prepay_id = result.get('prepay_id')
-        timestamp = 'demo-timestamp'
-        noncestr = 'demo-nocestr'
+        timestamp = str(int(time.time()))
+        noncestr = str(uuid.uuid4()).replace('-', '')
         package = 'Sign=WXPay'
-        paysign = 'demo-sign'
+        sign = wxpay.sign(data=[APPID, timestamp, noncestr, prepay_id])
         return jsonify({'code': 0, 'result': {
             'appid': APPID,
             'partnerid': MCHID,
@@ -185,7 +187,7 @@ def pay_app():
             'package': package,
             'nonceStr': noncestr,
             'timestamp': timestamp,
-            'sign': paysign
+            'sign': sign
         }})
     else:
         return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
