@@ -3,6 +3,8 @@
 [![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
 [![Download count](https://img.shields.io/pypi/dm/wechatpayv3)](https://img.shields.io/pypi/dm/wechatpayv3)
 
+**当前代码库中只有后端的演示代码，欢迎大家贡献前端各个类型应用调起支付的演示代码。**
+
 ## 介绍
 
 微信支付接口 V3 版 python 库。
@@ -48,7 +50,7 @@ pip install wechatpayv3
 
 ### 一个最小的后端
 
-[examples.py](examples.py) 演示了一个带有[Native 支付下单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml)接口和[支付通知](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_5.shtml)接口的后端。
+[examples.py](examples/server/examples.py) 演示了一个带有[Native 支付下单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml)接口和[支付通知](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_5.shtml)接口的后端。
 首先，修改 **examplys.py** 里以下几项配置参数：
 
 ```python
