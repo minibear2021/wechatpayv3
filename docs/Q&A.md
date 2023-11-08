@@ -1,9 +1,5 @@
 # 常见问题
 
-## 获取不到微信支付平台证书
-
-报异常："No wechatpay platform certificate ..."，检查所有初始化参数。
-特别是无法显式确认是否正确的api v3 key，直接重置后再试。
 
 ## 回调验证失败处理
 
@@ -81,6 +77,11 @@ result = wxpay.callback(headers=request.headers, body=request.body)
 ### 其他框架
 
 参考以上处理方法，大原则就是保证传给 callback 的参数值和收到的值一致，不要转换为 dict，也不要转换为 string。
+
+## 获取不到微信支付平台证书
+
+报异常："No wechatpay platform certificate ..."，检查所有初始化参数。
+特别是无法显式确认是否正确的api v3 key，直接重置后再试。
 
 ## 反复收到同一个回调消息怎么处理
 
