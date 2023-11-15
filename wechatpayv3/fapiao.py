@@ -33,7 +33,7 @@ def fapiao_set_merchant_config(self, callback_url=None):
     params = {}
     params.update({'callback_url': callback_url})
     path = '/v3/new-tax-control-fapiao/merchant/development-config'
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.PATCH, data=params)
 
 
 def fapiao_merchant_config(self):
