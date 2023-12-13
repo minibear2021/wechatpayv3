@@ -79,7 +79,10 @@ def rsa_verify(timestamp, nonce, body, signature, certificate):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
     public_key = certificate.public_key()
     message = sign_str.encode('UTF-8')
-    signature = b64decode(signature)
+    try:
+        signature = b64decode(signature)
+    except:
+        return False
     try:
         public_key.verify(signature, message, PKCS1v15(), SHA256())
     except InvalidSignature:
