@@ -2,7 +2,7 @@
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 import requests
 
@@ -199,8 +199,8 @@ class Core():
                     continue
                 with open(self._cert_dir + file_name, encoding="utf-8") as f:
                     certificate = load_certificate(f.read())
-                now = datetime.utcnow()
-                if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                now = datetime.now(timezone.utc)
+                if certificate and now >= certificate.not_valid_before_utc and now <= certificate.not_valid_after_utc:
                     self._certificates.append(certificate)
         if not self._certificates:
             self._update_certificates()
