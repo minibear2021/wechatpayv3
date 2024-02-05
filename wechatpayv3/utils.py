@@ -13,6 +13,7 @@ from cryptography.hazmat.primitives.hashes import SHA1, SHA256, SM3, Hash
 from cryptography.hazmat.primitives.hmac import HMAC
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.x509 import load_pem_x509_certificate
+from cryptography import __version__ as cryptography_version
 
 
 def build_authorization(path,

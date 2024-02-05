@@ -9,7 +9,7 @@ import requests
 from .type import RequestType, SignType
 from .utils import (aes_decrypt, build_authorization, hmac_sign,
                     load_certificate, load_private_key, rsa_decrypt,
-                    rsa_encrypt, rsa_sign, rsa_verify)
+                    rsa_encrypt, rsa_sign, rsa_verify, cryptography_version)
 
 
 class Core():
@@ -199,9 +199,14 @@ class Core():
                     continue
                 with open(self._cert_dir + file_name, encoding="utf-8") as f:
                     certificate = load_certificate(f.read())
-                now = datetime.now(timezone.utc)
-                if certificate and now >= certificate.not_valid_before_utc and now <= certificate.not_valid_after_utc:
-                    self._certificates.append(certificate)
+                if (int(cryptography_version.split(".")[0]) < 42):
+                    now = datetime.utcnow()
+                    if certificate and now >= certificate.not_valid_before and now <= certificate.not_valid_after:
+                        self._certificates.append(certificate)
+                else:
+                    now = datetime.now(timezone.utc)
+                    if certificate and now >= certificate.not_valid_before_utc and now <= certificate.not_valid_after_utc:
+                        self._certificates.append(certificate)
         if not self._certificates:
             self._update_certificates()
         if not self._certificates:
