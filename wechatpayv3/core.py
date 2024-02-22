@@ -53,8 +53,8 @@ class Core():
             certificate = load_certificate(cert_str)
             if not certificate:
                 continue
-            now = datetime.utcnow()
-            if now < certificate.not_valid_before or now > certificate.not_valid_after:
+            now = datetime.now(timezone.utc)
+            if now < certificate.not_valid_before_utc or now > certificate.not_valid_after_utc:
                 continue
             self._certificates.append(certificate)
             if not self._cert_dir:
