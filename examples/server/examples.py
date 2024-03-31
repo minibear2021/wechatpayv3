@@ -45,7 +45,7 @@ PARTNER_MODE = False
 PROXY = None
 
 # 请求超时时间配置
-timeoute = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
+timeout = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
 
 # 初始化
 wxpay = WeChatPay(
@@ -59,8 +59,9 @@ wxpay = WeChatPay(
     cert_dir=CERT_DIR,
     logger=LOGGER,
     partner_mode=PARTNER_MODE,
-    timeout=(10, 30),
-    proxy=PROXY)
+    proxy=PROXY,
+    timeout=timeout,
+)
 
 app = Flask(__name__)
 

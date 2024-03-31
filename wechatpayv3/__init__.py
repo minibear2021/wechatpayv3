@@ -29,6 +29,7 @@ class WeChatPay():
         :param logger: 日志记录器，示例值logging.getLoger('demo')
         :param partner_mode: 接入模式，默认False为直连商户模式，True为服务商模式
         :param proxy: 代理设置，示例值:{"https": "http://10.10.1.10:1080"}
+        :param timeout: 超时时间，示例值：(10, 30), 10为建立连接的最大超时时间，30为读取响应的最大超时实践
         """
         from .core import Core
 
