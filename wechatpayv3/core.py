@@ -13,7 +13,7 @@ from .utils import (aes_decrypt, build_authorization, hmac_sign,
 
 
 class Core():
-    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None, proxy=None):
+    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None, proxy=None, timeout=None):
         self._proxy = proxy
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
@@ -24,6 +24,7 @@ class Core():
         self._cert_dir = cert_dir + '/' if cert_dir else None
         self._logger = logger
         self._init_certificates()
+        self._timeout = timeout
 
     def _update_certificates(self):
         path = '/v3/certificates'
@@ -117,15 +118,15 @@ class Core():
             self._logger.debug('Request headers: %s' % headers)
             self._logger.debug('Request params: %s' % data)
         if method == RequestType.GET:
-            response = requests.get(url=self._gate_way + path, headers=headers, proxies=self._proxy)
+            response = requests.get(url=self._gate_way + path, headers=headers, proxies=self._proxy, timeout=self._timeout)
         elif method == RequestType.POST:
-            response = requests.post(url=self._gate_way + path, json=None if files else data, data=data if files else None, headers=headers, files=files, proxies=self._proxy)
+            response = requests.post(url=self._gate_way + path, json=None if files else data, data=data if files else None, headers=headers, files=files, proxies=self._proxy, timeout=self._timeout)
         elif method == RequestType.PATCH:
-            response = requests.patch(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy)
+            response = requests.patch(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy, timeout=self._timeout)
         elif method == RequestType.PUT:
-            response = requests.put(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy)
+            response = requests.put(url=self._gate_way + path, json=data, headers=headers, proxies=self._proxy, timeout=self._timeout)
         elif method == RequestType.DELETE:
-            response = requests.delete(url=self._gate_way + path, headers=headers, proxies=self._proxy)
+            response = requests.delete(url=self._gate_way + path, headers=headers, proxies=self._proxy, timeout=self._timeout)
         else:
             raise Exception('wechatpayv3 does no support this request type.')
         if self._logger:

@@ -15,7 +15,8 @@ class WeChatPay():
                  cert_dir=None,
                  logger=None,
                  partner_mode=False,
-                 proxy=None):
+                 proxy=None,
+                 timeout=None):
         """
         :param wechatpay_type: 微信支付类型，示例值:WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值:'1230000109'
@@ -41,7 +42,8 @@ class WeChatPay():
                           apiv3_key=apiv3_key,
                           cert_dir=cert_dir,
                           logger=logger,
-                          proxy=proxy)
+                          proxy=proxy,
+                          timeout=timeout)
         self._partner_mode = partner_mode
 
     def sign(self, data, sign_type=SignType.RSA_SHA256):
