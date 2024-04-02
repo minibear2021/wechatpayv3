@@ -85,6 +85,9 @@ PARTNER_MODE = False
 
 # 代理设置，None或者{"https": "http://10.10.1.10:1080"}，详细格式参见[https://requests.readthedocs.io/en/latest/user/advanced/#proxies](https://requests.readthedocs.io/en/latest/user/advanced/#proxies)
 PROXY = None
+
+# 请求超时时间配置
+TIMEOUT = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
 ```
 
 接下来初始化 WechatPay 实例并配置一个合适的接口：
@@ -101,7 +104,8 @@ wxpay = WeChatPay(
     cert_dir=CERT_DIR,
     logger=LOGGER,
     partner_mode=PARTNER_MODE,
-    proxy=PROXY)
+    proxy=PROXY,
+    timeout=TIMEOUT)
 
 app = Flask(__name__)
 
