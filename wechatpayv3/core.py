@@ -23,8 +23,9 @@ class Core():
         self._certificates = []
         self._cert_dir = cert_dir + '/' if cert_dir else None
         self._logger = logger
-        self._init_certificates()
         self._timeout = timeout
+        self._init_certificates()
+
 
     def _update_certificates(self):
         path = '/v3/certificates'
