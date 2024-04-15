@@ -46,7 +46,8 @@ def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, t
             transfer_detail['user_name'] = self._core.encrypt(transfer_detail.get('user_name'))
             cipher_data = True
     params.update({'appid': appid or self._appid})
-    params.update({'notify_url': notify_url or self._notify_url})
+    if notify_url or self._notify_url:
+        params.update({'notify_url': notify_url or self._notify_url})
     if transfer_scene_id:
         params.update({'transfer_scene_id': transfer_scene_id})
     path = '/v3/transfer/batches'
