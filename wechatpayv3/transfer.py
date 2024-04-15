@@ -3,7 +3,7 @@
 from .type import RequestType
 
 
-def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, total_num, transfer_detail_list=[], appid=None, transfer_scene_id=None):
+def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, total_num, transfer_detail_list=[], appid=None, transfer_scene_id=None, notify_url=None):
     """发起商家转账
     :param out_batch_no: 商户系统内部的商家批次单号，要求此参数只能由数字、大小写字母组成，在商户系统内部唯一，示例值：'plfk2020042013'
     :param batch_name: 该笔批量转账的名称，示例值：'2019年1月深圳分部报销单'
@@ -13,6 +13,7 @@ def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, t
     :param transfer_detail_list: 发起批量转账的明细列表，最多三千笔，示例值：[{"out_detail_no": "x23zy545Bd5436", "transfer_amount": 200000, "transfer_remark": "2020年4月报销", "openid": "o-MYE42l80oelYMDE34nYD456Xoy", "user_name": "张三"}]
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     :param transfer_scene_id: 转账场景ID，示例值:'1001'
+    :param notify_url: 通知地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
     """
     params = {}
     if out_batch_no:
@@ -45,6 +46,7 @@ def transfer_batch(self, out_batch_no, batch_name, batch_remark, total_amount, t
             transfer_detail['user_name'] = self._core.encrypt(transfer_detail.get('user_name'))
             cipher_data = True
     params.update({'appid': appid or self._appid})
+    params.update({'notify_url': notify_url or self._notify_url})
     if transfer_scene_id:
         params.update({'transfer_scene_id': transfer_scene_id})
     path = '/v3/transfer/batches'
