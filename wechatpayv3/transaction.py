@@ -42,9 +42,10 @@ def pay(self,
     :param pay_type: 微信支付类型，示例值:WeChatPayType.JSAPI
     """
     params = {}
-    if not (notify_url or self._notify_url):
-        raise Exception('notify_url is not assigned.')
-    params.update({'notify_url': notify_url or self._notify_url})
+    if pay_type != WeChatPayType.CODEPAY:
+        if not (notify_url or self._notify_url):
+            raise Exception('notify_url is not assigned.')
+        params.update({'notify_url': notify_url or self._notify_url})
     if description:
         params.update({'description': description})
     else:
@@ -93,6 +94,8 @@ def pay(self,
             path = '/v3/pay/partner/transactions/h5'
         elif pay_type == WeChatPayType.NATIVE:
             path = '/v3/pay/partner/transactions/native'
+        elif pay_type == WeChatPayType.CODEPAY:
+            path = '/v3/pay/partner/transactions/codepay'
         else:
             raise Exception('pay_type is not assigned.')
     else:
@@ -110,6 +113,8 @@ def pay(self,
             path = '/v3/pay/transactions/h5'
         elif pay_type == WeChatPayType.NATIVE:
             path = '/v3/pay/transactions/native'
+        elif pay_type == WeChatPayType.CODEPAY:
+            path = '/v3/pay/transactions/codepay'
         else:
             raise Exception('pay_type is not assigned.')
     if support_fapiao:
@@ -424,3 +429,30 @@ def abnormal_refund(self, refund_id, out_refund_no, type, bank_type=None, bank_a
         params.update({'real_name': self._core.encrypt(real_name)})
         cipher_data = True
     return self._core.request(path, method=RequestType.POST, data=params, cipher_data=cipher_data)
+
+def codepay_reverse(self, out_trade_no, appid=None, mchid=None, sub_appid=None, sub_mchid=None):
+    """撤销付款码支付订单
+    :警告：付款码支付订单如果用户已经付款，调用撤销接口会将资金退回给用户。:
+    :return code, message:
+    :param out_trade_no: 商户订单号，示例值:'1217752501201407033233368018'
+    :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
+    :param mchid: 微信支付商户号，可不填，默认传入初始化的mchid，示例值:'987654321'
+    :param sub_appid: (服务商模式)子商户应用ID，示例值:'wxd678efh567hg6999'
+    :param sub_mchid: (服务商模式)子商户的商户号，由微信支付生成并下发。示例值:'1900000109'
+    """
+    params = {}
+    if self._partner_mode:
+        params.update({'sp_appid': appid or self._appid})
+        params.update({'sp_mchid': mchid or self._mchid})
+        if sub_mchid:
+            params.update({'sub_mchid': sub_mchid})
+        else:
+            raise Exception('sub_mchid is not assigned.')
+        if sub_appid:
+            params.update({'sub_appid': sub_appid})
+        path = f'/v3/pay/partner/transactions/out-trade-no/{out_trade_no}/reverse'
+    else:
+        params.update({'appid': appid or self._appid})
+        params.update({'mchid': mchid or self._mchid})
+        path = f'/v3/pay/transactions/out-trade-no/{out_trade_no}/reverse'
+    return self._core.request(path, method=RequestType.POST, data=params)

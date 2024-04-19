@@ -197,6 +197,34 @@ def pay_app():
     else:
         return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
 
+@app.route('/pay_codepay')
+def pay_app():
+    # 以付款码支付为例，终端条码枪扫描用户付款码将解码后的auth_code放入payer传递给微信支付服务器扣款。
+    out_trade_no = ''.join(sample(ascii_letters + digits, 8))
+    description = 'demo-description'
+    amount = 1
+    payer = {'auth_code': '130061098828009406'}
+    scene_info={'store_info' : {'id' : '0001'}}
+    code, message = wxpay.pay(
+        description=description,
+        out_trade_no=out_trade_no,
+        amount={'total': amount},
+        payer=payer,
+        scene_info=scene_info,
+        pay_type=WeChatPayType.CODEPAY
+    )
+    result = json.loads(message)
+    if code in range(200, 300):
+        trade_state = result.get('trade_state')
+        trade_state_desc = result.get('trade_state_desc')
+        if trade_state == 'SUCCESS':
+            # 扣款成功，提示终端做后续处理
+            return jsonify({'code': 0, 'result': {'reason': trade_state_desc}})
+        else:
+            # 扣款失败，提示终端做后续处理
+            return jsonify({'code': -1, 'result': {'reason': trade_state_desc}})
+    else:
+        return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
 
 @app.route('/notify', methods=['POST'])
 def notify():

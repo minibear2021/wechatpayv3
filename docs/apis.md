@@ -10,9 +10,10 @@
 | 商户进件 | 特约商户进件、小微商户进件| 查询申请单状态| applyment_query| 否| 是|
 | 商户进件 | 特约商户进件、小微商户进件| 修改结算账号| applyment_settlement_modify| 否| 是|
 | 商户进件 | 特约商户进件、小微商户进件| 查询结算账号| applyment_settlement_query| 否| 是|
-| 基础支付 | JSAPI、APP、H5、Native、小程序支付| 统一下单 | pay | 是| 是|
-| 基础支付 | JSAPI、APP、H5、Native、小程序支付| 查询订单 | query | 是| 是|
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付、付款码支付| 统一下单 | pay | 是| 是|
+| 基础支付 | JSAPI、APP、H5、Native、小程序支付、付款码支付| 查询订单 | query | 是| 是|
 | 基础支付 | JSAPI、APP、H5、Native、小程序支付| 关闭订单 | close | 是| 是|
+| 基础支付 | 付款码支付 | 撤销订单 | codepay_reverse | 是| 是|
 | 基础支付 | 合单支付 | 统一下单 | combine_pay| 是| 是|
 | 基础支付 | 合单支付 | 查询订单 | combine_query| 是| 是|
 | 基础支付 | 合单支付 | 关闭订单 | combine_close| 是| 是|

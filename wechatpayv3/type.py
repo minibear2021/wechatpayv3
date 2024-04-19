@@ -18,6 +18,7 @@ class WeChatPayType(Enum):
     H5 = 2
     NATIVE = 3
     MINIPROG = 4
+    CODEPAY = 5
 
 
 class SignType(Enum):
