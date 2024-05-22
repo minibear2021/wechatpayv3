@@ -178,7 +178,7 @@ class WeChatPay():
                                 profitsharing_unfreeze)
     from .smartguide import (guides_assign, guides_query, guides_register,
                              guides_update)
-    from .transaction import (abnormal_refund, close, combine_close,
+    from .transaction import (abnormal_refund, close, codepay_reverse, combine_close,
                               combine_pay, combine_query, download_bill,
                               fundflow_bill, pay, query, query_refund, refund,
                               submch_fundflow_bill, trade_bill)
