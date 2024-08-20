@@ -198,7 +198,7 @@ def pay_app():
         return jsonify({'code': -1, 'result': {'reason': result.get('code')}})
 
 @app.route('/pay_codepay')
-def pay_app():
+def pay_codepay():
     # 以付款码支付为例，终端条码枪扫描用户付款码将解码后的auth_code放入payer传递给微信支付服务器扣款。
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
