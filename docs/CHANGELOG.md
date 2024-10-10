@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.53] - 2024-10-10
+
+### Added
+
+- 提交投诉回复接口添加mini_program_jump_info参数
+
 ## [1.2.52] - 2024-05-22
 
 ### Fixed
