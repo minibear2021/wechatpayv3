@@ -7,13 +7,13 @@ from datetime import datetime, timezone
 import requests
 
 from .type import RequestType, SignType
-from .utils import (aes_decrypt, build_authorization, hmac_sign,
+from .utils import (aes_decrypt, build_authorization, hmac_sign, load_public_key,
                     load_certificate, load_private_key, rsa_decrypt,
                     rsa_encrypt, rsa_sign, rsa_verify, cryptography_version)
 
 
 class Core():
-    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None, proxy=None, timeout=None):
+    def __init__(self, mchid, cert_serial_no, private_key, apiv3_key, cert_dir=None, logger=None, proxy=None, timeout=None, public_key=None, public_key_id=None):
         self._proxy = proxy
         self._mchid = mchid
         self._cert_serial_no = cert_serial_no
@@ -24,8 +24,15 @@ class Core():
         self._cert_dir = cert_dir + '/' if cert_dir else None
         self._logger = logger
         self._timeout = timeout
-        self._init_certificates()
-
+        if public_key:
+            self._pubkey_mode = True
+            self._public_key = load_public_key(public_key)
+            if not public_key_id:
+                raise Exception('public_key_serial_no is not assigned.')
+            self._public_key_id = public_key_id.replace('PUB_KEY_ID_', '')
+        else:
+            self._pubkey_mode = False
+            self._init_certificates()
 
     def _update_certificates(self):
         path = '/v3/certificates'
@@ -77,22 +84,28 @@ class Core():
         timestamp = headers.get('Wechatpay-Timestamp')
         nonce = headers.get('Wechatpay-Nonce')
         serial_no = headers.get('Wechatpay-Serial')
-        cert_found = False
-        for cert in self._certificates:
-            if int('0x' + serial_no, 16) == cert.serial_number:
-                cert_found = True
-                certificate = cert
-                break
-        if not cert_found:
-            self._update_certificates()
+        if self._pubkey_mode:
+            if serial_no != self._public_key_id:
+                return False
+            public_key = self._public_key
+        else:
+            cert_found = False
             for cert in self._certificates:
                 if int('0x' + serial_no, 16) == cert.serial_number:
                     cert_found = True
                     certificate = cert
                     break
             if not cert_found:
-                return False
-        if not rsa_verify(timestamp, nonce, body, signature, certificate):
+                self._update_certificates()
+                for cert in self._certificates:
+                    if int('0x' + serial_no, 16) == cert.serial_number:
+                        cert_found = True
+                        certificate = cert
+                        break
+                if not cert_found:
+                    return False
+            public_key = certificate.public_key()
+        if not rsa_verify(timestamp, nonce, body, signature, public_key):
             return False
         return True
 
@@ -104,7 +117,8 @@ class Core():
         headers.update({'Accept': 'application/json'})
         headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
         if cipher_data:
-            headers.update({'Wechatpay-Serial': hex(self._last_certificate().serial_number)[2:].upper()})
+            wechatpay_serial = self._public_key_id if self._pubkey_mode else hex(self._last_certificate().serial_number)[2:].upper()
+            headers.update({'Wechatpay-Serial': wechatpay_serial})
         authorization = build_authorization(
             path,
             method.value,
@@ -223,7 +237,11 @@ class Core():
         return rsa_decrypt(ciphertext=ciphtext, private_key=self._private_key)
 
     def encrypt(self, text):
-        return rsa_encrypt(text=text, certificate=self._last_certificate())
+        if self._pubkey_mode:
+            public_key = self._public_key
+        else:
+            public_key = self._last_certificate().public_key()
+        return rsa_encrypt(text=text, public_key=public_key)
 
     def _last_certificate(self):
         if not self._certificates:

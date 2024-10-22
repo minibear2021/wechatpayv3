@@ -48,6 +48,12 @@ pip install wechatpayv3
 - **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao)。
 - **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
 
+在2024年09月后申请开通的微信支付不再使用接口下载平台证书，用户需要从微信支付后台的“API安全”菜单中下载/复制以下两项，使用公钥模式初始化WechatPay。
+
+- **微信支付公钥：PUBLIC_KEY**，微信支付平台API安全菜单中下载的微信支付公钥。
+- **微信支付公钥：PUBLIC_KEY_ID**，微信支付平台API安全菜单中复制的微信支付公钥ID。
+
+
 ### 一个最小的后端
 
 [examples.py](examples/server/examples.py) 演示了一个带有[Native 支付下单](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml)接口和[支付通知](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_5.shtml)接口的后端。
@@ -58,7 +64,7 @@ pip install wechatpayv3
 MCHID = '1230000109'
 
 # 商户证书私钥，此文件不要放置在下面设置的CERT_DIR目录里。
-with open('path_to_key/apiclient_key.pem') as f:
+with open('path_to_mch_private_key/apiclient_key.pem') as f:
     PRIVATE_KEY = f.read()
 
 # 商户证书序列号
@@ -74,6 +80,7 @@ APPID = 'wxd678efh567hg6787'
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
 # 微信支付平台证书缓存目录，初始调试的时候可以设为None，首次使用确保此目录为空目录。
+# 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，此参数无需配置。
 CERT_DIR = './cert'
 
 # 日志记录器，记录web请求和回调细节，便于调试排错。
@@ -88,11 +95,19 @@ PROXY = None
 
 # 请求超时时间配置
 TIMEOUT = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
+
+# 微信支付平台公钥
+with open('path_to_wechat_pay_public_key/wechat_pay_public_key.pem') as f:
+    PUBLIC_KEY = f.read()
+
+# 微信支付平台公钥ID
+PUBLIC_KEY_ID = '444F4864EA9B34415...'
 ```
 
 接下来初始化 WechatPay 实例并配置一个合适的接口：
 
 ```python
+# 微信支付平台证书模式初始化
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
@@ -106,6 +121,22 @@ wxpay = WeChatPay(
     partner_mode=PARTNER_MODE,
     proxy=PROXY,
     timeout=TIMEOUT)
+
+# 微信支付平台公钥模式初始化，2024年09月之后申请的账号使用此模式。
+wxpay = WeChatPay(
+    wechatpay_type=WeChatPayType.NATIVE,
+    mchid=MCHID,
+    private_key=PRIVATE_KEY,
+    cert_serial_no=CERT_SERIAL_NO,
+    apiv3_key=APIV3_KEY,
+    appid=APPID,
+    notify_url=NOTIFY_URL,
+    logger=LOGGER,
+    partner_mode=PARTNER_MODE,
+    proxy=PROXY,
+    timeout=TIMEOUT,
+    public_key=PUBLIC_KEY,
+    public_key_id=PUBLIC_KEY_ID)
 
 app = Flask(__name__)
 

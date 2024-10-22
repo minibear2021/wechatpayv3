@@ -16,7 +16,9 @@ class WeChatPay():
                  logger=None,
                  partner_mode=False,
                  proxy=None,
-                 timeout=None):
+                 timeout=None,
+                 public_key=None,
+                 public_key_id=None):
         """
         :param wechatpay_type: 微信支付类型，示例值:WeChatPayType.MINIPROG
         :param mchid: 直连商户号，示例值:'1230000109'
@@ -30,6 +32,8 @@ class WeChatPay():
         :param partner_mode: 接入模式，默认False为直连商户模式，True为服务商模式
         :param proxy: 代理设置，示例值:{"https": "http://10.10.1.10:1080"}
         :param timeout: 超时时间，示例值：(10, 30), 10为建立连接的最大超时时间，30为读取响应的最大超时实践
+        :param public_key: 微信支付平台公钥，示例值:'MIIEvwIBADANBgkqhkiG9w0BAQE...'
+        :param public_key_id: 微信支付平台公钥id，示例值：'PUB_KEY_ID_444F4864EA9B34415...'
         """
         from .core import Core
 
@@ -44,7 +48,9 @@ class WeChatPay():
                           cert_dir=cert_dir,
                           logger=logger,
                           proxy=proxy,
-                          timeout=timeout)
+                          timeout=timeout,
+                          public_key=public_key,
+                          public_key_id=public_key_id)
         self._partner_mode = partner_mode
 
     def sign(self, data, sign_type=SignType.RSA_SHA256):

@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.asymmetric.padding import MGF1, OAEP, PKCS1v
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.hashes import SHA1, SHA256, SM3, Hash
 from cryptography.hazmat.primitives.hmac import HMAC
-from cryptography.hazmat.primitives.serialization import load_pem_private_key
+from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography import __version__ as cryptography_version
 
@@ -62,6 +62,16 @@ def format_private_key(private_key_str):
     return private_key_str
 
 
+def format_public_key(public_key_str):
+    pem_start = '-----BEGIN PUBLIC KEY-----\n'
+    pem_end = '\n-----END PUBLIC KEY-----'
+    if not public_key_str.startswith(pem_start):
+        public_key_str = pem_start + public_key_str
+    if not public_key_str.endswith(pem_end):
+        public_key_str = public_key_str + pem_end
+    return public_key_str
+
+
 def load_certificate(certificate_str):
     try:
         return load_pem_x509_certificate(data=certificate_str.encode('UTF-8'), backend=default_backend())
@@ -76,9 +86,15 @@ def load_private_key(private_key_str):
         raise Exception('failed to load private key.')
 
 
-def rsa_verify(timestamp, nonce, body, signature, certificate):
+def load_public_key(public_key_str):
+    try:
+        return load_pem_public_key(data=format_public_key(public_key_str).encode('UTF-8'), backend=default_backend())
+    except:
+        raise Exception('failed to load public key.')
+
+
+def rsa_verify(timestamp, nonce, body, signature, public_key):
     sign_str = '%s\n%s\n%s\n' % (timestamp, nonce, body)
-    public_key = certificate.public_key()
     message = sign_str.encode('UTF-8')
     try:
         signature = b64decode(signature)
@@ -91,9 +107,8 @@ def rsa_verify(timestamp, nonce, body, signature, certificate):
     return True
 
 
-def rsa_encrypt(text, certificate):
+def rsa_encrypt(text, public_key):
     data = text.encode('UTF-8')
-    public_key = certificate.public_key()
     cipherbyte = public_key.encrypt(
         plaintext=data,
         padding=OAEP(mgf=MGF1(algorithm=SHA1()), algorithm=SHA1(), label=None)
