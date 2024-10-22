@@ -30,10 +30,6 @@ APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
-# 微信支付平台证书缓存目录，减少证书下载调用次数，首次使用确保此目录为空目录.
-# 初始调试时可不设置，调试通过后再设置，示例值:'./cert'
-CERT_DIR = None
-
 # 日志记录器，记录web请求和回调细节
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
 LOGGER = logging.getLogger("demo")
@@ -47,6 +43,13 @@ PROXY = None
 # 请求超时时间配置
 TIMEOUT = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
 
+# 微信支付平台公钥
+with open('path_to_wechat_pay_public_key/wechat_pay_public_key.pem') as f:
+    PUBLIC_KEY = f.read()
+
+# 微信支付平台公钥ID
+PUBLIC_KEY_ID = '444F4864EA9B34415...'
+
 # 初始化
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
@@ -56,11 +59,12 @@ wxpay = WeChatPay(
     apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL,
-    cert_dir=CERT_DIR,
     logger=LOGGER,
     partner_mode=PARTNER_MODE,
     proxy=PROXY,
-    timeout=TIMEOUT
+    timeout=TIMEOUT,
+    public_key=PUBLIC_KEY,
+    public_key_id=PUBLIC_KEY_ID
 )
 
 app = Flask(__name__)
