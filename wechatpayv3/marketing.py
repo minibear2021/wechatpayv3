@@ -1060,7 +1060,7 @@ def bank_package_file(self, package_id, bank_type, filepath):
         'CSV': 'text/csv'
     }
     if filetype not in mimes:
-        raise Exception('wechatpayv3 does not support this file type.')
+        raise Exception('wechatpayv3 does not support this file type: ' + filetype)
     if not package_id or bank_type:
         raise Exception('package_id or bank_type is not assigned.')
     params = {}

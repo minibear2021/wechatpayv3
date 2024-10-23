@@ -80,10 +80,30 @@ class Core():
                     f.write(cert_str)
 
     def _verify_signature(self, headers, body):
-        signature = headers.get('Wechatpay-Signature')
-        timestamp = headers.get('Wechatpay-Timestamp')
-        nonce = headers.get('Wechatpay-Nonce')
-        serial_no = headers.get('Wechatpay-Serial')
+        signature_mark = 'Wechatpay-Signature'
+        timestamp_mark = 'Wechatpay-Timestamp'
+        nonce_mark = 'Wechatpay-Nonce'
+        serial_mark = 'Wechatpay-Serial'
+        signature_type_mark = 'Wechatpay-Signature-Type'        
+        if headers.get('HTTP_WECHATPAY_SIGNATURE'): # 兼容django
+            signature_mark = 'HTTP_WECHATPAY_SIGNATURE'
+            timestamp_mark = 'HTTP_WECHATPAY_TIMESTAMP'
+            nonce_mark = 'HTTP_WECHATPAY_NONCE'
+            serial_mark = 'HTTP_WECHATPAY_SERIAL'
+            signature_type_mark = 'HTTP_WECHATPAY_SIGNATURE_TYPE'
+        if headers.get('wechatpay-signature'): # 兼容fastapi
+            signature_mark = 'wechatpay-signature'
+            timestamp_mark = 'wechatpay-timestamp'
+            nonce_mark = 'wechatpay-nonce'
+            serial_mark = 'wechatpay-serial'
+            signature_type_mark = 'wechatpay-signature-type'            
+        signature = headers.get(signature_mark)
+        timestamp = headers.get(timestamp_mark)
+        nonce = headers.get(nonce_mark)
+        serial_no = headers.get(serial_mark)
+        signature_type = headers.get(signature_type_mark)
+        if signature_type != 'WECHATPAY2-SHA256-RSA2048':
+            raise Exception('wechatpayv3 does not support this algorithm: ' + signature_type)
         if self._pubkey_mode:
             if serial_no != self._public_key_id:
                 return False
@@ -175,6 +195,8 @@ class Core():
             self._logger.debug('Callback headers: %s' % headers)
             self._logger.debug('Callback body: %s' % body)
         if not self._verify_signature(headers, body):
+            if self._logger:
+                self._logger.debug('Failed to verify signature')
             return None
         data = json.loads(body)
         resource_type = data.get('resource_type')
@@ -185,7 +207,7 @@ class Core():
             return None
         algorithm = resource.get('algorithm')
         if algorithm != 'AEAD_AES_256_GCM':
-            raise Exception('wechatpayv3 does not support this algorithm')
+            raise Exception('wechatpayv3 does not support this algorithm: ' + algorithm)
         nonce = resource.get('nonce')
         ciphertext = resource.get('ciphertext')
         associated_data = resource.get('associated_data')
@@ -200,6 +222,8 @@ class Core():
             apiv3_key=self._apiv3_key)
         if self._logger:
             self._logger.debug('Callback result: %s' % result)
+            if not result:
+                self._logger.debug('Please double check your apiv3 key')
         return result
 
     def callback(self, headers, body):

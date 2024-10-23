@@ -30,6 +30,11 @@ APPID = 'wxd678efh567hg6787'
 # 回调地址，也可以在调用接口的时候覆盖
 NOTIFY_URL = 'https://www.xxxx.com/notify'
 
+# 微信支付平台证书缓存目录，减少证书下载调用次数，首次使用确保此目录为空目录。
+# 初始调试时可不设置，调试通过后再设置，示例值:'./cert'。
+# 新申请的微信支付商户号如果使用平台公钥模式，可以不用设置此参数。
+CERT_DIR = None
+
 # 日志记录器，记录web请求和回调细节
 logging.basicConfig(filename=os.path.join(os.getcwd(), 'demo.log'), level=logging.DEBUG, filemode='a', format='%(asctime)s - %(process)s - %(levelname)s: %(message)s')
 LOGGER = logging.getLogger("demo")
@@ -61,13 +66,27 @@ wxpay = WeChatPay(
     apiv3_key=APIV3_KEY,
     appid=APPID,
     notify_url=NOTIFY_URL,
+    cert_dir=CERT_DIR,
+    logger=LOGGER,
+    partner_mode=PARTNER_MODE,
+    proxy=PROXY,
+    timeout=TIMEOUT)
+
+# 微信支付平台公钥模式初始化，2024年09月之后申请的账号参考使用此模式。
+wxpay = WeChatPay(
+    wechatpay_type=WeChatPayType.NATIVE,
+    mchid=MCHID,
+    private_key=PRIVATE_KEY,
+    cert_serial_no=CERT_SERIAL_NO,
+    apiv3_key=APIV3_KEY,
+    appid=APPID,
+    notify_url=NOTIFY_URL,
     logger=LOGGER,
     partner_mode=PARTNER_MODE,
     proxy=PROXY,
     timeout=TIMEOUT,
     public_key=PUBLIC_KEY,
-    public_key_id=PUBLIC_KEY_ID
-)
+    public_key_id=PUBLIC_KEY_ID)
 
 app = Flask(__name__)
 

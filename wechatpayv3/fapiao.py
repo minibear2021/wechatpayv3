@@ -202,7 +202,7 @@ def fapiao_upload_file(self, filepath):
         'ODF': 'application/odf'
     }
     if filetype not in mimes:
-        raise Exception('wechatpayv3 does not support this file type.')
+        raise Exception('wechatpayv3 does not support this file type: ' + filetype)
     params = {}
     params.update({'meta': '{"file_type":"%s","digest_alogrithm":"SM3","digest":"%s"}' % (filetype, sm3(content))})
     files = [('file', (filename, content, mimes[filetype]))]

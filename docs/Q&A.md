@@ -47,7 +47,8 @@ headers = {
     'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE'),
     'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP'),
     'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE'),
-    'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL')
+    'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL'),
+    'Wechatpay-Signature-Type': request.META.get('HTTP_WECHATPAY_SIGNATURE_TYPE')
 }
 result = wxpay.callback(headers=headers, body=request.body)
 ```
@@ -61,7 +62,8 @@ headers = {
     'Wechatpay-Signature': request.headers.get('wechatpay-signature'),
     'Wechatpay-Timestamp': request.headers.get('wechatpay-timestamp'),
     'Wechatpay-Nonce': request.headers.get('wechatpay-nonce'),
-    'Wechatpay-Serial': request.headers.get('wechatpay-serial')
+    'Wechatpay-Serial': request.headers.get('wechatpay-serial'),
+    'Wechatpay-Signature-Type': request.headers.get('wechatpay-signature-type')
 }
 result = wxpay.callback(headers=headers, body=await request.body())
 ```
