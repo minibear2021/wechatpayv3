@@ -104,7 +104,7 @@ with open('path_to_wechat_pay_public_key/wechat_pay_public_key.pem') as f:
 
 # 微信支付平台公钥ID
 # 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
-PUBLIC_KEY_ID = '444F4864EA9B34415...'
+PUBLIC_KEY_ID = 'PUB_KEY_ID_444F4864EA9B34415...'
 ```
 
 接下来初始化 WechatPay 实例并配置一个合适的接口：
