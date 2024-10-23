@@ -19,11 +19,12 @@
 
 ## 特性
 
-1. 平台证书自动更新，无需开发者关注平台证书有效性，无需手动下载更新，自动验证签名；
-2. 支持本地缓存平台证书，初始化时指定平台证书保存目录即可；
+1. 平台证书自动更新，无需开发者关注平台证书有效性，无需手动下载更新，自动验证签名（微信支付平台证书模式）；
+2. 支持本地缓存平台证书，初始化时指定平台证书保存目录即可（微信支付平台证书模式）；
 3. 敏感信息直接传入明文参数，SDK 内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密 resource 对象，并返回解密后的数据；
-5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有 v3 版接口。
+5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有 v3 版接口；
+6. 兼容通过平台证书模式和平台公钥模式（2024年09月后启用）初始化。
 
 ## 源码
 
@@ -97,17 +98,18 @@ PROXY = None
 TIMEOUT = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
 
 # 微信支付平台公钥
+# 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
 with open('path_to_wechat_pay_public_key/wechat_pay_public_key.pem') as f:
     PUBLIC_KEY = f.read()
 
 # 微信支付平台公钥ID
+# 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
 PUBLIC_KEY_ID = '444F4864EA9B34415...'
 ```
 
 接下来初始化 WechatPay 实例并配置一个合适的接口：
 
 ```python
-# 微信支付平台证书模式初始化
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
