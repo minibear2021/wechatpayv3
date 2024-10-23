@@ -47,12 +47,12 @@ pip install wechatpayv3
 - **商户 API 证书私钥：PRIVATE_KEY**。商户申请商户 API 证书时，会生成商户私钥，并保存在本地证书文件夹的文件 apiclient_key.pem 中。
   > :warning: 不要把私钥文件暴露在公共场合，如上传到 Github，写在客户端代码等。
 - **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao)。
-- **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
+- **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 解密时使用的对称加密密钥。
 
 在2024年09月后申请开通的微信支付可能[无法使用接口下载平台证书](docs/Q&A.md#下载平台证书时解析失败)，这种情况下，需要从微信支付后台的“API安全”菜单中下载/复制以下两项，使用公钥模式初始化WechatPay。
 
-- **微信支付公钥：PUBLIC_KEY**，微信支付平台“API安全”菜单中下载的微信支付公钥。
-- **微信支付公钥ID：PUBLIC_KEY_ID**，微信支付平台“API安全”菜单中复制的微信支付公钥ID。
+- **微信支付公钥：PUBLIC_KEY**，微信支付后台“API安全-微信支付公钥”菜单中下载的微信支付公钥。
+- **微信支付公钥ID：PUBLIC_KEY_ID**，微信支付后台“API安全-微信支付公钥”菜单中复制的微信支付公钥ID，形如：PUB_KEY_ID_1234567890...。
 
 
 ### 一个最小的后端
