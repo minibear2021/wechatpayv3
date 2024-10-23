@@ -104,7 +104,7 @@ with open('path_to_wechat_pay_public_key/wechat_pay_public_key.pem') as f:
 
 # 微信支付平台公钥ID
 # 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
-PUBLIC_KEY_ID = '444F4864EA9B34415...'
+PUBLIC_KEY_ID = 'PUB_KEY_ID_444F4864EA9B34415...'
 ```
 
 接下来初始化 WechatPay 实例并配置一个合适的接口：
@@ -217,7 +217,3 @@ Native 支付调试最简单便捷，调试通过没有问题证明初始化参�
 1. 回调通知（callback）接口将收到的参数解密后返回，回调验证不合规或解密失败则返回 None；
 2. 下载账单（download_bill）和消费者投诉 2.0 的图片下载（complaint_image_download）接口返回的 message 为 bytes 类型，直接将 message 写入磁盘即可获得对应的目标文件。
 3. 账单下载接口默认返回的是gzip格式的文件，可用gzip库解压后获取实际的账单文件。
-
-## 签名、验签、加密、解密的内部实现
-
-涉及加解密的具体实现的可以参考[这里](docs/security.md)了解。
