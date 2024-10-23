@@ -48,7 +48,7 @@ pip install wechatpayv3
 - **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao)。
 - **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 加密时使用的对称加密密钥。
 
-在2024年09月后申请开通的微信支付不再使用接口下载平台证书，用户需要从微信支付后台的“API安全”菜单中下载/复制以下两项，使用公钥模式初始化WechatPay。
+在2024年09月后申请开通的微信支付可能[无法使用接口下载平台证书](docs/Q&A.md#下载平台证书时解析失败)，这种情况下，需要从微信支付后台的“API安全”菜单中下载/复制以下两项，使用公钥模式初始化WechatPay。
 
 - **微信支付公钥：PUBLIC_KEY**，微信支付平台“API安全”菜单中下载的微信支付公钥。
 - **微信支付公钥ID：PUBLIC_KEY_ID**，微信支付平台“API安全”菜单中复制的微信支付公钥ID。
@@ -122,7 +122,7 @@ wxpay = WeChatPay(
     proxy=PROXY,
     timeout=TIMEOUT)
 
-# 微信支付平台公钥模式初始化，2024年09月之后申请的账号使用此模式。
+# 微信支付平台公钥模式初始化，2024年09月之后申请的账号参考使用此模式。
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,

@@ -29,7 +29,7 @@ class Core():
             self._public_key = load_public_key(public_key)
             if not public_key_id:
                 raise Exception('public_key_serial_no is not assigned.')
-            self._public_key_id = public_key_id.replace('PUB_KEY_ID_', '')
+            self._public_key_id = public_key_id
         else:
             self._pubkey_mode = False
             self._init_certificates()
