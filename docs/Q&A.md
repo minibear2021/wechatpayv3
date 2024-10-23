@@ -40,37 +40,23 @@ result = wxpay.callback(headers=request.headers, body=request.data)
 
 ### django 框架
 
-由于 django 框架特殊性，会将 headers 做一定的预处理，可以参考以下方式调用。
+可以参考以下方式调用。
 
 ```python
-headers = {
-    'Wechatpay-Signature': request.META.get('HTTP_WECHATPAY_SIGNATURE'),
-    'Wechatpay-Timestamp': request.META.get('HTTP_WECHATPAY_TIMESTAMP'),
-    'Wechatpay-Nonce': request.META.get('HTTP_WECHATPAY_NONCE'),
-    'Wechatpay-Serial': request.META.get('HTTP_WECHATPAY_SERIAL'),
-    'Wechatpay-Signature-Type': request.META.get('HTTP_WECHATPAY_SIGNATURE_TYPE')
-}
-result = wxpay.callback(headers=headers, body=request.body)
+result = wxpay.callback(headers=request.META, body=request.body)
 ```
 
 ### FastAPI 框架
 
-由于 FastAPI 框架特殊性，会将 headers 做一定的预处理，可以参考以下方式调用。
+可以参考以下方式调用。
 
 ```python
-headers = {
-    'Wechatpay-Signature': request.headers.get('wechatpay-signature'),
-    'Wechatpay-Timestamp': request.headers.get('wechatpay-timestamp'),
-    'Wechatpay-Nonce': request.headers.get('wechatpay-nonce'),
-    'Wechatpay-Serial': request.headers.get('wechatpay-serial'),
-    'Wechatpay-Signature-Type': request.headers.get('wechatpay-signature-type')
-}
-result = wxpay.callback(headers=headers, body=await request.body())
+result = wxpay.callback(headers=request.headers, body=await request.body())
 ```
 
 ### tornado 框架
 
-直接传入 request.headers 和 request.body 即可。
+可以参考以下方式调用。
 
 ```python
 result = wxpay.callback(headers=request.headers, body=request.body)
