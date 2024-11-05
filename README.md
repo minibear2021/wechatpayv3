@@ -24,7 +24,7 @@
 3. 敏感信息直接传入明文参数，SDK 内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密 resource 对象，并返回解密后的数据；
 5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有 v3 版接口；
-6. 兼容通过平台证书模式和平台公钥模式（2024年09月后启用）初始化。
+6. 兼容通过平台证书模式和平台公钥模式（2024年09月后启用）初始化，兼容证书模式向公钥模式过渡。
 
 ## 源码
 
