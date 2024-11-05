@@ -25,13 +25,11 @@ class Core():
         self._logger = logger
         self._timeout = timeout
         if public_key:
-            self._pubkey_mode = True
             self._public_key = load_public_key(public_key)
             if not public_key_id:
                 raise Exception('public_key_serial_no is not assigned.')
             self._public_key_id = public_key_id
         else:
-            self._pubkey_mode = False
             self._init_certificates()
 
     def _update_certificates(self):
@@ -104,9 +102,7 @@ class Core():
         signature_type = headers.get(signature_type_mark)
         if signature_type != 'WECHATPAY2-SHA256-RSA2048':
             raise Exception('wechatpayv3 does not support this algorithm: ' + signature_type)
-        if self._pubkey_mode:
-            if serial_no != self._public_key_id:
-                return False
+        if serial_no == self._public_key_id:
             public_key = self._public_key
         else:
             cert_found = False
@@ -137,7 +133,7 @@ class Core():
         headers.update({'Accept': 'application/json'})
         headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
         if cipher_data:
-            wechatpay_serial = self._public_key_id if self._pubkey_mode else hex(self._last_certificate().serial_number)[2:].upper()
+            wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()
             headers.update({'Wechatpay-Serial': wechatpay_serial})
         authorization = build_authorization(
             path,
@@ -261,7 +257,7 @@ class Core():
         return rsa_decrypt(ciphertext=ciphtext, private_key=self._private_key)
 
     def encrypt(self, text):
-        if self._pubkey_mode:
+        if self._public_key_id:
             public_key = self._public_key
         else:
             public_key = self._last_certificate().public_key()
