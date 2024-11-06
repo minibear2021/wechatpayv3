@@ -24,12 +24,11 @@ class Core():
         self._cert_dir = cert_dir + '/' if cert_dir else None
         self._logger = logger
         self._timeout = timeout
-        if public_key:
-            self._public_key = load_public_key(public_key)
-            if not public_key_id:
-                raise Exception('public_key_serial_no is not assigned.')
-            self._public_key_id = public_key_id
-        else:
+        self._public_key = load_public_key(public_key)
+        self._public_key_id = public_key_id
+        if (public_key is None) != (public_key_id is None):
+            raise Exception('public_key_id or public_key is not assigned.')            
+        if not public_key:
             self._init_certificates()
 
     def _update_certificates(self):

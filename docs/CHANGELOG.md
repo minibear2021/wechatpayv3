@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.5] - 2024-11-06
+
+### Fixed
+
+- 修复public_key_id未赋值bug
+
 ## [1.3.4] - 2024-11-05
 
 ### Added

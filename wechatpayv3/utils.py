@@ -80,6 +80,8 @@ def load_certificate(certificate_str):
 
 
 def load_private_key(private_key_str):
+    if not private_key_str:
+        return None
     try:
         return load_pem_private_key(data=format_private_key(private_key_str).encode('UTF-8'), password=None, backend=default_backend())
     except:
@@ -87,6 +89,8 @@ def load_private_key(private_key_str):
 
 
 def load_public_key(public_key_str):
+    if not public_key_str:
+        return None
     try:
         return load_pem_public_key(data=format_public_key(public_key_str).encode('UTF-8'), backend=default_backend())
     except:

@@ -73,6 +73,7 @@ wxpay = WeChatPay(
     timeout=TIMEOUT)
 
 # 微信支付平台公钥模式初始化，2024年09月之后申请的账号参考使用此模式。
+# 平台证书模式向公钥模式切换期间也请使用此方式初始化。
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
