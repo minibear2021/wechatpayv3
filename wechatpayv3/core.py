@@ -94,13 +94,13 @@ class Core():
             nonce_mark = 'wechatpay-nonce'
             serial_mark = 'wechatpay-serial'
             signature_type_mark = 'wechatpay-signature-type'            
-        signature = headers.get(signature_mark)
-        timestamp = headers.get(timestamp_mark)
-        nonce = headers.get(nonce_mark)
-        serial_no = headers.get(serial_mark)
-        signature_type = headers.get(signature_type_mark)
+        signature = headers.get(signature_mark, '')
+        timestamp = headers.get(timestamp_mark, '')
+        nonce = headers.get(nonce_mark, '')
+        serial_no = headers.get(serial_mark, '')
+        signature_type = headers.get(signature_type_mark, '')
         if signature_type != 'WECHATPAY2-SHA256-RSA2048':
-            raise Exception('wechatpayv3 does not support this algorithm: ' + signature_type)
+            raise Exception(f'wechatpayv3 does not support this algorithm: {signature_type}')
         if serial_no == self._public_key_id:
             public_key = self._public_key
         else:
@@ -202,7 +202,7 @@ class Core():
             return None
         algorithm = resource.get('algorithm')
         if algorithm != 'AEAD_AES_256_GCM':
-            raise Exception('wechatpayv3 does not support this algorithm: ' + algorithm)
+            raise Exception(f'wechatpayv3 does not support this algorithm: {algorithm}')
         nonce = resource.get('nonce')
         ciphertext = resource.get('ciphertext')
         associated_data = resource.get('associated_data')
