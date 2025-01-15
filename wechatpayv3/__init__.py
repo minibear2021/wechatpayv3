@@ -195,3 +195,6 @@ class WeChatPay():
                            transfer_query_out_batch_no,
                            transfer_query_out_detail_no,
                            transfer_query_receipt)
+    from .mchtransfer import (mch_transfer_bills, mch_transfer_bills_cancel,
+                              mch_transfer_bills_query, mch_transfer_elecsign,
+                              mch_transfer_elecsign_query)

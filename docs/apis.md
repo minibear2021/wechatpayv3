@@ -109,6 +109,11 @@
 | 资金应用 | 商家转账到零钱 | 查询转账电子回单| transfer_query_bill_receipt | 是| 否|
 | 资金应用 | 商家转账到零钱 | 转账明细电子回单受理| transfer_detail_receipt | 是| 否|
 | 资金应用 | 商家转账到零钱 | 查询转账明细电子回单受理结果| transfer_query_receipt | 是| 否|
+| 资金应用 | 商家转账 | 发起转账 | mch_transfer_bills | 是 | 否
+| 资金应用 | 商家转账 | 撤销转账 | mch_transfer_bills_cancel | 是 | 否
+| 资金应用 | 商家转账 | 查询转账单 | mch_transfer_bills_query | 是 | 否
+| 资金应用 | 商家转账 | 申请电子回单 | mch_transfer_elecsign | 是 | 否
+| 资金应用 | 商家转账 | 查询电子回单 | mch_transfer_elecsign_query | 是 | 否
 | 资金应用 | 分账 | 请求分账 | profitsharing_order | 是| 是|
 | 资金应用 | 分账 | 查询分账结果| profitsharing_order_query | 是| 是|
 | 资金应用 | 分账 | 请求分账回退| profitsharing_return| 是| 是|
