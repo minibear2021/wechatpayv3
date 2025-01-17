@@ -100,12 +100,12 @@ PROXY = None
 TIMEOUT = (10, 30) # 建立连接最大超时时间是10s，读取响应的最大超时时间是30s
 
 # 微信支付平台公钥
-# 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
+# 注：部分新申请的微信支付账号使用平台公钥模式初始化，需配置此参数。
 with open('path_to_wechat_pay_public_key/pub_key.pem') as f:
     PUBLIC_KEY = f.read()
 
 # 微信支付平台公钥ID
-# 注：2024年09月后新申请的微信支付账号使用公钥模式初始化，需配置此参数。
+# 注：部分新申请的微信支付账号使用平台公钥模式初始化，需配置此参数。
 PUBLIC_KEY_ID = 'PUB_KEY_ID_444F4864EA9B34415...'
 ```
 
@@ -126,8 +126,7 @@ wxpay = WeChatPay(
     proxy=PROXY,
     timeout=TIMEOUT)
 
-# 微信支付平台公钥模式初始化，2024年09月之后申请的账号参考使用此模式。
-# 平台证书模式向公钥模式切换期间也请使用此方式初始化。
+# 微信支付平台公钥模式初始化，平台证书模式向平台公钥模式切换期间也请使用此方式初始化。
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
