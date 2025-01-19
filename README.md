@@ -24,7 +24,7 @@
 3. 敏感信息直接传入明文参数，SDK 内部自动加密，无需手动处理；
 4. 回调通知自动验证回调消息，自动解密 resource 对象，并返回解密后的数据；
 5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有 v3 版接口；
-6. 兼容通过平台证书模式和平台公钥模式（2024年09月后启用）初始化，兼容证书模式向公钥模式过渡。
+6. 兼容通过平台证书模式或平台公钥模式初始化，兼容证书模式向公钥模式过渡。
 
 ## 源码
 
@@ -42,7 +42,7 @@ pip install wechatpayv3
 
 ### 准备
 
-根据[Q&A](docs/Q&A.md)第一条判断当前账户所使用的模式（微信支付平台证书模式 或 微信支付平台公钥模式）。
+**首先根据[Q&A](docs/Q&A.md)第一条判断当前账户所使用的模式（微信支付平台证书模式 或 微信支付平台公钥模式）。**
 
 参考微信官方文档准备好商户证书私钥、商户证书序列号、APIv3密钥, 如果使用微信支付平台公钥模式，还需要准备好微信支付平台公钥和微信支付公钥ID，这些参数配置方法请参考官方文档。
 
@@ -51,7 +51,7 @@ pip install wechatpayv3
 - **商户 API 证书序列号：CERT_SERIAL_NO**。每个证书都有一个由 CA 颁发的唯一编号，即证书序列号。扩展阅读 [如何查看证书序列号](https://wechatpay-api.gitbook.io/wechatpay-api-v3/chang-jian-wen-ti/zheng-shu-xiang-guan#ru-he-cha-kan-zheng-shu-xu-lie-hao)。
 - **微信支付 APIv3 密钥：APIV3_KEY**，是在回调通知和微信支付平台证书下载接口中，为加强数据安全，对关键信息 `AES-256-GCM` 解密时使用的对称加密密钥。
 
-在2024年09月后申请开通的微信支付可能[无法使用接口下载平台证书](docs/Q&A.md#下载平台证书时解析失败)，这种情况下，需要从微信支付后台的“API安全”菜单中下载/复制以下两项，使用公钥模式初始化WechatPay。
+对于使用微信支付平台公钥模式初始化的情况，还需要从微信支付后台的“API安全”菜单中下载/复制以下两项：
 
 - **微信支付平台公钥：PUBLIC_KEY**，微信支付后台“API安全-微信支付公钥”菜单中下载的微信支付公钥。
 - **微信支付平台公钥ID：PUBLIC_KEY_ID**，微信支付后台“API安全-微信支付公钥”菜单中复制的微信支付公钥ID，形如：PUB_KEY_ID_1234567890...。
@@ -109,7 +109,7 @@ with open('path_to_wechat_pay_public_key/pub_key.pem') as f:
 PUBLIC_KEY_ID = 'PUB_KEY_ID_444F4864EA9B34415...'
 ```
 
-接下来初始化 WechatPay 实例并配置一个合适的接口：
+接下来使用微信支付平台证书模式初始化 WechatPay 实例并配置一个合适的接口：
 
 ```python
 wxpay = WeChatPay(
@@ -126,7 +126,7 @@ wxpay = WeChatPay(
     proxy=PROXY,
     timeout=TIMEOUT)
 
-# 微信支付平台公钥模式初始化，平台证书模式向平台公钥模式切换期间也请使用此方式初始化。
+# 如果是使用微信支付平台公钥模式初始化，参照下面代码，平台证书模式向平台公钥模式过渡期间也请使用此方式初始化。
 wxpay = WeChatPay(
     wechatpay_type=WeChatPayType.NATIVE,
     mchid=MCHID,
