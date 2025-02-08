@@ -72,7 +72,7 @@ def goldplan_advertising_open(self, sub_mchid, advertising_industry_filters=None
     else:
         raise Exception('advertising_industry_filters is not assigned.')
     path = '/v3/goldplan/merchants/open-advertising-show'
-    return self._core.request(path, method=RequestType.POST, data=params)
+    return self._core.request(path, method=RequestType.PATCH, data=params)
 
 
 def goldplan_advertising_close(self, sub_mchid):
