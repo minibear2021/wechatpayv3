@@ -37,7 +37,7 @@ def mch_transfer_bills(self, out_bill_no, transfer_scene_id, openid, transfer_am
     else:
         raise Exception('transfer_remark is not assigned')
     cipher_data = False
-    if user_name:
+    if user_name and transfer_amount >= 30:
         params.update({'user_name':self._core.encrypt(user_name)})
         cipher_data = True
     if transfer_amount >= 200000 and not user_name:
@@ -59,7 +59,7 @@ def mch_transfer_bills_cancel(self, out_bill_no):
         path = f'/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/{out_bill_no}/cancel'
     else:
         raise Exception('out_bill_no is not assigned')
-    return self._core.request(path)
+    return self._core.request(path, method=RequestType.POST)
 
 def mch_transfer_bills_query(self, out_bill_no=None, transfer_bill_no=None):
     """查询转账单
