@@ -27,8 +27,8 @@ class Core():
         self._public_key = load_public_key(public_key)
         self._public_key_id = public_key_id
         if (public_key is None) != (public_key_id is None):
-            raise Exception('public_key_id or public_key is not assigned.')            
-        if not public_key:
+            raise Exception('public_key_id or public_key is not assigned.')
+        if not self._public_key:
             self._init_certificates()
 
     def _update_certificates(self):
@@ -131,9 +131,8 @@ class Core():
             headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
         headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
-        if cipher_data:
-            wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()
-            headers.update({'Wechatpay-Serial': wechatpay_serial})
+        wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()
+        headers.update({'Wechatpay-Serial': wechatpay_serial})
         authorization = build_authorization(
             path,
             method.value,
