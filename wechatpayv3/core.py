@@ -132,7 +132,8 @@ class Core():
         headers.update({'Accept': 'application/json'})
         headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
         wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()
-        headers.update({'Wechatpay-Serial': wechatpay_serial})
+        if self._public_key_id or cipher_data:
+            headers.update({'Wechatpay-Serial': wechatpay_serial})
         authorization = build_authorization(
             path,
             method.value,
