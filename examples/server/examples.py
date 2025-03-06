@@ -97,7 +97,7 @@ def pay():
     # 以native下单为例，下单成功后即可获取到'code_url'，将'code_url'转换为二维码，并用微信扫码即可进行支付测试。
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
@@ -112,7 +112,7 @@ def pay_jsapi():
     # 以jsapi下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给JSSDK的wx.chooseWXPay接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     payer = {'openid': 'demo-openid'}
     code, message = wxpay.pay(
         description=description,
@@ -146,7 +146,7 @@ def pay_h5():
     # 以h5下单为例，下单成功后，将获取的的h5_url传递给前端跳转唤起支付。
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     scene_info = {'payer_client_ip': '1.2.3.4', 'h5_info': {'type': 'Wap'}}
     code, message = wxpay.pay(
         description=description,
@@ -163,7 +163,7 @@ def pay_miniprog():
     # 以小程序下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给小程序的wx.requestPayment接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     payer = {'openid': 'demo-openid'}
     code, message = wxpay.pay(
         description=description,
@@ -197,7 +197,7 @@ def pay_app():
     # 以app下单为例，下单成功后，将prepay_id和其他必须的参数组合传递给IOS或ANDROID SDK接口唤起支付
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     code, message = wxpay.pay(
         description=description,
         out_trade_no=out_trade_no,
@@ -228,7 +228,7 @@ def pay_codepay():
     # 以付款码支付为例，终端条码枪扫描用户付款码将解码后的auth_code放入payer传递给微信支付服务器扣款。
     out_trade_no = ''.join(sample(ascii_letters + digits, 8))
     description = 'demo-description'
-    amount = 1
+    amount = 100
     payer = {'auth_code': '130061098828009406'}
     scene_info={'store_info' : {'id' : '0001'}}
     code, message = wxpay.pay(
