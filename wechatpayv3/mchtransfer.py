@@ -11,7 +11,7 @@ def mch_transfer_bills(self, out_bill_no, transfer_scene_id, openid, transfer_am
     :param transfer_remark: 转账备注，用户收款时可见该备注信息，最多允许32个字符，示例值:'2020年4月报销'
     :param user_name: 收款用户姓名，转账金额 >= 2,000元时，该笔明细必须填写。若商户传入收款用户姓名，微信支付会校验收款用户与输入姓名是否一致，并提供电子回单，示例值:'张三'
     :param user_recv_perception: 用户收款时感知到的收款原因，将根据转账场景自动展示默认内容。如有其他展示需求，可在本字段传入。示例值: '现金奖励'
-    :param transfer_scene_report_infos: 转账场景报备信息，示例值: [{'info_type':'奖励说明', 'info_content':'注册会员抽奖'}]
+    :param transfer_scene_report_infos: 转账场景报备信息，info_type的值必需按文档指示传入，示例值: [{'info_type':'活动名称', 'info_content':'新会员有礼'}, {'info_type':'奖励说明', 'info_content':'注册会员抽奖'}]
     :param appid: 应用ID，可不填，默认传入初始化时的appid，示例值:'wx1234567890abcdef'
     :param notify_url: 通知地址，异步接收微信支付结果通知的回调地址，示例值:'https://www.weixin.qq.com/wxpay/pay.php'
     """
