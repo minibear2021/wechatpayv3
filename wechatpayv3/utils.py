@@ -55,6 +55,7 @@ def aes_decrypt(nonce, ciphertext, associated_data, apiv3_key):
 def format_private_key(private_key_str):
     pem_start = '-----BEGIN PRIVATE KEY-----\n'
     pem_end = '\n-----END PRIVATE KEY-----'
+    private_key_str = private_key_str.strip()
     if not private_key_str.startswith(pem_start):
         private_key_str = pem_start + private_key_str
     if not private_key_str.endswith(pem_end):
@@ -65,6 +66,7 @@ def format_private_key(private_key_str):
 def format_public_key(public_key_str):
     pem_start = '-----BEGIN PUBLIC KEY-----\n'
     pem_end = '\n-----END PUBLIC KEY-----'
+    public_key_str = public_key_str.strp()
     if not public_key_str.startswith(pem_start):
         public_key_str = pem_start + public_key_str
     if not public_key_str.endswith(pem_end):
