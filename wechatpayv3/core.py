@@ -130,7 +130,7 @@ class Core():
         else:
             headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
-        headers.update({'User-Agent': 'wechatpay v3 api python sdk(https://github.com/minibear2021/wechatpayv3)'})
+        headers.update({'User-Agent': 'wechatpay python sdk v1.3.11(https://github.com/minibear2021/wechatpayv3)'})
         if self._public_key_id or cipher_data:
             wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()            
             headers.update({'Wechatpay-Serial': wechatpay_serial})
@@ -166,7 +166,7 @@ class Core():
         if response.status_code in range(200, 300) and not skip_verify:
             if not self._verify_signature(response.headers, response.text):
                 raise Exception('failed to verify the signature')
-        return response.status_code, response.text if 'application/json' in response.headers.get('Content-Type') else response.content
+        return response.status_code, response.text if 'application/json' in response.headers.get('Content-Type', '') else response.content
 
     def sign(self, data, sign_type=SignType.RSA_SHA256):
         if sign_type == SignType.RSA_SHA256:
