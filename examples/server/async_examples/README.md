@@ -36,33 +36,6 @@ pip install wechatpayv3[async]
 - **商户号：MCHID**
 - **应用ID：APPID**
 
-### 环境变量配置
-
-复制并配置环境变量文件：
-
-```bash
-cp .env.example .env
-```
-
-编辑 `.env` 文件：
-
-```bash
-# 商户配置
-WECHATPAY_MCHID=1230000109
-WECHATPAY_APPID=wxd678efh567hg6787
-WECHATPAY_APIV3_KEY=MIIEvwIBADANBgkqhkiG9w0BAQE...
-
-# 证书配置
-WECHATPAY_PRIVATE_KEY_PATH=/path/to/apiclient_key.pem
-WECHATPAY_CERT_SERIAL_NO=444F4864EA9B34415...
-WECHATPAY_CERT_DIR=./cert
-
-# 业务配置
-WECHATPAY_NOTIFY_URL=https://www.xxxx.com/notify
-WECHATPAY_TYPE=NATIVE
-WECHATPAY_PARTNER_MODE=false
-```
-
 ### 基础异步使用示例
 
 ```python

@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 with open("README.md", "r", encoding="utf8") as f:
@@ -15,7 +15,7 @@ setup(
     license="MIT",
     keywords="python sdk wechatpay api v3 微信支付",
     url="https://github.com/minibear2021/wechatpayv3",
-    packages=["wechatpayv3"],
+    packages=find_packages(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Topic :: Office/Business :: Financial",
