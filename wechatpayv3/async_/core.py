@@ -40,7 +40,7 @@ class AsyncCore:
     async def __aenter__(self):
         """Async context manager entry"""
         self._client = httpx.AsyncClient(
-            proxies=self._proxy,
+            proxy=self._proxy,
             timeout=httpx.Timeout(
                 timeout=self._timeout[1] if isinstance(self._timeout, tuple) else self._timeout,
                 connect=self._timeout[0] if isinstance(self._timeout, tuple) else 10.0

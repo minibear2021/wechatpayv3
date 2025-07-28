@@ -9,8 +9,9 @@
 **wechatpayv3 异步版本**同时支持微信支付[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)及[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml)，完全兼容同步版本的所有配置参数。
 
 ## 异步版本特性
+> Python的版本需大于等于3.8
 
-1. **高性能异步操作**：基于 `httpx` 实现非阻塞网络请求，显著提升并发性能；
+1**高性能异步操作**：基于 `httpx` 实现非阻塞网络请求，显著提升并发性能；
 2. **自动资源管理**：使用 `async with` 语法自动管理连接生命周期，防止资源泄露；
 3. **兼容同步接口**：配置参数与同步版本完全一致，迁移成本低；
 4. **支持批量操作**：可通过 `asyncio.gather()` 实现批量查询、退款等操作；
