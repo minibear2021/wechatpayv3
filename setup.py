@@ -22,4 +22,7 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     install_requires=["requests>=2.21.0", "cryptography>=35.0.0"],
+    extras_require={
+        "async": ["httpx>=0.24.0", "aiofiles>=23.2.0"],
+    },
 )
