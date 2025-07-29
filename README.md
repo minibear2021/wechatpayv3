@@ -37,6 +37,9 @@
 
 ```sh
 pip install wechatpayv3
+
+# 安装包含异步依赖的完整版本
+pip install wechatpayv3[async]
 ```
 
 ## 使用方法
@@ -185,6 +188,8 @@ $ python examples.py
 **以上步骤如果不能正确执行，务必仔细检查各项初始化参数，必要的情况下，登录微信支付后台，将所有参数重置。**
 
 Native 支付调试最简单便捷，调试通过没有问题证明初始化参数正确之后，如果需要采用其他（小程序、H5、JSAPI、APP）支付下单，可继续参考 examples.py。
+
+以上演示了一个最简单的后端，如果需要使用异步调用，可以[点击查看异步版本的实现指南](examples/server/async_examples/README.md)。
 
 ## 常见问题
 
