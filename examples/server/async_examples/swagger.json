@@ -1,0 +1,535 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "WeChat Pay v3 Async API",
+    "description": "异步版本微信支付 SDK API 文档",
+    "version": "1.0.0",
+    "contact": {
+      "name": "WeChat Pay v3 SDK",
+      "url": "https://github.com/minibear2021/wechatpayv3"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "本地开发服务器"
+    }
+  ],
+  "paths": {
+    "/api/v1/payment/native": {
+      "post": {
+        "summary": "创建 Native 支付订单",
+        "description": "创建扫码支付订单，返回二维码链接",
+        "tags": ["支付接口"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "code_url": {
+                          "type": "string",
+                          "description": "二维码链接",
+                          "example": "weixin://wxpay/bizpayurl?pr=abcdefg"
+                        },
+                        "out_trade_no": {
+                          "type": "string",
+                          "description": "商户订单号",
+                          "example": "ORDER_001"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务器内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/jsapi": {
+      "post": {
+        "summary": "创建 JSAPI 支付订单",
+        "description": "创建公众号/小程序支付订单，返回调起支付参数",
+        "tags": ["支付接口"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PaymentRequest"
+                  },
+                  {
+                    "type": "object",
+                    "required": ["openid"],
+                    "properties": {
+                      "openid": {
+                        "type": "string",
+                        "description": "用户openid（JSAPI支付必填）",
+                        "example": "oHkLxtx0vUqe-18p_AXTZ1innxkCY"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "appId": {
+                          "type": "string",
+                          "description": "应用ID",
+                          "example": "wxd678efh567hg6787"
+                        },
+                        "timeStamp": {
+                          "type": "string",
+                          "description": "时间戳",
+                          "example": "1640995200"
+                        },
+                        "nonceStr": {
+                          "type": "string",
+                          "description": "随机字符串",
+                          "example": "ORDER_001"
+                        },
+                        "package": {
+                          "type": "string",
+                          "description": "订单详情扩展字符串",
+                          "example": "prepay_id=wx123456789"
+                        },
+                        "signType": {
+                          "type": "string",
+                          "description": "签名方式",
+                          "example": "RSA"
+                        },
+                        "paySign": {
+                          "type": "string",
+                          "description": "签名",
+                          "example": "0CB01533B8C1EF103065174F50BCA001"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/query/{out_trade_no}": {
+      "get": {
+        "summary": "查询支付订单状态",
+        "description": "根据商户订单号查询订单状态",
+        "tags": ["支付接口"],
+        "parameters": [
+          {
+            "name": "out_trade_no",
+            "in": "path",
+            "required": true,
+            "description": "商户订单号",
+            "schema": {
+              "type": "string",
+              "example": "ORDER_001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "out_trade_no": {
+                          "type": "string",
+                          "description": "商户订单号",
+                          "example": "ORDER_001"
+                        },
+                        "transaction_id": {
+                          "type": "string",
+                          "description": "微信支付订单号",
+                          "example": "4200001234567890123"
+                        },
+                        "trade_state": {
+                          "type": "string",
+                          "description": "交易状态",
+                          "enum": ["SUCCESS", "REFUND", "NOTPAY", "CLOSED", "REVOKED", "USERPAYING", "PAYERROR"],
+                          "example": "SUCCESS"
+                        },
+                        "trade_state_desc": {
+                          "type": "string",
+                          "description": "交易状态描述",
+                          "example": "支付成功"
+                        },
+                        "amount": {
+                          "type": "object",
+                          "description": "订单金额信息",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "总金额，单位为分",
+                              "example": 100
+                            },
+                            "currency": {
+                              "type": "string",
+                              "description": "货币类型",
+                              "example": "CNY"
+                            }
+                          }
+                        },
+                        "payer": {
+                          "type": "object",
+                          "description": "支付者信息",
+                          "properties": {
+                            "openid": {
+                              "type": "string",
+                              "description": "用户openid",
+                              "example": "oHkLxtx0vUqe-18p_AXTZ1innxkCY"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "订单不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/refund": {
+      "post": {
+        "summary": "申请退款",
+        "description": "对已支付的订单申请退款",
+        "tags": ["支付接口"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "退款申请成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "refund_id": {
+                          "type": "string",
+                          "description": "微信退款单号",
+                          "example": "50000000382019052709732678859"
+                        },
+                        "out_refund_no": {
+                          "type": "string",
+                          "description": "商户退款单号",
+                          "example": "REFUND_001"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "退款状态",
+                          "enum": ["SUCCESS", "CLOSED", "PROCESSING", "ABNORMAL"],
+                          "example": "SUCCESS"
+                        },
+                        "amount": {
+                          "type": "object",
+                          "description": "金额信息",
+                          "properties": {
+                            "refund": {
+                              "type": "integer",
+                              "description": "退款金额，单位为分",
+                              "example": 50
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "原订单金额，单位为分",
+                              "example": 100
+                            },
+                            "currency": {
+                              "type": "string",
+                              "description": "货币类型",
+                              "example": "CNY"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "健康检查",
+        "description": "检查服务运行状态",
+        "tags": ["系统接口"],
+        "responses": {
+          "200": {
+            "description": "服务正常",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "healthy"
+                    },
+                    "service": {
+                      "type": "string",
+                      "example": "wechatpay-async"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaymentRequest": {
+        "type": "object",
+        "required": ["description", "out_trade_no", "total"],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "商品描述",
+            "example": "Image形象店-深圳腾大-QQ公仔",
+            "maxLength": 127
+          },
+          "out_trade_no": {
+            "type": "string",
+            "description": "商户订单号",
+            "example": "ORDER_001",
+            "maxLength": 32
+          },
+          "total": {
+            "type": "integer",
+            "description": "订单金额，单位为分",
+            "example": 100,
+            "minimum": 1
+          },
+          "openid": {
+            "type": "string",
+            "description": "用户openid（JSAPI支付时必填）",
+            "example": "oHkLxtx0vUqe-18p_AXTZ1innxkCY"
+          }
+        }
+      },
+      "RefundRequest": {
+        "type": "object",
+        "required": ["out_trade_no", "out_refund_no", "refund", "total"],
+        "properties": {
+          "out_trade_no": {
+            "type": "string",
+            "description": "原支付交易对应的商户订单号",
+            "example": "ORDER_001",
+            "maxLength": 32
+          },
+          "out_refund_no": {
+            "type": "string",
+            "description": "商户退款单号",
+            "example": "REFUND_001",
+            "maxLength": 64
+          },
+          "refund": {
+            "type": "integer",
+            "description": "退款金额，单位为分",
+            "example": 50,
+            "minimum": 1
+          },
+          "total": {
+            "type": "integer",
+            "description": "原订单金额，单位为分",
+            "example": 100,
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string",
+            "description": "退款原因",
+            "example": "用户申请退款",
+            "maxLength": 80,
+            "default": "用户申请退款"
+          }
+        }
+      },
+      "BatchQueryRequest": {
+        "type": "object",
+        "required": ["orders"],
+        "properties": {
+          "orders": {
+            "type": "array",
+            "description": "商户订单号列表",
+            "items": {
+              "type": "string",
+              "example": "ORDER_001"
+            },
+            "minItems": 1,
+            "maxItems": 50,
+            "example": ["ORDER_001", "ORDER_002", "ORDER_003"]
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "错误码",
+            "example": -1
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息",
+            "example": "参数错误"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "微信支付签名认证"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "支付接口",
+      "description": "支付相关的API接口"
+    },
+    {
+      "name": "对账单接口",
+      "description": "对账单下载相关接口"
+    },
+    {
+      "name": "回调接口",
+      "description": "微信支付回调通知接口"
+    },
+    {
+      "name": "系统接口",
+      "description": "系统状态检查接口"
+    }
+  ]
+}

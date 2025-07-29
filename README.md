@@ -25,6 +25,7 @@
 4. 回调通知自动验证回调消息，自动解密 resource 对象，并返回解密后的数据；
 5. 已适配[直连模式](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/index.shtml)和[服务商模式](https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/index.shtml)中除“电商收付通”以外所有 v3 版接口；
 6. 兼容通过平台证书模式或平台公钥模式初始化，兼容证书模式向公钥模式过渡。
+7. 支持Python的异步编程 `async`和 `await`，如需集成在FastAPI框架中 [查看文档地址](examples/server/async_examples/README.md)
 
 ## 源码
 
