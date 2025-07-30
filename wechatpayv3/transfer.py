@@ -183,4 +183,4 @@ def transfer_query_receipt(self, accept_type, out_detail_no, out_batch_no=None):
         raise Exception('out_detail_no is not assigned')
     if out_batch_no:
         path += '&out_batch_no=%s' % out_batch_no
-    return self._core_request(path)
+    return self._core.request(path)
