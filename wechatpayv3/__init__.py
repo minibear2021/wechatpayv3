@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
 
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:
+    # 兼容 Python 3.7 以下版本
+    from importlib_metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version("wechatpayv3")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
 from .type import SignType, WeChatPayType
 
 

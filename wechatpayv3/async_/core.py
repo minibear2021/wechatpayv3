@@ -14,6 +14,7 @@ from .type import RequestType, SignType
 from .utils import (aes_decrypt, build_authorization, hmac_sign, load_public_key,
                     load_certificate, load_private_key, rsa_decrypt,
                     rsa_encrypt, rsa_sign, rsa_verify, cryptography_version)
+from .. import __version__
 
 
 class AsyncCore:
@@ -199,7 +200,7 @@ class AsyncCore:
         else:
             headers.update({'Content-Type': 'application/json'})
         headers.update({'Accept': 'application/json'})
-        headers.update({'User-Agent': 'wechatpay python sdk v1.3.11(https://github.com/minibear2021/wechatpayv3)'})
+        headers.update({'User-Agent': f'wechatpay python sdk v{__version__}(https://github.com/minibear2021/wechatpayv3)'})
         if self._public_key_id or cipher_data:
             wechatpay_serial = self._public_key_id if self._public_key_id else hex(self._last_certificate().serial_number)[2:].upper()            
             headers.update({'Wechatpay-Serial': wechatpay_serial})
