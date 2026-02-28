@@ -74,6 +74,8 @@ def pay(self,
         params.update({'settle_info': settle_info})
     pay_type = pay_type or self._type
     if self._partner_mode:
+        if payer and payer.get('openid'):
+            params['payer'] = {'sub_openid': payer['openid']}
         params.update({'sp_appid': appid or self._appid})
         params.update({'sp_mchid': mchid or self._mchid})
         if sub_mchid:
