@@ -194,7 +194,9 @@ class AsyncCore:
             return False
         return True
 
-    async def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False, headers={}):
+    async def request(self, path, method=RequestType.GET, data=None, skip_verify=False, sign_data=None, files=None, cipher_data=False, headers=None):
+        if headers is None:
+            headers = {}
         if files:
             headers.update({'Content-Type': 'multipart/form-data'})
         else:

@@ -26,7 +26,7 @@ def pay(self,
     :param description: 商品描述，示例值:'Image形象店-深圳腾大-QQ公仔'
     :param out_trade_no: 商户订单号，示例值:'1217752501201407033233368018'
     :param amount: 订单金额，示例值:{'total':100, 'currency':'CNY'}
-    :param payer: 支付者，示例值:{'openid':'oHkLxtx0vUqe-18p_AXTZ1innxkCY'}
+    :param payer: 支付者，示例值:{'openid':'oHkLxtx0vUqe-18p_AXTZ1innxkCY'}，或服务商模式：{'sub_openid':'oHkLxtx0vUqe-18p_AXTZ1innxkCY'}/{'sp_openid':'oHkLxtx0vUqe-18p_AXTZ1innxkCY'}
     :param time_expire: 交易结束时间，示例值:'2018-06-08T10:34:56+08:00'
     :param attach: 附加数据，示例值:'自定义数据'
     :param goods_tag: 订单优惠标记，示例值:'WXG'
