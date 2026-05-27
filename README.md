@@ -3,10 +3,6 @@
 [![PyPI version](https://badge.fury.io/py/wechatpayv3.svg)](https://badge.fury.io/py/wechatpayv3)
 [![Download count](https://img.shields.io/pypi/dm/wechatpayv3)](https://img.shields.io/pypi/dm/wechatpayv3)
 
-> **注意**：本项目是 **微信支付 v3 API** 的后端 Python SDK。如果你需要的是 **微信小程序虚拟支付** 的 后端 Python SDK，请使用 [wechat-xpay](https://github.com/minibear2021/wechat-xpay)：
-> ```bash
-> pip install wechat-xpay
-> ```
 
 ## 介绍
 
