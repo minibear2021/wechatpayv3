@@ -8,7 +8,7 @@ GITHUB_MODELS_HOST = os.getenv('GITHUB_MODELS_HOST', 'https://models.github.ai')
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
 # Claude Haiku 4.5模型
-HAIKU_MODEL = "claude-3-5-haiku-20241022"
+HAIKU_MODEL = "claude-haiku-4-5-20251001"
 
 def call_haiku(prompt: str, system_prompt: str = "") -> str:
     """调用Claude Haiku 4.5"""
